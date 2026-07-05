@@ -3,9 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Избранные работы — Портфолио</title>
+    <title>Никита — UI/UX Дизайнер | Портфолио</title>
+    
+    <!-- ПОДКЛЮЧАЕМ ШРИФТ INTER ИЗ GOOGLE FONTS -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <!-- Подключаем внешний файл стилей -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Подключение фавикона -->
+    <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body>
 
@@ -13,13 +22,34 @@
     <div class="custom-cursor" id="cursor">View case study</div>
 
     <div class="container">
-        <!-- Главный заголовок -->
-        <h1 class="main-title">We bring your boldest ideas to life</h1>
         
-        <!-- Заголовок секции -->
-        <h2 class="section-title">Избранные работы</h2>
+        <!-- ВЕРХНЯЯ СЕКЦИЯ ПРИВЕТСТВИЯ -->
+        <section class="hero-section">
+            
+            <!-- Левая колонка: контейнер для hi.svg -->
+            <div class="svg-container hi-container">
+                <img src="hi.svg" alt="Приветствие">
+            </div>
+            
+            <!-- Правая колонка: контейнер для about.svg -->
+            <div class="svg-container about-container">
+                <img src="about.svg" alt="Обо мне">
+            </div>
+            
+        </section>
 
-        <!-- Сетка с карточками -->
+        <!-- БЛОК ПЛАШЕК-ТЕГОВ (Выровнены по левому краю, как на новом макете) -->
+        <div class="tags-container">
+            <a href="#" class="filter-tag">UI/UX</a>
+            <a href="#" class="filter-tag">Web</a>
+            <a href="#" class="filter-tag">Mobile</a>
+            <a href="#" class="filter-tag">Gamedev</a>
+            <a href="#" class="filter-tag">iGaming</a>
+            <a href="#" class="filter-tag">BI</a>
+            <a href="#" class="filter-tag">Enterprise</a>
+            <a href="#" class="filter-tag">SaaS</a>
+        </div>
+
         <main class="portfolio-grid">
             
             <!-- 1. Большой проект -->
@@ -57,7 +87,7 @@
         </main>
     </div>
 
-    <!-- Логика следования кастомного курсора за мышкой -->
+    <!-- Логика следования кастомного курсора -->
     <script>
         const cursor = document.getElementById('cursor');
         const images = document.querySelectorAll('.project-image');
