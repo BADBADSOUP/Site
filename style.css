@@ -1,0 +1,230 @@
+/* ==========================================================================
+   1. ПЕРЕМЕННЫЕ (Глобальное управление сайтом)
+   ========================================================================== */
+:root {
+    --main-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    
+    /* Цветовая палитра */
+    --bg-color: #ffffff;
+    --text-main: #000000;
+    --text-muted: #666666;
+    --text-light: #999999;
+    
+    /* Геометрия сайта */
+    --container-max-width: 1300px; /* Максимальная ширина сайта */
+    --grid-gap: 60px;              /* Строго заданный зазор между карточками */
+}
+
+/* ==========================================================================
+   2. БАЗОВЫЕ СБРОСЫ И СТРУКТУРА
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--main-font);
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    padding: 80px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+    max-width: var(--container-max-width);
+}
+
+/* ==========================================================================
+   3. ТИПОГРАФИКА (Управление шрифтами)
+   ========================================================================== */
+
+/* 1. Главный большой заголовок страницы */
+.main-title {
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: clamp(30px, 5vw, 60px);
+    max-width: 500px;
+}
+
+/* 2. Заголовок секции "Избранные работы" */
+.section-title {
+    font-size: clamp(18px, 2vw, 24px);
+    font-weight: 500;
+    margin-bottom: clamp(20px, 3vw, 30px);
+}
+
+/* 3. Названия проектов (Заголовки h3 внутри карточек) */
+.project-name {
+    font-size: 32px; /* Базовый крупный размер для экранов от 1440px и выше */
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: clamp(6px, 0.8vw, 10px);
+}
+
+/* 4. Короткое описание под названиями проектов */
+.project-desc {
+    font-size: clamp(14px, 1.3vw, 18px); 
+    color: var(--text-muted);
+    line-height: 1.4;
+    margin-bottom: clamp(6px, 0.8vw, 10px);
+}
+
+/* 5. Теги технологий в самом низу карточки */
+.project-tags {
+    font-size: clamp(12px, 1.1vw, 15px); 
+    color: var(--text-light);
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   4. СТИЛИ КАСТОМНОГО КУРСОРA
+   ========================================================================== */
+.custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    padding: 18px 28px;
+    background-color: #18191b; 
+    color: #ffffff;            
+    font-size: 18px;           
+    font-weight: 400;          
+    white-space: nowrap;
+    pointer-events: none;      
+    opacity: 0;                
+    transform: translate(-50%, -50%) scale(0.8);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 9999;             
+    border-radius: 8px;
+}
+
+.custom-cursor.active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* ==========================================================================
+   5. ГИБКАЯ СЕТКА И КАРТОЧКИ
+   ========================================================================== */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(2, calc(50% - (var(--grid-gap) / 2))); 
+    gap: var(--grid-gap); 
+    row-gap: 80px; 
+}
+
+.project-card {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+.project-card.full-width {
+    grid-column: span 2;
+}
+
+/* Блоки изображений с логичным скейлингом */
+.project-image {
+    width: 100%;
+    aspect-ratio: 503 / 615; 
+    object-fit: cover; /* Защита от деформации картинок */
+    margin-bottom: 20px;
+    border-radius: 0px;
+    
+    /* Анимация увеличения и тени */
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform, box-shadow;
+    position: relative;
+    z-index: 1;
+}
+
+.project-card.full-width .project-image {
+    aspect-ratio: 16 / 9; 
+}
+
+.project-image:hover {
+    cursor: none;
+}
+
+/* ==========================================================================
+   6. ЭФФЕКТ НАВЕДЕНИЯ НА КАРТИНКИ (Прирост ровно 20px)
+   ========================================================================== */
+.project-card:hover .project-image {
+    transform: scale(calc(1 + (20 / 645)));
+    z-index: 2;
+    box-shadow: 0 0 60px #D0D1D3;
+}
+
+.project-card.full-width:hover .project-image {
+    transform: scale(calc(1 + (20 / 1350)));
+    z-index: 2;
+    box-shadow: 0 0 60px #D0D1D3;
+}
+
+/* ==========================================================================
+   7. АДАПТИВНОСТЬ (Жесткие брейкпоинты для контроля размеров project-name)
+   ========================================================================== */
+
+/* --- ШАГ 2: СТАНДАРТНЫЕ НОУТБУКИ (Меньше 1440px) --- */
+@media (max-width: 1440px) {
+    .project-name {
+        font-size: 32px; 
+    }
+}
+
+/* --- ШАГ 3: НЕТБУКИ И ПЛАНШЕТЫ (Меньше 1024px) --- */
+@media (max-width: 1024px) {
+    body {
+        padding: 60px 30px;
+    }
+    .portfolio-grid {
+        row-gap: 50px;
+    }
+    .project-name {
+        font-size: 28px; 
+    }
+}
+
+/* --- ШАГ 4: СМАРТФОНЫ И МОБИЛЬНЫЕ (Меньше 768px) --- */
+@media (max-width: 768px) {
+    body {
+        padding: 40px 16px;
+    }
+    
+    .project-name {
+        font-size: 18px; 
+    }
+    
+    /* Перестроение сетки в одну колонку */
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    .project-card,
+    .project-card.full-width {
+        grid-column: span 1;
+    }
+    .project-image,
+    .project-card.full-width .project-image {
+        aspect-ratio: 503 / 615;
+    }
+    .project-card:hover .project-image,
+    .project-card.full-width:hover .project-image {
+        transform: scale(1.02);
+        box-shadow: 0 0 30px #D0D1D3;
+    }
+    .custom-cursor {
+        display: none !important;
+    }
+    .project-image:hover {
+        cursor: default;
+    }
+}

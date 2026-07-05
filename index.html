@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Избранные работы — Портфолио</title>
+    <!-- Подключаем внешний файл стилей -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Элемент плавающего курсора -->
+    <div class="custom-cursor" id="cursor">View case study</div>
+
+    <div class="container">
+        <!-- Главный заголовок -->
+        <h1 class="main-title">We bring your boldest ideas to life</h1>
+        
+        <!-- Заголовок секции -->
+        <h2 class="section-title">Избранные работы</h2>
+
+        <!-- Сетка с карточками -->
+        <main class="portfolio-grid">
+            
+            <!-- 1. Большой проект -->
+            <article class="project-card full-width">
+                <img src="project1.png" alt="Foresight" class="project-image">
+                <h3 class="project-name">Foresight</h3>
+                <p class="project-desc">Blending design and development for seamless, user-first solutions.</p>
+                <div class="project-tags">UI/UX • Web • Design system</div>
+            </article>
+
+            <!-- 2. Левый малый проект -->
+            <article class="project-card">
+                <img src="project2.png" alt="Heroes Quests!" class="project-image">
+                <h3 class="project-name">Heroes Quests!</h3>
+                <p class="project-desc">Мобильная RPG с автоматическими боями.</p>
+                <div class="project-tags">UI/UX • Web • Design system</div>
+            </article>
+
+            <!-- 3. Правый малый проект -->
+            <article class="project-card">
+                <img src="project3.png" alt="TrucoReal" class="project-image">
+                <h3 class="project-name">TrucoReal</h3>
+                <p class="project-desc">Blending design and development for seamless, user-first solutions.</p>
+                <div class="project-tags">UI/UX • Web • Design system</div>
+            </article>
+
+            <!-- 4. Вторая большая карточка -->
+            <article class="project-card full-width">
+                <img src="project4.png" alt="Foresight" class="project-image">
+                <h3 class="project-name">Foresight</h3>
+                <p class="project-desc">Blending design and development for seamless, user-first solutions.</p>
+                <div class="project-tags">UI/UX • Web • Design system</div>
+            </article>
+
+        </main>
+    </div>
+
+    <!-- Логика следования кастомного курсора за мышкой -->
+    <script>
+        const cursor = document.getElementById('cursor');
+        const images = document.querySelectorAll('.project-image');
+
+        window.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        images.forEach(image => {
+            image.addEventListener('mouseenter', () => cursor.classList.add('active'));
+            image.addEventListener('mouseleave', () => cursor.classList.remove('active'));
+        });
+    </script>
+
+</body>
+</html>
