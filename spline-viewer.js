@@ -1,5 +1,5 @@
 /**
- * Автономный Spline Viewer Компонент
+ * Автономный Spline Viewer Компонен
  * Работает без внешних сетевых импортов и CORS-блокировок
  */
 class AutonomousSplineViewer extends HTMLElement {
