@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Никита — UI/UX Designer</title>
+
+    <!-- Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="icon" href="favicon.png">
+
+    <!-- Hana Viewer -->
+    <script type="module" src="https://cdn.spline.design/@splinetool/hana-viewer@1.2.54/hana-viewer.js"></script>
+</head>
+
+<body>
+
+<div class="custom-cursor" id="cursor">
+    View case study
+</div>
+
+<div class="container">
+
+<section class="hero-section">
+
+    <div class="hero-content">
+
+        <h1 class="hero-title">
+            Привет, я Никита
+        </h1>
+
+        <p class="hero-description">
+            UI/UX дизайнер с 15+ годами опыта. Запускаю проекты в сфере Gamedev и iGaming.
+            Проектирую сложные Enterprise продукты, развиваю дизайн-системы
+            и организую процессы в дизайн командах.
+        </p>
+
+        <div class="tags-container">
+
+            <a href="#" class="filter-tag">UI/UX</a>
+            <a href="#" class="filter-tag">Web</a>
+            <a href="#" class="filter-tag">Mobile</a>
+            <a href="#" class="filter-tag">Gamedev</a>
+            <a href="#" class="filter-tag">iGaming</a>
+            <a href="#" class="filter-tag">BI</a>
+            <a href="#" class="filter-tag">Enterprise</a>
+            <a href="#" class="filter-tag">SaaS</a>
+
+        </div>
+
+    </div>
+
+    <div class="hero-spline-container">
+
+        <hana-viewer
+            url="https://prod.spline.design/MJk2VEnkdp5m3frD-qub/scene.hanacode">
+        </hana-viewer>
+
+    </div>
+
+</section>
+
+<main class="portfolio-grid">
+
+    <article class="project-card full-width">
+        <img src="project1.png" class="project-image">
+        <h3 class="project-name">Foresight</h3>
+        <p class="project-desc">Blending design and development for seamless, user-first solutions.</p>
+        <div class="project-tags">UI/UX • Web • Design system</div>
+    </article>
+
+    <article class="project-card">
+        <img src="project2.png" class="project-image">
+        <h3 class="project-name">Heroes Quests!</h3>
+        <p class="project-desc">Мобильная RPG с автоматическими боями.</p>
+        <div class="project-tags">UI/UX • Web • Design system</div>
+    </article>
+
+    <article class="project-card">
+        <img src="project3.png" class="project-image">
+        <h3 class="project-name">TrucoReal</h3>
+        <p class="project-desc">Blending design and development for seamless, user-first solutions.</p>
+        <div class="project-tags">UI/UX • Web • Design system</div>
+    </article>
+
+    <article class="project-card full-width">
+        <img src="project4.png" class="project-image">
+        <h3 class="project-name">Foresight</h3>
+        <p class="project-desc">Blending design and development for seamless, user-first solutions.</p>
+        <div class="project-tags">UI/UX • Web • Design system</div>
+    </article>
+
+</main>
+
+</div>
+
+<script>
+
+const cursor=document.getElementById('cursor');
+const images=document.querySelectorAll('.project-image');
+
+window.addEventListener('mousemove',(e)=>{
+
+cursor.style.left=e.clientX+'px';
+cursor.style.top=e.clientY+'px';
+
+});
+
+images.forEach(image=>{
+
+image.addEventListener('mouseenter',()=>cursor.classList.add('active'));
+image.addEventListener('mouseleave',()=>cursor.classList.remove('active'));
+
+});
+
+</script>
+
+</body>
+</html>
