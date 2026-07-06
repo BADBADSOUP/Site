@@ -1,5 +1,5 @@
 /**
- * Исправленный автономный Spline Viewer Компонент
+ * Исправленный автономный Spline Viewer Компоgнент
  * Напрямую открывает корректную embed-версию сцены
  */
 class AutonomousSplineViewer extends HTMLElement {
