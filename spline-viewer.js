@@ -1,6 +1,70 @@
 /**
- * Spline Viewer Components v1.9.0
- * Copyright (c) 2026 Spline Tool
- * Licensed under MIT
+ * Автономный Spline Viewer Компонент
+ * Работает без внешних сетевых импортов и CORS-блокировок
  */
-!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(exports):"function"==typeof define&&define.amd?define(["exports"],t):t((e="undefined"!=typeof globalThis?globalThis:e||self).SplineViewer={})}(this,(function(e){"use strict";class t extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this._url=""}static get observedAttributes(){return["url"]}attributeChangedCallback(e,t,r){"url"===e&&t!==r&&(this._url=r,this.render())}connectedCallback(){this.render()}async render(){if(!this._url)return;this.shadowRoot.innerHTML=`<style>:host{display:block;width:100%;height:100%;margin:0;padding:0;position:relative;overflow:hidden}canvas{display:block;width:100%;height:100%;outline:none;background:transparent}#loading{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:sans-serif;font-size:14px;color:#999;transition:opacity 0.3s ease;pointer-events:none}</style><div id="loading">Loading 3D Scene...</div><canvas id="spline-canvas"></canvas>`;const e=this.shadowRoot.getElementById("spline-canvas"),t=this.shadowRoot.getElementById("loading");try{if(!window.THREE){await import("https://cloudflare.com")}if(!window.SplineRuntime){const{SplineRuntime:e}=await import("https://jsdelivr.net");window.SplineRuntime=e}const r=new window.SplineRuntime(e);await r.load(this._url),t.style.opacity="0",setTimeout((()=>t.remove()),300)}catch(e){console.error("Spline Viewer Error:",e),t.innerText="Failed to load 3D scene"}}}customElements.define("spline-viewer",t),e.SplineViewer=t,Object.defineProperty(e,"__esModule",{value:!value})}));
+class AutonomousSplineViewer extends HTMLElement {
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+        this._url = '';
+        this._iframe = null;
+    }
+
+    static get observedAttributes() {
+        return ['url'];
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (name === 'url' && oldValue !== newValue) {
+            this._url = newValue;
+            this.render();
+        }
+    }
+
+    connectedCallback() {
+        this.render();
+    }
+
+    render() {
+        if (!this._url) return;
+
+        // Преобразуем стандартную ссылку просмотра в чистый полноэкранный плеер Spline Sandbox,
+        // который легально разрешен к показу внутри тегов и не блокируется защитой CORS
+        let embedUrl = this._url;
+        if (embedUrl.includes('prod.spline.design')) {
+            embedUrl = embedUrl.replace('prod.spline.design', 'my.spline.design');
+            embedUrl = embedUrl.replace('/scene.splinecode', '/');
+        }
+
+        this.shadowRoot.innerHTML = `
+            <style>
+                :host {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                    position: relative;
+                    overflow: hidden;
+                }
+                iframe {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    border: none;
+                    background: transparent;
+                }
+            </style>
+            <iframe 
+                src="${embedUrl}?embed=true" 
+                allow="autoplay; fullscreen; vr" 
+                loading="lazy">
+             iframe>
+        `;
+    }
+}
+
+// Запускаем кастомный HTML-тег в систему
+if (!customElements.get('spline-viewer')) {
+    customElements.define('spline-viewer', AutonomousSplineViewer);
+}
