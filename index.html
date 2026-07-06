@@ -15,6 +15,9 @@
     
     <!-- Подключение фавикона -->
     <link rel="icon" type="image/png" href="favicon.png">
+
+    <!-- КРИТИЧЕСКИ ВАЖНО: Подключаем официальный скрипт для отображения Spline-сцен -->
+    <script type="module" src="https://unpkg.com"></script>
 </head>
 <body>
 
@@ -26,14 +29,14 @@
         <!-- ГЛАВНЫЙ ЭКРАН (Текст слева, 3D-модель справа) -->
         <section class="hero-section">
             
-            <!-- Левая колонка: весь контент макета собран вместе -->
+            <!-- Левая колонка: контент макета -->
             <div class="hero-content">
                 <h1 class="hero-title">Привет, я Никита</h1>
                 <p class="hero-description">
                     UI/UX дизайнер с 15+ годами опыта. Запускаю проекты в сфере Gamedev и iGaming. Проектирую сложные Enterprise продукты, развиваю дизайн-системы и организую процессы в дизайн командах.
                 </p>
                 
-                <!-- Блок тегов перенесен внутрь левой колонки точно под описание -->
+                <!-- Блок тегов под описанием -->
                 <div class="tags-container">
                     <a href="#" class="filter-tag">UI/UX</a>
                     <a href="#" class="filter-tag">Web</a>
@@ -46,9 +49,10 @@
                 </div>
             </div>
             
-            <!-- Правая колонка: интерактивный 3D объект из Spline через надежный iframe -->
+            <!-- Правая колонка: интерактивный 3D объект из Spline без использования iframe -->
             <div class="hero-spline-container">
-                <iframe src="https://spline.design" frameborder="0" width="100%" height="100%"></iframe>
+                <!-- Прямая загрузка файла сцены обходит любые блокировки браузера -->
+                <spline-viewer url="https://spline.design"></spline-viewer>
             </div>
             
         </section>
