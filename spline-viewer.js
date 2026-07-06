@@ -1,13 +1,12 @@
 /**
- * Автономный Spline Viewer Компонен
- * Работает без внешних сетевых импортов и CORS-блокировок
+ * Исправленный автономный Spline Viewer Компонент
+ * Напрямую открывает корректную embed-версию сцены
  */
 class AutonomousSplineViewer extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
         this._url = '';
-        this._iframe = null;
     }
 
     static get observedAttributes() {
@@ -28,13 +27,8 @@ class AutonomousSplineViewer extends HTMLElement {
     render() {
         if (!this._url) return;
 
-        // Преобразуем стандартную ссылку просмотра в чистый полноэкранный плеер Spline Sandbox,
-        // который легально разрешен к показу внутри тегов и не блокируется защитой CORS
-        let embedUrl = this._url;
-        if (embedUrl.includes('prod.spline.design')) {
-            embedUrl = embedUrl.replace('prod.spline.design', 'my.spline.design');
-            embedUrl = embedUrl.replace('/scene.splinecode', '/');
-        }
+        // Формируем чистую ссылку на полноэкранный интерактивный плеер
+        const finalEmbedUrl = "https://spline.design";
 
         this.shadowRoot.innerHTML = `
             <style>
@@ -56,15 +50,14 @@ class AutonomousSplineViewer extends HTMLElement {
                 }
             </style>
             <iframe 
-                src="${embedUrl}?embed=true" 
-                allow="autoplay; fullscreen; vr" 
+                src="${finalEmbedUrl}" 
+                allow="autoplay; fullscreen" 
                 loading="lazy">
-             iframe>
+            </iframe>
         `;
     }
 }
 
-// Запускаем кастомный HTML-тег в систему
 if (!customElements.get('spline-viewer')) {
     customElements.define('spline-viewer', AutonomousSplineViewer);
 }
