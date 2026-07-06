@@ -15,9 +15,6 @@
     
     <!-- Подключение фавикона -->
     <link rel="icon" type="image/png" href="favicon.png">
-
-    <!-- ПОДКЛЮЧЕНИЕ НАШЕГО ИСПРАВЛЕННОГО ЛОКАЛЬНОГО СКРИПТА С ВЕРСИЕЙ ДЛЯ ОБХОДА КЭША -->
-    <script type="module" src="spline-viewer.js?v=3"></script>
 </head>
 <body>
 
@@ -49,9 +46,9 @@
                 </div>
             </div>
             
-            <!-- Правая колонка: интерактивный 3D объект из Spline с точным адресом сцены -->
+            <!-- Правая колонка: интерактивный 3D объект из Spline через прямой чистый фрейм с версией -->
             <div class="hero-spline-container">
-                <spline-viewer url="https://spline.design"></spline-viewer>
+                <iframe src="https://spline.design" frameborder="0" width="100%" height="100%" allow="autoplay; fullscreen"></iframe>
             </div>
             
         </section>
