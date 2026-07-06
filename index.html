@@ -23,33 +23,37 @@
 
     <div class="container">
         
-        <!-- ВЕРХНЯЯ СЕКЦИЯ ПРИВЕТСТВИЯ -->
+        <!-- ГЛАВНЫЙ ЭКРАН (Текст слева, 3D-модель справа) -->
         <section class="hero-section">
             
-            <!-- Левая колонка: контейнер для hi.svg -->
-            <div class="svg-container hi-container">
-                <img src="hi.svg" alt="Приветствие">
+            <!-- Левая колонка: весь контент макета собран вместе -->
+            <div class="hero-content">
+                <h1 class="hero-title">Привет, я Никита</h1>
+                <p class="hero-description">
+                    UI/UX дизайнер с 15+ годами опыта. Запускаю проекты в сфере Gamedev и iGaming. Проектирую сложные Enterprise продукты, развиваю дизайн-системы и организую процессы в дизайн командах.
+                </p>
+                
+                <!-- Блок тегов перенесен внутрь левой колонки точно под описание -->
+                <div class="tags-container">
+                    <a href="#" class="filter-tag">UI/UX</a>
+                    <a href="#" class="filter-tag">Web</a>
+                    <a href="#" class="filter-tag">Mobile</a>
+                    <a href="#" class="filter-tag">Gamedev</a>
+                    <a href="#" class="filter-tag">iGaming</a>
+                    <a href="#" class="filter-tag">BI</a>
+                    <a href="#" class="filter-tag">Enterprise</a>
+                    <a href="#" class="filter-tag">SaaS</a>
+                </div>
             </div>
             
-            <!-- Правая колонка: контейнер для about.svg -->
-            <div class="svg-container about-container">
-                <img src="about.svg" alt="Обо мне">
+            <!-- Правая колонка: интерактивный 3D объект из Spline через надежный iframe -->
+            <div class="hero-spline-container">
+                <iframe src="https://spline.design" frameborder="0" width="100%" height="100%"></iframe>
             </div>
             
         </section>
 
-        <!-- БЛОК ПЛАШЕК-ТЕГОВ (Выровнены по левому краю, как на новом макете) -->
-        <div class="tags-container">
-            <a href="#" class="filter-tag">UI/UX</a>
-            <a href="#" class="filter-tag">Web</a>
-            <a href="#" class="filter-tag">Mobile</a>
-            <a href="#" class="filter-tag">Gamedev</a>
-            <a href="#" class="filter-tag">iGaming</a>
-            <a href="#" class="filter-tag">BI</a>
-            <a href="#" class="filter-tag">Enterprise</a>
-            <a href="#" class="filter-tag">SaaS</a>
-        </div>
-
+        <!-- СЕКЦИЯ С КАРТОЧКАМИ ПОРТФОЛИО -->
         <main class="portfolio-grid">
             
             <!-- 1. Большой проект -->

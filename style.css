@@ -7,13 +7,13 @@
     /* Цветовая палитра из макета */
     --bg-color: #ffffff;
     --text-main: #06070A;
-    --text-muted: #4A4B57; /* Серый цвет для описания */
+    --text-muted: #999999; /* Светло-серый цвет описания из нового макета */
     --text-light: #999999;
-    --tag-bg: #4A4B57;     /* Цвет плашек со скриншота */
+    --tag-bg: #4A4B57;     
     
     /* Геометрия сайта */
-    --container-max-width: 1350px; /* Максимальная ширина сайта */
-    --grid-gap: 60px;              /* Строго заданный зазор между карточками */
+    --container-max-width: 1350px; 
+    --grid-gap: 60px;              
 }
 
 /* ==========================================================================
@@ -40,50 +40,64 @@ body {
 }
 
 /* ==========================================================================
-   3. ГЛАВНЫЙ ЭКРАН (Приветствие строго по сетке)
+   3. НОВАЯ ТЕКСТОВАЯ ШАПКА И 3D БЛОК SPLINE
    ========================================================================== */
 .hero-section {
     display: flex;
-    justify-content: flex-start; /* Прижимаем оба блока к левому краю */
-    align-items: flex-start;
-    gap: 70px;                   /* Строгое расстояние 60 пикселей между блоками на десктопе */
+    justify-content: space-between;
+    align-items: center; /* Центрируем контент по вертикали относительно 3D объекта */
+    gap: 80px;           
+    margin-top: 50px;
+    margin-bottom: 140px; /* Тот самый увеличенный отступ до карточек */
+}
+
+/* Левая текстовая часть */
+.hero-content {
+    flex: 0 1 580px; 
+    display: flex;
+    flex-direction: column;
+}
+
+.hero-title {
+    font-size: 54px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 24px;
+}
+
+.hero-description {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--text-muted);
     margin-bottom: 40px; 
-    margin-top: 100px;
 }
 
-/* Стили для контейнеров картинок */
-.svg-container {
-    display: block;
+/* Правая интерактивная часть под Spline */
+.hero-spline-container {
+    flex: 1 1 550px;
+    height: 450px; /* Высота для отображения 3D сцены */
+    position: relative;
+    border: none;
+    overflow: hidden;
 }
 
-.svg-container img {
+.hero-spline-container iframe {
+    border: none;
     display: block;
     width: 100%;
-    height: auto;
-}
-
-/* ЖЕСТКАЯ БЛОКИРОВКА: этот блок ВСЕГДА равен 410px на десктопе */
-.hi-container {
-    flex: 0 0 410px !important; 
-    width: 410px !important;
-    max-width: 410px !important;
-    min-width: 410px !important;
-}
-
-.about-container {
-    flex: 0 1 590px; 
-    max-width: 590px;
+    height: 100%;
 }
 
 /* ==========================================================================
-   3.1 БЛОК С ТЕГАМИ-ПЛАШКАМИ (Выравнивание по левому краю)
+   3.1 БЛОК С ТЕГАМИ-ПЛАШКАМИ
    ========================================================================== */
 .tags-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start; 
     gap: 8px; 
-    margin-bottom: 130px; 
 }
 
 .filter-tag {
@@ -105,14 +119,8 @@ body {
 /* ==========================================================================
    3.2 ТИПОГРАФИКА КАРТОЧЕК (Фиксированные шрифты)
    ========================================================================== */
-.section-title {
-    font-size: clamp(18px, 2vw, 24px);
-    font-weight: 500;
-    margin-bottom: clamp(20px, 3vw, 30px);
-}
-
 .project-name {
-    font-size: 28px; 
+    font-size: 32px; 
     font-weight: 600;
     line-height: 1.2;
     margin-bottom: 10px;
@@ -120,7 +128,7 @@ body {
 
 .project-desc {
     font-size: 16px; 
-    color: var(--text-muted);
+    color: #4A4B57; 
     line-height: 1.4;
     margin-bottom: 10px;
 }
@@ -160,7 +168,7 @@ body {
 }
 
 /* ==========================================================================
-   5. СЕТКА И КАРТОЧКИ (Свойства геометрии изображений)
+   5. СЕТКА И КАРТОЧКИ
    ========================================================================== */
 .portfolio-grid {
     display: grid;
@@ -201,7 +209,7 @@ body {
 }
 
 /* ==========================================================================
-   6. ЭФФЕКТ НАВЕДЕНИЯ НА КАРТИНКИ (Прирост ровно 20px)
+   6. ЭФФЕКТ НАВЕДЕНИЯ НА КАРТИНКИ
    ========================================================================== */
 .project-card:hover .project-image {
     transform: scale(calc(1 + (20 / 645)));
@@ -216,29 +224,27 @@ body {
 }
 
 /* ==========================================================================
-   7. АДАПТИВНОСТЬ (Полная перестройка логики отступов для узких окон)
+   7. АДАПТИВНОСТЬ
    ========================================================================== */
 @media (max-width: 1140px) {
     body { 
         padding: 60px 30px; 
     }
-    
-    /* Полностью уничтожаем flex-бокс структуры, переводим блоки в обычный поток */
     .hero-section { 
-        display: block !important; 
-        margin-bottom: 24px;
+        flex-direction: column;
+        gap: 40px;
+        margin-bottom: 80px;
     }
-    
-    /* Задаем жесткий, аккуратный и контролируемый отступ СНИЗУ от первой картинки */
-    .hi-container { 
-        margin-bottom: 16px !important; 
+    .hero-content {
+        max-width: 100%;
+        flex: 1 1 auto;
     }
-    
-    .about-container { 
-        width: 100%; 
-        max-width: 100%; 
+    .hero-spline-container {
+        width: 100%;
+        max-width: 100%;
+        height: 350px;
+        flex: 1 1 auto;
     }
-    
     .portfolio-grid { 
         row-gap: 50px; 
     }
@@ -248,43 +254,29 @@ body {
     body { 
         padding: 40px 16px; 
     }
-    
+    .hero-title {
+        font-size: 38px;
+    }
     .portfolio-grid { 
         grid-template-columns: 1fr; 
         gap: 40px; 
     }
-    
     .project-card, 
     .project-card.full-width { 
         grid-column: span 1; 
     }
-    
     .project-image, 
     .project-card.full-width .project-image { 
         aspect-ratio: 503 / 615; 
     }
-    
     .project-card:hover .project-image, 
     .project-card.full-width:hover .project-image {
         transform: scale(1.02);
         box-shadow: 0 0 30px #D0D1D3;
     }
-    
-    /* Если экран мобильного телефона стал совсем узким (меньше 450px), 
-       снимаем фиксацию в 410px, чтобы картинка не вылазила за край дисплея */
-    @media (max-width: 450px) {
-        .hi-container {
-            flex: 1 1 auto !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            min-width: 100% !important;
-        }
-    }
-    
     .custom-cursor { 
         display: none !important; 
     }
-    
     .project-image:hover { 
         cursor: default; 
     }
