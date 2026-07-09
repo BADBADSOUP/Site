@@ -21,7 +21,7 @@
 <body>
 
 <div class="custom-cursor" id="cursor">
-    View case study
+    Показать кейс
 </div>
 
 <div class="container">
@@ -76,7 +76,18 @@
 
     <!-- PORTFOLIO -->
 
-    <main class="portfolio-grid">
+    <section class="portfolio-section">
+
+        <aside class="portfolio-filter">
+            <ul class="filter-list">
+                <li class="filter-item active">Все проекты <span>6</span></li>
+                <li class="filter-item">Gamedev <span>2</span></li>
+                <li class="filter-item">iGaming <span>2</span></li>
+                <li class="filter-item">Busines intelgens <span>2</span></li>
+            </ul>
+        </aside>
+
+        <main class="portfolio-grid">
 
         <article class="project-card full-width">
             <img src="project1.png" alt="Foresight" class="project-image" loading="lazy">
@@ -148,6 +159,42 @@
 
         </article>
 
+        <article class="project-card">
+
+            <img src="project5.png" alt="Neo Studio" class="project-image" loading="lazy">
+
+            <h3 class="project-name">
+                Fly Bi
+            </h3>
+
+            <p class="project-desc">
+                Self-service BI платформа для анализа данных и построения дашбордов
+            </p>
+
+            <div class="project-tags">
+                UI/UX • Web • Brand
+            </div>
+
+        </article>
+
+        <article class="project-card">
+
+            <img src="project6.png" alt="Atlas App" class="project-image" loading="lazy">
+
+            <h3 class="project-name">
+                Casino Zenith
+            </h3>
+
+            <p class="project-desc">
+                Навигация и структура для онлайн казино
+            </p>
+
+            <div class="project-tags">
+                UI/UX • Mobile • Productivity
+            </div>
+
+        </article>
+
     </main>
 
 </div>
@@ -155,7 +202,7 @@
 <script>
 
 const cursor = document.getElementById('cursor');
-const cards = document.querySelectorAll('.project-card');
+const images = document.querySelectorAll('.project-image');
 
 if (window.matchMedia("(pointer:fine)").matches) {
 
@@ -164,13 +211,13 @@ if (window.matchMedia("(pointer:fine)").matches) {
         cursor.style.top = `${e.clientY}px`;
     });
 
-    cards.forEach(card => {
+    images.forEach(image => {
 
-        card.addEventListener('mouseenter', () => {
+        image.addEventListener('mouseenter', () => {
             cursor.classList.add('active');
         });
 
-        card.addEventListener('mouseleave', () => {
+        image.addEventListener('mouseleave', () => {
             cursor.classList.remove('active');
         });
 

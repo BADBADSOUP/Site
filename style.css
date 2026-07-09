@@ -174,6 +174,62 @@ spline-viewer a * {
     transform: translate(-50%, -50%) scale(1);
 }
 
+.portfolio-section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 60px;
+    align-items: start;
+    margin-bottom: 80px;
+}
+
+.portfolio-filter {
+    position: sticky;
+    top: 100px;
+    align-self: flex-start;
+    padding: 0;
+    order: 2;
+}
+
+.portfolio-grid {
+    order: 1;
+}
+
+.filter-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.filter-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #06070A;
+    border-bottom: 1px solid rgba(9, 10, 16, 0.08);
+    cursor: pointer;
+}
+
+.filter-item:last-child {
+    border-bottom: none;
+}
+
+.filter-item span {
+    font-size: 16px;
+    font-weight: 600;
+    color: #8B8F99;
+}
+
+.filter-item.active {
+    color: #06070A;
+}
+
+.filter-item.active span {
+    color: #06070A;
+}
+
 .portfolio-grid {
     display: grid;
     grid-template-columns: repeat(2, calc(50% - (var(--grid-gap) / 2)));
@@ -209,7 +265,7 @@ spline-viewer a * {
 }
 
 .project-image:hover {
-    cursor: none;
+    cursor: none !important;
 }
 
 .project-card:hover .project-image {
@@ -233,6 +289,9 @@ spline-viewer a * {
     }
     .hero-section {
         margin-bottom: 120px; /* На планшетах делаем отступ до сетки чуть компактнее */
+    }
+    .portfolio-section {
+        grid-template-columns: 1fr;
     }
     .portfolio-grid {
         row-gap: 50px;
