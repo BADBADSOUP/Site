@@ -29,12 +29,16 @@ body {
 }
 
 /* Скрыть логотип Spline */
-#logo {
+#logo,
+#logo * {
     display: none !important;
+    visibility: hidden !important;
 }
 
-spline-viewer a {
+spline-viewer a,
+spline-viewer a * {
     display: none !important;
+    visibility: hidden !important;
 }
 
 /* ==========================================================================
