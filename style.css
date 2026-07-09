@@ -176,7 +176,7 @@ spline-viewer a * {
 
 .portfolio-section {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 280px;
+    grid-template-columns: minmax(0, 1fr) 220px;
     gap: 60px;
     align-items: start;
     margin-bottom: 80px;
@@ -204,11 +204,10 @@ spline-viewer a * {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 0;
-    font-size: 22px;
-    font-weight: 700;
+    padding: 8px 0;
+    font-size: 18px;
+    font-weight: 400;
     color: #06070A;
-    border-bottom: 1px solid rgba(9, 10, 16, 0.08);
     cursor: pointer;
 }
 
