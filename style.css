@@ -1,0 +1,290 @@
+:root {
+    --main-font: 'Inter', sans-serif;
+    --title-font: 'Nunito Sans', sans-serif; /* Добавлен новый шрифт для заголовка */
+    --bg-color: #EDEDF0;
+    --text-main: #06070A;
+    --tag-bg: #DBDBDB; /* ИЗМЕНЕНО: Новый цвет плашек */
+    --container-max-width: 1350px;
+    --grid-gap: 60px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--main-font);
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    padding: 80px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+    max-width: var(--container-max-width);
+}
+
+/* Скрыть логотип Spline */
+#logo {
+    display: none !important;
+}
+
+spline-viewer a {
+    display: none !important;
+}
+
+/* ==========================================================================
+   HERO + SPLINE
+   ========================================================================== */
+
+.hero-section {
+    margin-top: 50px;
+    margin-bottom: 220px;
+}
+
+.hero-content {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(500px, 750px) 1fr;
+    align-items: center;
+    gap: 1px;
+    position: relative;
+}
+
+.hero-text {
+    max-width: 750px;
+}
+
+.hero-spline {
+    width: 100%;
+    height: 400px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    overflow: visible;
+    transform: translateX(-60px);
+}
+
+.hero-spline spline-viewer {
+    width: 600px;
+    height: 600px;
+    border: none;
+    background: transparent;
+    margin-right: -120px;
+}
+
+.hero-title {
+    font-family: var(--title-font); /* ИЗМЕНЕНО: Шрифт Nunito Sans */
+    font-size: 72px;               /* ИЗМЕНЕНО: Размер шрифта 72 пикселя */
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 32px;           /* ИЗМЕНЕНО: Расстояние до описания 60 пикселей */
+}
+
+.hero-description {
+    font-family: var(--main-font);
+    font-size: 20px;               /* ИЗМЕНЕНО: Inter Regular 20 пикселей */
+    font-weight: 400;
+    line-height: 1.5;
+    color: #06070A;                
+    margin-bottom: 46px;           /* ИЗМЕНЕНО: Расстояние до тегов 46 пикселей */
+}
+
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 8px;
+    z-index: 3;
+}
+
+.filter-tag {
+    font-family: var(--main-font);
+    font-size: 14px;               /* ИЗМЕНЕНО: Размер Inter 14 */
+    font-weight: 500;              /* ИЗМЕНЕНО: Вес Medium */
+    color: #06070A;                /* Темный цвет текста для контраста на светло-сером */
+    background-color: var(--tag-bg); /* Цвет #DBDBDB */
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.filter-tag:hover {
+    background-color: #C4C4C4;     /* Слегка темнеет при наведении */
+    transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   АРХИТЕКТУРА ПОРТФОЛИО (Чистые углы, без скруглений)
+   ========================================================================== */
+.project-name {
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 10px;
+}
+
+.project-desc {
+    font-size: 16px;
+    color: #4A4B57;
+    line-height: 1.4;
+    margin-bottom: 10px;
+}
+
+.project-tags {
+    font-size: 16px;
+    color: #999999;
+    letter-spacing: 0.2px;
+}
+
+.custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    padding: 18px 28px;
+    background-color: #18191b;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 400;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 9999;
+    border-radius: 8px;
+}
+
+.custom-cursor.active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(2, calc(50% - (var(--grid-gap) / 2)));
+    gap: var(--grid-gap);
+    row-gap: 80px;
+}
+
+.project-card {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+.project-card.full-width {
+    grid-column: span 2;
+}
+
+.project-image {
+    width: 100%;
+    aspect-ratio: 503 / 615;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border-radius: 0; /* Острые углы сохранены по вашему запросу */
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform, box-shadow;
+    position: relative;
+    z-index: 1;
+}
+
+.project-card.full-width .project-image {
+    aspect-ratio: 16 / 9;
+}
+
+.project-image:hover {
+    cursor: none;
+}
+
+.project-card:hover .project-image {
+    transform: scale(calc(1 + (20 / 645)));
+    z-index: 2;
+    box-shadow: 0 0 60px #D0D1D3;
+}
+
+.project-card.full-width:hover .project-image {
+    transform: scale(calc(1 + (20 / 1350)));
+    z-index: 2;
+    box-shadow: 0 0 60px #D0D1D3;
+}
+
+/* ==========================================================================
+   АДАПТИВНОСТЬ
+   ========================================================================== */
+@media (max-width: 1140px) {
+    body {
+        padding: 60px 30px;
+    }
+    .hero-section {
+        margin-bottom: 120px; /* На планшетах делаем отступ до сетки чуть компактнее */
+    }
+    .portfolio-grid {
+        row-gap: 50px;
+    }
+
+    .hero-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+}
+
+.hero-text {
+    max-width: 100%;
+}
+
+.hero-spline {
+    justify-content: center;
+    height: 500px;
+}
+
+.hero-spline spline-viewer {
+    width: 520px;
+    height: 520px;
+    margin-right: 0;
+}
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 40px 16px;
+    }
+    .hero-title {
+        font-size: 46px; /* Адаптивное уменьшение крупного заголовка на смартфонах */
+    }
+    .hero-section {
+        margin-bottom: 80px;
+    }
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    .project-card,
+    .project-card.full-width {
+        grid-column: span 1;
+    }
+    .project-image,
+    .project-card.full-width .project-image {
+        aspect-ratio: 503 / 615;
+    }
+    .project-card:hover .project-image,
+    .project-card.full-width:hover .project-image {
+        transform: scale(1.02);
+        box-shadow: 0 0 30px #D0D1D3;
+    }
+    .custom-cursor {
+        display: none !important;
+    }
+    .project-image:hover {
+        cursor: default;
+    }
+}
+ип
