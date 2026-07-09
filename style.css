@@ -57,6 +57,8 @@ spline-viewer a {
 
 .hero-text {
     max-width: 750px;
+    position: relative;
+    z-index: 2;
 }
 
 .hero-spline {
@@ -132,7 +134,7 @@ spline-viewer a {
 
 .project-desc {
     font-size: 16px;
-    color: #4A4B57;
+    color: #06070A;
     line-height: 1.4;
     margin-bottom: 10px;
 }
@@ -242,6 +244,7 @@ spline-viewer a {
 }
 
 .hero-spline {
+    display: none;
     justify-content: center;
     height: 500px;
 }
