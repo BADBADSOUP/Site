@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Никита — UI/UX Designer</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.png">
+
+    <!-- Spline -->
+    <script type="module" src="https://unpkg.com/@splinetool/viewer/build/spline-viewer.js"></script>
+
+</head>
+<body>
+
+<div id="preloader" class="preloader" aria-hidden="true">
+    <div class="preloader__content">
+        <div class="loader" aria-hidden="true"></div>
+    </div>
+</div>
+
+<div class="custom-cursor" id="cursor">
+    Показать кейс
+</div>
+
+<div class="container">
+
+    <!-- HERO -->
+
+    <header class="hero-section">
+
+        <div class="hero-content">
+
+            <div class="hero-text">
+
+                <div class="hero-title-mask">
+                    <h1 class="hero-title hero-title-animate">
+                        Привет, я Жопка
+                    </h1>
+                </div>
+
+                <p class="hero-description">
+                    UI/UX дизайнер с 15+ годами опыта.
+                    Запускаю проекты в сфере Gamedev и iGaming.
+                    Проектирую сложные Enterprise продукты,
+                    развиваю дизайн-системы и организую процессы
+                    в дизайн-командах.
+                </p>
+
+
+            </div>
+
+
+        </div>
+
+    </header>
+
+    <!-- PORTFOLIO -->
+
+    
+
+        <main class="portfolio-grid">
+
+        <article class="project-card full-width card-animate">
+            <img src="project1.png" alt="Foresight" class="project-image" loading="lazy">
+
+            <h3 class="project-name">
+                Foresight
+            </h3>
+
+            <p class="project-desc">
+                Редизайн и перенос в веб платформы для бизнес анализа
+            </p>
+
+            <div class="project-tags">
+                #UI/UX #Web #Design system
+            </div>
+        </article>
+
+        <article class="project-card card-animate">
+
+            <img src="project2.png" alt="Heroes Quests" class="project-image" loading="lazy">
+
+            <h3 class="project-name">
+                Heroes Quests!
+            </h3>
+
+            <p class="project-desc">
+                Мобильная RPG с автоматическими боями.
+            </p>
+
+            <div class="project-tags">
+                #UI/UX #Mobile #Gamedev
+            </div>
+
+        </article>
+
+        <article class="project-card card-animate">
+
+            <img src="project3.png" alt="TrucoReal" class="project-image" loading="lazy">
+
+            <h3 class="project-name">
+                TrucoReal
+            </h3>
+
+            <p class="project-desc">
+                MVP онлайн казино для аргентинского рынка
+            </p>
+
+            <div class="project-tags">
+                #UI/UX #iGaming #Mobile #Web
+            </div>
+
+        </article>
+
+        <article class="project-card full-width card-animate">
+
+            <img src="project4.png" alt="Project" class="project-image" loading="lazy">
+
+            <h3 class="project-name">
+                Pixel Gun 3d
+            </h3>
+
+            <p class="project-desc">
+                Онлайн PVP шутер в стилистике Minecraft
+            </p>
+
+            <div class="project-tags">
+                #UI/UX #Enterprise #SaaS
+            </div>
+
+        </article>
+
+        <article class="project-card card-animate" onclick="window.location.href='truco/Truco.html'" style="cursor: pointer;">
+
+            <video class="project-image" src="trucoprev.mp4" muted loop playsinline preload="metadata" aria-label="Fly Bi preview video"></video>
+
+            <h3 class="project-name">
+                Fly Bi
+            </h3>
+
+            <p class="project-desc">
+                Self-service BI платформа для анализа данных и построения дашбордов
+            </p>
+
+            <div class="project-tags">
+                #UI/UX #Web #Brand
+            </div>
+
+        </article>
+
+        <article class="project-card card-animate">
+
+            <img src="project6.png" alt="Atlas App" class="project-image" loading="lazy">
+
+            <h3 class="project-name">
+                Casino Zenith
+            </h3>
+
+            <p class="project-desc">
+                Навигация и структура для онлайн казино
+            </p>
+
+            <div class="project-tags">
+                #UI/UX #Mobile #Productivity
+            </div>
+
+        </article>
+
+    </main>
+
+</div>
+
+<!-- Lenis (Плавный скролл) -->
+<script src="https://unpkg.com/lenis@1.1.21/dist/lenis.min.js"></script>
+
+<!-- GSAP и ScrollTrigger (Анимация при скролле) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<!-- SplitType (Разбиение текста на строки) -->
+<script src="https://unpkg.com/split-type@2.0.0/dist/split-type.min.js"></script>
+
+
+<script>
+
+const preloader = document.getElementById('preloader');
+const minPreloaderTime = 2000;
+let preloaderFinished = false;
+let preloaderStartedAt = performance.now();
+
+function finishPreloader() {
+  if (preloaderFinished) return;
+  preloaderFinished = true;
+
+  const elapsed = performance.now() - preloaderStartedAt;
+  const delay = Math.max(0, minPreloaderTime - elapsed);
+
+  window.setTimeout(() => {
+    preloader.classList.add('is-hidden');
+    document.body.classList.remove('preloading');
+
+    startSiteAnimations();
+
+  }, delay);
+}
+
+if (document.body) {
+  document.body.classList.add('preloading');
+}
+
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(finishPreloader).catch(finishPreloader);
+}
+
+window.addEventListener('load', finishPreloader);
+window.addEventListener('DOMContentLoaded', finishPreloader);
+
+// ==========================================
+// 1. ИНИЦИАЛИЗАЦИЯ LENIS (ПЛАВНЫЙ СКРОЛЛ)
+// ==========================================
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  orientation: 'vertical',
+  gestureOrientation: 'vertical',
+  smoothWheel: true,
+  wheelMultiplier: 1,
+  infinite: false,
+});
+
+function raf(time) {
+  lenis.raf(time);
+  requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
+
+lenis.on('scroll', ScrollTrigger.update);
+
+gsap.ticker.add((time)=>{
+  lenis.raf(time * 1000);
+});
+gsap.ticker.lagSmoothing(0);
+
+// ==========================================
+// ИНИЦИАЛИЗАЦИЯ ВСЕХ АНИМАЦИЙ (ЗАПУСКАЕТСЯ ИЗ ПРЕЛОАДЕРА)
+// ==========================================
+
+gsap.registerPlugin(ScrollTrigger);
+
+function startSiteAnimations() {
+
+  const tl = gsap.timeline();
+
+  tl.to(".hero-title-animate", {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    duration: 1.2,
+    delay: 0.5,
+    ease: "power4.out"
+  })
+
+  .to(".hero-description", {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    duration: 0.8,
+    ease: "power3.out"
+  }, "-=0.45");
+
+  // ПЛАВНОЕ ПОЯВЛЕНИЕ КАРТОЧЕК
+  const cards = document.querySelectorAll('.card-animate');
+
+  cards.forEach((card) => {
+    gsap.fromTo(card,
+      {
+        opacity: 0,
+        y: 60,
+        scale: 0.96
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 1.2,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: card,
+          start: "top 88%",
+          toggleActions: "play none none none"
+        }
+      }
+    );
+  });
+
+  // Пересчитываем координаты ScrollTrigger после появления элементов
+  ScrollTrigger.refresh();
+
+}
+
+const cursor = document.getElementById('cursor');
+const images = document.querySelectorAll('.project-image');
+
+if (window.matchMedia("(pointer:fine)").matches) {
+
+    window.addEventListener('mousemove', (e) => {
+        cursor.style.left = `${e.clientX}px`;
+        cursor.style.top = `${e.clientY}px`;
+    });
+
+    images.forEach(image => {
+
+        image.addEventListener('mouseenter', () => {
+            cursor.classList.add('active');
+            if (image.tagName === 'VIDEO') {
+                image.play();
+            }
+        });
+
+        image.addEventListener('mouseleave', () => {
+            cursor.classList.remove('active');
+            if (image.tagName === 'VIDEO') {
+                image.pause();
+                image.currentTime = 0;
+            }
+        });
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>

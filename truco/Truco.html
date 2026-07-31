@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrucoReal — Кейс</title>
+  <style>
+
+    /* =============================================
+       БАЗОВЫЕ СТИЛИ
+    ============================================= */
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      /* Цвета */
+      --dark-bg: #0b131a;
+      --dark-section: #0d1b2a;
+      --blue-bg: #1B5FFF;
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255,255,255,0.55);
+      --text-label: rgba(255,255,255,0.4);
+      --border: rgba(255,255,255,0.1);
+      --max-width: 1640px;
+
+      /* Типографика */
+      --fs-display:  clamp(40px, 5.2vw, 86px);
+      --fs-h1:       clamp(28px, 3.2vw, 40px);
+      --fs-h2:       clamp(24px, 2.4vw, 40px);
+      --fs-body:     clamp(16px, 1.7vw, 28px);
+      --fs-small:    clamp(13px, 1vw,   16px);
+      --fs-label:    clamp(11px, 0.75vw, 13px);
+
+      /* Отступы */
+      --space-xxl:   clamp(80px,  7.5vw, 140px);
+      --space-xl:    clamp(60px,  6vw,   100px);
+      --space-lg:    clamp(40px,  4vw,   80px);
+      --space-md:    clamp(24px,  2.5vw, 48px);
+      --space-sm:    clamp(12px,  1.2vw, 20px);
+
+      /* Промежутки */
+      --gap-xl:      clamp(40px,  5vw,   80px);
+      --gap-lg:      clamp(24px,  3vw,   60px);
+      --gap-md:      clamp(16px,  2vw,   32px);
+      --gap-sm:      clamp(8px,   1vw,   16px);
+
+      /* Радиусы */
+      --radius-lg:   clamp(12px,  1vw,   20px);
+      --radius-md:   clamp(8px,   0.75vw, 14px);
+      --radius-sm:   clamp(4px,   0.4vw,  8px);
+
+      /* Горизонтальные отступы страницы */
+      --padding-x:      clamp(20px, 5vw, 80px);
+
+      /* Единый контейнер — ширина контента никогда не касается краёв */
+      --container-width: min(calc(100vw - var(--padding-x) * 2), var(--max-width));
+    }
+
+    body {
+      font-family: 'Suisse Intl', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--dark-bg);
+      color: var(--text-primary);
+      overflow-x: hidden;
+    }
+
+    /* Базовые настройки для корректной работы Lenis */
+    html.lenis,
+    html.lenis body {
+      height: auto;
+    }
+
+    .lenis.lenis-smooth {
+      scroll-behavior: auto !important;
+    }
+
+    .lenis.lenis-smooth [data-lenis-prevent] {
+      overscroll-behavior: contain;
+    }
+
+    .lenis.lenis-stopped {
+      overflow: hidden;
+    }
+
+    .lenis.lenis-scrolling iframe {
+      pointer-events: none;
+    }
+
+    /* =============================================
+       КОНТЕЙНЕР — единая система
+    ============================================= */
+
+    /* Все блоки с контентом используют этот паттерн:
+       width = --container-width, margin = auto, без padding по бокам */
+    .container,
+    .hero,
+    .section,
+    .text-blocks-inner,
+    .blue-section-inner,
+    .dark-section-inner,
+    .palette-section,
+    .phone-section,
+    .results-section,
+    .bottom-cards {
+      width: var(--container-width);
+      margin-inline: auto;
+    }
+
+    /* Секции с фоновой заливкой — сами на всю ширину,
+       внутренний контейнер ограничен */
+    .blue-section,
+    .dark-section {
+      width: 100%;
+    }
+
+    /* =============================================
+       НАВИГАЦИЯ / ШАПКА
+    ============================================= */
+    .page-header {
+      padding: 32px var(--padding-x);
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: var(--text-primary);
+    }
+
+    .back-link svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* =============================================
+       HERO-СЕКЦИЯ
+    ============================================= */
+    .hero {
+      height: clamp(400px, 45vw, 640px);
+      max-height: 640px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      flex: 0 0 60%;
+      z-index: 2;
+      position: relative;
+    }
+
+    .hero-label {
+      font-size: var(--fs-h1);
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      margin-bottom: var(--space-sm);
+    }
+
+    .hero-title {
+      font-size: var(--fs-display);
+      font-weight: 500;
+      line-height: 1.1;
+    }
+
+    /* =============================================
+       БЛОК С ТЕЛЕФОНАМИ
+    ============================================= */
+    .phones-block {
+      background-color: #0A1620;
+      height: 1300px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-phone {
+      position: absolute;
+      width: clamp(1150px, 100vw, 1150px);
+      height: auto;
+      object-fit: contain;
+      will-change: transform;
+      opacity: 0;
+    }
+
+    .hero-phone-left {
+      z-index: 2;
+      left: 50%;
+      top: 50%;
+      transform: translate3d(calc(50% - 16%), calc(-50% + 6%), 0) scale(0.95);
+    }
+
+    .hero-phone-right {
+      z-index: 3;
+      left: 50%;
+      top: 50%;
+      transform: translate3d(calc(-65% + 22%), calc(-50% - 4%), 0) scale(0.95);
+    }
+
+    /* =============================================
+       ОБЩИЕ СТИЛИ СЕКЦИЙ
+    ============================================= */
+    .section {
+      padding: var(--space-xl) 0;
+    }
+
+    .section-label {
+      font-size: var(--fs-label);
+      font-weight: 600;
+      color: var(--text-label);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: var(--space-sm);
+    }
+
+    .section-title {
+      font-size: var(--fs-h2);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-sm);
+    }
+
+    .section-text {
+      font-size: var(--fs-small);
+      line-height: 1.7;
+      color: var(--text-secondary);
+      max-width: 520px;
+    }
+
+
+    /* =============================================
+       ТЕКСТОВЫЕ БЛОКИ (задача / решение)
+    ============================================= */
+    .text-blocks {
+      background-color: #ffffff;
+      color: #06070A;
+    }
+
+    .text-blocks-inner {
+      padding: var(--space-xl) 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .text-block {
+      display: grid;
+      grid-template-columns: clamp(200px, 36vw, 600px) 1fr;
+      gap: var(--gap-lg);
+      padding: var(--space-lg) 0;
+    }
+
+    .text-block-label {
+      font-size: var(--fs-h1);
+      font-weight: 600;
+      color: #06070A;
+    }
+
+    .text-block-content {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      max-width: 1000px;
+    }
+
+    .text-block-title {
+      font-size: var(--fs-h2);
+      font-weight: 600;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+      color: #06070A;
+    }
+
+    .text-block-body {
+      font-size: var(--fs-body);
+      line-height: 1.5;
+      letter-spacing: -0.02em;
+      color: rgba(6,7,10,0.5);
+    }
+
+    /* =============================================
+       СИНЯЯ СЕКЦИЯ — UX/Онбординг
+    ============================================= */
+    .blue-section {
+      background-color: var(--blue-bg);
+      padding: var(--space-xl) 0;
+    }
+
+    .blue-section-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap-xl);
+      align-items: center;
+    }
+
+    .blue-section .section-label {
+      color: rgba(255,255,255,0.6);
+    }
+
+    .blue-section .section-title {
+      color: #ffffff;
+    }
+
+    .blue-section .section-text {
+      color: rgba(255,255,255,0.75);
+    }
+
+    .blue-screens {
+      display: flex;
+      gap: var(--gap-md);
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .blue-screen {
+      background: rgba(255,255,255,0.12);
+      border-radius: var(--radius-lg);
+      flex: 1;
+      aspect-ratio: 9/18;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.3);
+      font-size: var(--fs-label);
+      text-align: center;
+      padding: var(--space-sm);
+    }
+
+    .blue-screen.tall {
+      transform: scale(1.08);
+      transform-origin: bottom center;
+    }
+
+    /* =============================================
+       ТЁМНАЯ СЕКЦИЯ — Геймплей
+    ============================================= */
+    .dark-section {
+      background-color: #0d1b2a;
+      padding: var(--space-xl) 0;
+    }
+
+    .dark-section-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap-xl);
+      align-items: center;
+    }
+
+    .screen-mockup {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-lg);
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.2);
+      font-size: var(--fs-small);
+    }
+
+    .screen-mockup-tall {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-lg);
+      aspect-ratio: 9/16;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.2);
+      font-size: var(--fs-small);
+    }
+
+    /* =============================================
+       СЕКЦИЯ ПАЛИТРА / ЦВЕТОВАЯ СИСТЕМА
+    ============================================= */
+    .palette-section {
+      padding: var(--space-xl) 0;
+    }
+
+    .palette-header {
+      margin-bottom: var(--space-lg);
+    }
+
+    .palette-screens {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--gap-md);
+    }
+
+    .palette-screen {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-md);
+      aspect-ratio: 9/16;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.2);
+      font-size: var(--fs-label);
+    }
+
+    /* =============================================
+       СЕКЦИЯ С ТЕЛЕФОНОМ + ОПИСАНИЕ
+    ============================================= */
+    .phone-section {
+      padding: var(--space-xl) 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap-xl);
+      align-items: center;
+    }
+
+    .results-section {
+      padding: var(--space-xl) 0 var(--space-lg);
+    }
+
+    .results-section .section-title {
+      margin-bottom: var(--space-md);
+    }
+
+    .results-text {
+      font-size: var(--fs-small);
+      line-height: 1.75;
+      color: var(--text-secondary);
+      max-width: 700px;
+    }
+
+    /* =============================================
+       НИЖНИЕ КАРТОЧКИ
+    ============================================= */
+    .bottom-cards {
+      padding: var(--space-lg) 0 var(--space-xxl);
+    }
+
+    .bottom-cards-label {
+      font-size: var(--fs-label);
+      font-weight: 600;
+      color: var(--text-label);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: var(--space-md);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap-md);
+    }
+
+    .project-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .card-image {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.2);
+      font-size: var(--fs-small);
+    }
+
+    .card-body {
+      padding: var(--space-md);
+    }
+
+    .card-title {
+      font-size: var(--fs-h2);
+      font-weight: 600;
+      margin-bottom: var(--gap-sm);
+    }
+
+    .card-desc {
+      font-size: var(--fs-small);
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: var(--gap-sm);
+    }
+
+    .card-tags {
+      font-size: var(--fs-label);
+      color: var(--text-label);
+    }
+
+    /* =============================================
+       АДАПТИВНОСТЬ — только структурные изменения
+    ============================================= */
+    @media (max-width: 960px) {
+      .hero {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        padding-top: var(--space-lg);
+        padding-bottom: var(--space-lg);
+      }
+
+      .hero-left {
+        flex: none;
+        width: 100%;
+      }
+
+      .hero-right {
+        width: 100%;
+        height: 50vw;
+      }
+
+      .blue-section-inner,
+      .dark-section-inner,
+      .phone-section {
+        grid-template-columns: 1fr;
+      }
+
+      .text-block {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-screens {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .palette-screens {
+        grid-template-columns: 1fr;
+      }
+
+      .blue-screens {
+        flex-direction: column;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ====== HERO ====== -->
+  <div class="hero">
+    <div class="hero-left" style="padding-top: 100px;">
+      <div class="hero-label">TrucoReal</div>
+      <h1 class="hero-title">Запуск MVP iGaming‑платформы для рынка Аргентины</h1>
+    </div>
+  </div>
+
+  <!-- ====== ЗАЛИВКА ====== -->
+  <div class="phones-block">
+    <img src="phone-left.png"  alt="TrucoReal — лобби"    class="hero-phone hero-phone-left"  id="phoneLeft">
+    <img src="phone-right.png" alt="TrucoReal — геймплей" class="hero-phone hero-phone-right" id="phoneRight">
+  </div>
+
+  <!-- ====== ТЕКСТОВЫЕ БЛОКИ ====== -->
+  <div class="text-blocks">
+    <div class="text-blocks-inner">
+
+      <div class="text-block">
+        <div class="text-block-label">О проекте</div>
+        <div class="text-block-content">
+          <h2 class="text-block-title">TrucoReal — это онлайн-казино, ориентированное на рынок Аргентины. Основной особенностью проекта является аргентинская карточная игра Truco с возможностью игры на реальные деньги</h2>
+          <p class="text-block-body">Truco — это культовая южноамериканская карточная игра, суть которой строится на блефе, психологии и обмане соперников. Механика игры похожа на смесь покера и дурака и отлично ложится в формат онлайн казино</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+<div class="text-blocks">
+    <div class="text-blocks-inner">
+
+      <div class="text-block">
+        <div class="text-block-label">Задача</div>
+        <div class="text-block-content">
+          <h2 class="text-block-title">Когда я присоединился к проекту, команда уже имела рабочий прототип с реализованной игровой логикой. Однако интерфейс создавался без единой дизайн-системы, выглядел устаревшим и не был готов к запуску MVP.
+
+          </br></br>Моей задачей было полностью переработать UX, создать современный визуальный стиль и заложить основу для дальнейшего масштабирования продукта.</h2>
+          
+        </div>
+      </div>
+
+    </div>
+  </div>
+  
+  </section>
+
+  <!-- Lenis (Плавный скролл) -->
+  <script src="https://unpkg.com/lenis@1.1.21/dist/lenis.min.js"></script>
+
+  <!-- GSAP (Анимации) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <script>
+    // ==========================================
+    // LENIS — ПЛАВНЫЙ СКРОЛЛ
+    // ==========================================
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      infinite: false,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // ==========================================
+    // PHONE ANIMATION
+    // ==========================================
+    const phoneLeft  = document.getElementById('phoneLeft');
+    const phoneRight = document.getElementById('phoneRight');
+
+    // Финальные базовые трансформы
+    const leftBase  = { x: 'calc(-50% - 16%)', y: 'calc(-50% + 6%)', scale: 1 };
+    const rightBase = { x: 'calc(-50% + 22%)', y: 'calc(-50% - 4%)', scale: 1 };
+
+    // Для параллакса храним числовые смещения отдельно
+    let pxLeft  = { x: 0, y: 0 };
+    let pxRight = { x: 0, y: 0 };
+
+    // --- 1. ENTRANCE ANIMATION ---
+    gsap.to(phoneLeft, {
+      opacity: 1,
+      scale: 1,
+      duration: 1.4,
+      ease: 'power4.out',
+      delay: 0.2,
+    });
+
+    gsap.to(phoneRight, {
+      opacity: 1,
+      scale: 1,
+      duration: 1.4,
+      ease: 'power4.out',
+      delay: 0.4,
+      onComplete: startFloating,
+    });
+
+    // --- 2. FLOATING ANIMATION ---
+    function startFloating() {
+      gsap.to(phoneLeft, {
+        y: '-=3',
+        scale: 1.008,
+        duration: 7,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+      });
+
+      gsap.to(phoneRight, {
+        y: '-=2.5',
+        scale: 1.01,
+        duration: 8.5,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+        delay: 1.2,
+      });
+    }
+
+    // --- 3. MOUSE PARALLAX ---
+    const isMobile = window.matchMedia('(max-width: 960px)').matches;
+
+    if (!isMobile) {
+      let mouseX = 0, mouseY = 0;
+      let curX = 0, curY = 0;
+
+      window.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / window.innerWidth  - 0.5) * 2;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+      });
+
+      function parallaxLoop() {
+        curX += (mouseX - curX) * 0.06;
+        curY += (mouseY - curY) * 0.06;
+
+        pxLeft.x  = curX * 3.5;
+        pxLeft.y  = curY * 2.5;
+        pxRight.x = curX * 2;
+        pxRight.y = curY * 1.5;
+
+        gsap.set(phoneLeft,  { xPercent: -50 + pxLeft.x,  yPercent: pxLeft.y  });
+        gsap.set(phoneRight, { xPercent: -50 + pxRight.x, yPercent: pxRight.y });
+
+        requestAnimationFrame(parallaxLoop);
+      }
+
+      parallaxLoop();
+    }
+  </script>
+
+</body>
+</html>
