@@ -8,8 +8,6 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="favicon.png">
 
-    <!-- Spline -->
-    <script type="module" src="https://unpkg.com/@splinetool/viewer/build/spline-viewer.js"></script>
 
 </head>
 <body>
@@ -34,11 +32,9 @@
 
             <div class="hero-text">
 
-                <div class="hero-title-mask">
-                    <h1 class="hero-title hero-title-animate">
-                        Привет, я Жопка
-                    </h1>
-                </div>
+                <h1 class="hero-title">
+                    Привет, я Никита
+                </h1>
 
                 <p class="hero-description">
                     UI/UX дизайнер с 15+ годами опыта.
@@ -132,7 +128,7 @@
 
         </article>
 
-        <article class="project-card card-animate" onclick="window.location.href='truco/Truco.html'" style="cursor: pointer;">
+        <article class="project-card card-animate" data-href="truco/Truco.html">
 
             <video class="project-image" src="trucoprev.mp4" muted loop playsinline preload="metadata" aria-label="Fly Bi preview video"></video>
 
@@ -180,7 +176,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
 <!-- SplitType (Разбиение текста на строки) -->
-<script src="https://unpkg.com/split-type@2.0.0/dist/split-type.min.js"></script>
+<script src="https://unpkg.com/split-type@0.3.4/umd/index.min.js"></script>
 
 
 <script>
@@ -251,24 +247,51 @@ gsap.registerPlugin(ScrollTrigger);
 
 function startSiteAnimations() {
 
-  const tl = gsap.timeline();
+  // ── АНИМАЦИЯ ЗАГОЛОВКА ПО СЛОВАМ ──
+  const titleEl = document.querySelector('.hero-title');
+  if (titleEl) {
+    const text = titleEl.textContent.trim();
+    const words = text.split(/\s+/);
 
-  tl.to(".hero-title-animate", {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    duration: 1.2,
-    delay: 0.5,
-    ease: "power4.out"
-  })
+    titleEl.innerHTML = words.map(word =>
+      `<span class="word-wrap" style="display:inline-block; overflow:hidden; vertical-align:bottom; padding-bottom:0.1em;">` +
+      `<span class="word-inner" style="display:inline-block; transform:translateY(110%); will-change:transform;">${word}</span>` +
+      `</span>`
+    ).join(' ');
 
-  .to(".hero-description", {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    duration: 0.8,
-    ease: "power3.out"
-  }, "-=0.45");
+    gsap.to('.word-inner', {
+      y: '0%',
+      duration: 1.1,
+      ease: 'power4.out',
+      stagger: 0.05,
+      delay: 0.3,
+    });
+  }
+
+  // ── АНИМАЦИЯ ОПИСАНИЯ ПО СТРОКАМ ──
+  const descEl = document.querySelector('.hero-description');
+  if (descEl && typeof SplitType !== 'undefined') {
+    descEl.style.opacity = '1';
+    descEl.style.transform = 'none';
+
+    requestAnimationFrame(() => {
+      const split = new SplitType(descEl, { types: 'lines' });
+
+      split.lines.forEach(line => {
+        const html = line.innerHTML;
+        line.style.cssText = 'overflow:hidden; padding-bottom:0.05em;';
+        line.innerHTML = `<span class="desc-inner" style="display:block; transform:translateY(110%); will-change:transform;">${html}</span>`;
+      });
+
+      gsap.to('.desc-inner', {
+        y: '0%',
+        duration: 1.0,
+        ease: 'power4.out',
+        stagger: 0.06,
+        delay: 0.8,
+      });
+    });
+  }
 
   // ПЛАВНОЕ ПОЯВЛЕНИЕ КАРТОЧЕК
   const cards = document.querySelectorAll('.card-animate');
@@ -302,6 +325,14 @@ function startSiteAnimations() {
 
 const cursor = document.getElementById('cursor');
 const images = document.querySelectorAll('.project-image');
+
+// Обработчик клика по карточкам с data-href
+document.querySelectorAll('[data-href]').forEach(card => {
+  card.addEventListener('click', () => {
+    window.location.href = card.dataset.href;
+  });
+  card.style.cursor = 'pointer';
+});
 
 if (window.matchMedia("(pointer:fine)").matches) {
 

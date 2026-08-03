@@ -1,5 +1,13 @@
 @font-face {
     font-family: 'Suisse Intl';
+    src: url('Fonts/SuisseIntl-Light.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Suisse Intl';
     src: url('Fonts/SuisseIntl-Regular.otf') format('opentype');
     font-weight: 400;
     font-style: normal;
@@ -38,37 +46,11 @@
     font-display: swap;
 }
 
-@font-face {
-    font-family: 'Suisse Intl';
-    src: url('Fonts/SuisseIntl-RegularItalic.otf') format('opentype');
-    font-weight: 400;
-    font-style: italic;
-    font-display: swap;
+.font-light {
+    font-family: 'Suisse Intl', 'Inter', sans-serif;
+    font-weight: 300;
 }
 
-@font-face {
-    font-family: 'Suisse Intl';
-    src: url('Fonts/SuisseIntl-MediumItalic.otf') format('opentype');
-    font-weight: 500;
-    font-style: italic;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Suisse Intl';
-    src: url('Fonts/SuisseIntl-SemiBoldItalic.otf') format('opentype');
-    font-weight: 600;
-    font-style: italic;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Suisse Intl';
-    src: url('Fonts/SuisseIntl-BoldItalic.otf') format('opentype');
-    font-weight: 700;
-    font-style: italic;
-    font-display: swap;
-}
 
 :root {
     --main-font: 'Suisse Intl', 'Inter', sans-serif;
@@ -78,6 +60,7 @@
     --tag-bg: #DBDBDB;
     --container-max-width: 1450px;
     --grid-gap: 60px;
+    --space-xxl: clamp(60px, 8vw, 120px);
 }
 
 * {
@@ -107,7 +90,7 @@ body.preloading {
     align-items: center;
     justify-content: center;
     background: var(--bg-color);
-    transition: background-color 0.6s ease, opacity 0.8s ease, visibility 0.8s ease;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
 }
 
 .preloader.is-hidden {
@@ -181,7 +164,7 @@ html.lenis body {
 /* Стили для текстовой шторки */
 .line {
     overflow: hidden;
-    line-height: 1.2;
+    line-height: 1.4;
 }
 
 .line-child {
@@ -230,35 +213,28 @@ spline-viewer a * {
 
 .hero-title {
     font-family: var(--title-font);
-    font-size: 100px;
+    font-size: clamp(48px, 8vw, 100px);
     font-weight: 700;
     line-height: 1.1;
     letter-spacing: -1px;
     margin-bottom: 32px;
-    width: 1000px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.hero-title-mask {
-    overflow: hidden;
-}
-
-.hero-title-animate {
-    opacity: 0;
-    transform: translateY(40px);
-    filter: blur(0px);
-}
+/* Шторка для строк заголовка — стили задаются через JS */
 
 .hero-description {
     font-family: var(--main-font);
-    font-size: 24px;
+    font-size: clamp(18px, 2vw, 24px);
     font-weight: 400;
     line-height: 1.5;
     color: #06070A;
     margin-bottom: 46px;
-    width: 840px;
-    opacity: 0;
-    transform: translateY(24px);
-    filter: blur(0px);
+    max-width: 840px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .tags-container {
@@ -271,10 +247,10 @@ spline-viewer a * {
 
 .filter-tag {
     font-family: var(--main-font);
-    font-size: 14px;               /* ИЗМЕНЕНО: Размер Inter 14 */
-    font-weight: 500;              /* ИЗМЕНЕНО: Вес Medium */
-    color: #06070A;                /* Темный цвет текста для контраста на светло-сером */
-    background-color: var(--tag-bg); /* Цвет #DBDBDB */
+    font-size: 14px;
+    font-weight: 500;
+    color: #06070A;
+    background-color: var(--tag-bg);
     padding: 8px 16px;
     border-radius: 6px;
     text-decoration: none;
@@ -290,22 +266,24 @@ spline-viewer a * {
    АРХИТЕКТУРА ПОРТФОЛИО (Чистые углы, без скруглений)
    ========================================================================== */
 .project-name {
-    font-size: 28px;
+    font-size: 36px;
     font-weight: 600;
     line-height: 1.2;
-    margin-bottom: 10px;
+    margin-bottom: 14px;
 }
 
 .project-desc {
-    font-size: 16px;
+    font-size: 22px;
+    font-weight: 400;
     color: #06070A;
     line-height: 1.4;
-    margin-bottom: 10px;
+    margin-bottom: 14px;
 }
 
 .project-tags {
-    font-size: 16px;
-    color: #999999;
+    font-size: 22px;
+    color: #656C7B;
+    font-weight: 400;
     letter-spacing: 0.2px;
 }
 
@@ -421,7 +399,7 @@ spline-viewer a * {
     width: 100%;
     aspect-ratio: 503 / 615;
     object-fit: cover;
-    margin-bottom: 20px;
+    margin-bottom: 32px;
     border-radius: 0; /* Острые углы сохранены по вашему запросу */
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     will-change: transform, box-shadow;
