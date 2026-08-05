@@ -1,20 +1,11 @@
-/* ==========================================================
-   BARBA PAGE TRANSITION
-========================================================== */
-
-
-.transition-wrapper {
+.transition-overlay {
     position: fixed;
-    inset:0;
-    z-index:99999;
-    pointer-events:none;
-    overflow:hidden;
-}
-
-
-.loading-screen {
-    position:absolute;
-    inset:0;
-    background:#0B1C2A;
-    transform:translateX(-100%);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #0b0b0b; /* Темный премиальный фон */
+    z-index: 9999;
+    transform: translateY(100%);
+    pointer-events: none;
 }
