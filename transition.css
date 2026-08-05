@@ -1,0 +1,20 @@
+/* ==========================================================
+   BARBA PAGE TRANSITION
+========================================================== */
+
+
+.transition-wrapper {
+    position: fixed;
+    inset:0;
+    z-index:99999;
+    pointer-events:none;
+    overflow:hidden;
+}
+
+
+.loading-screen {
+    position:absolute;
+    inset:0;
+    background:#0B1C2A;
+    transform:translateX(-100%);
+}
