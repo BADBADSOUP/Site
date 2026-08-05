@@ -1,1482 +1,505 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TrucoReal — Кейс</title>
-  <style>
 
-    /* =============================================
-       БАЗОВЫЕ СТИЛИ
-    ============================================= */
+<meta charset="UTF-8">
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    :root {
-      /* Цвета */
-      --dark-bg: #0b131a;
-      --dark-section: #0d1b2a;
-      --blue-bg: #1B5FFF;
-      --text-primary: #ffffff;
-      --text-secondary: rgba(255,255,255,0.55);
-      --text-label: rgba(255,255,255,0.4);
-      --border: rgba(255,255,255,0.1);
-      --max-width: 1640px;
+<title>TrucoReal — Кейс</title>
 
-      /* Типографика */
-      --fs-display:  clamp(40px, 5.2vw, 80px);
-      --fs-h1:       clamp(28px, 3.2vw, 40px);
-      --fs-h2:       clamp(24px, 2.4vw, 30px);
-      --fs-body:     clamp(16px, 1.7vw, 26px);
-      --fs-small:    clamp(24px, 1vw,   24px);
-      --fs-label:    clamp(22px, 0.75vw, 20px);
-      --fs-content-title:    clamp(40px, 3vw, 70px);
-      --fs-content-text:    clamp(22px, 3vw, 32px);
 
-      /* Отступы */
-      --space-xl:    clamp(220px,  8vw,  220px);
-      --space-lg:    clamp(120px,  4vw,   120px);
-      --space-md:    clamp(64px,  2.5vw, 64px);
-      --space-sm:    clamp(40px,  1.2vw, 40px);
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="truco.css">
+<link rel="stylesheet" href="../transition.css">
 
-      /* Промежутки */
-      --gap-xl:      clamp(40px,  5vw,   80px);
-      --gap-lg:      clamp(24px,  3vw,   60px);
-      --gap-md:      clamp(16px,  2vw,   32px);
-      --gap-sm:      clamp(8px,   1vw,   16px);
 
-      /* Радиусы */
-      --radius-lg:   clamp(12px,  1vw,   20px);
-      --radius-md:   clamp(8px,   0.75vw, 14px);
-      --radius-sm:   clamp(4px,   0.4vw,  8px);
-
-      /* Горизонтальные отступы страницы */
-      --padding-x:      clamp(20px, 5vw, 80px);
-
-      /* Единый контейнер — ширина контента никогда не касается краёв */
-      --container-width: min(calc(100vw - var(--padding-x) * 2), var(--max-width));
-    }
-
-    /* Базовые настройки для корректной работы Lenis */
-    html.lenis, html.lenis body { height: auto; }
-    .lenis.lenis-smooth { scroll-behavior: auto !important; }
-    .lenis.lenis-stopped { overflow: hidden; }
-    .lenis.lenis-scrolling iframe { pointer-events: none; }
-
-    body {
-      font-family: 'Suisse Intl', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: #ffffff;
-      color: var(--text-primary);
-      overflow-x: hidden;
-    }
-
-    /* Базовые настройки для корректной работы Lenis */
-    html.lenis,
-    html.lenis body {
-      height: auto;
-    }
-
-    .lenis.lenis-smooth {
-      scroll-behavior: auto !important;
-    }
-
-    .lenis.lenis-smooth [data-lenis-prevent] {
-      overscroll-behavior: contain;
-    }
-
-    .lenis.lenis-stopped {
-      overflow: hidden;
-    }
-
-    .lenis.lenis-scrolling iframe {
-      pointer-events: none;
-    }
-
-    /* =============================================
-       КОНТЕЙНЕР — единая система
-    ============================================= */
-
-    /* Все блоки с контентом используют этот паттерн:
-       width = --container-width, margin = auto, без padding по бокам */
-    .container,
-    .hero,
-    .section,
-    .text-blocks-inner,
-    .blue-section-inner,
-    .dark-section-inner,
-    .palette-section,
-    .phone-section,
-    .results-section,
-    .bottom-cards {
-      width: var(--container-width);
-      margin-inline: auto;
-    }
-
-    /* Секции с фоновой заливкой — сами на всю ширину,
-       внутренний контейнер ограничен */
-    .blue-section,
-    .dark-section {
-      width: 100%;
-    }
-
-    /* =============================================
-       НАВИГАЦИЯ / ШАПКА
-    ============================================= */
-    .page-header {
-      padding: 32px var(--padding-x);
-      max-width: var(--max-width);
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-
-    .back-link:hover {
-      color: var(--text-primary);
-    }
-
-    .back-link svg {
-      width: 16px;
-      height: 16px;
-    }
-
-    /* =============================================
-       HERO-СЕКЦИЯ
-    ============================================= */
-    .hero-frame {
-      width: 100%;
-      background-color: #051D2B;
-    }
-
-    .hero {
-      width: var(--container-width);
-      margin-inline: auto;
-      height: clamp(400px, 45vw, 640px);
-      max-height: 640px;
-      display: flex;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-      background-color: #0B1C2A;
-    }
-
-    .hero-left {
-      flex: 0 0 100%;
-      max-width: calc(var(--container-width) * 1);
-      z-index: 2;
-      position: relative;
-    }
-
-    .hero-title {
-      font-size: var(--fs-display);
-      font-weight: 500;
-      line-height: 1.1;
-      max-width: 100%;
-      width: 100%;
-      word-break: break-word;
-    }
-
-    .hero-label {
-      font-size: var(--fs-h1);
-      font-weight: 500;
-      color: var(--text-primary);
-      letter-spacing: -0.01em;
-      margin-bottom: var(--space-sm);
-    }
-
-    .hero-title {
-      font-size: var(--fs-display);
-      font-weight: 500;
-      line-height: 1.1;
-    }
-
-    /* =============================================
-       БЛОК С ИЗОБРАЖЕНИЕМ
-    ============================================= */
-    .phones-block {
-      background-color: #0A1620;
-      min-height: 560px;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 48px 24px;
-    }
-
-    .phones-block img {
-      display: block;
-      width: min(100%, 1100px);
-      height: auto;
-      object-fit: contain;
-    }
-
-    .about-project {
-      background-color: #ffffff;
-      color: #06070A;
-      padding: var(--space-lg) 0;
-    }
-
-    .about-project-grid--second {
-      margin-top: var(--space-lg);
-    }
-
-    .about-project-container {
-      width: var(--container-width);
-      margin-inline: auto;
-    }
-
-    .about-project-title {
-      font-size: var(--fs-display);
-      font-weight: 600;
-      line-height: 1.1;
-      color: #06070A;
-      letter-spacing: -0.02em;
-      margin-bottom: var(--space-lg);
-    }
-
-    .about-project-grid--border {
-      border-top: 1px solid #06070A;
-      padding-top: var(--space-md);
-    }
-
-    .about-project-label--small {
-      font-size: var(--fs-label);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      line-height: 1.3;
-      color: #06070A;
-    }
-
-    .about-project-grid {
-      width: var(--container-width);
-      margin-inline: auto;
-      display: grid;
-      grid-template-columns: minmax(0, 470px) minmax(0, 1fr);
-      gap: var(--gap-lg);
-      align-items: start;
-    }
-
-    .about-project-label {
-      font-size: var(--fs-h1);
-      font-weight: 600;
-      color: #06070A;
-      max-width: 470px;
-    }
-
-    .about-project-content {
-      font-size: var(--fs-h2);
-      font-weight: 400;
-      line-height: 1.5;
-      letter-spacing: -0.01em;
-      color: #06070A;
-      max-width: 1110px;
-    }
-
-    .about-project-content--body {
-      font-size: var(--fs-body);
-      line-height: 1.6;
-      letter-spacing: -0.01em;
-    }
-
-    @media (max-width: 960px) {
-      .about-project-grid {
-        grid-template-columns: 1fr;
-        gap: var(--gap-md);
-      }
-
-      .about-project-label {
-        max-width: none;
-      }
-    }
-
-    /* =============================================
-       ПОЛНОШИРИННЫЙ БЛОК С ИЗОБРАЖЕНИЕМ И СЕРЫМ ФОНОМ
-    ============================================= */
-    .image-block {
-      background-color: #f5f5f7;
-      width: 100%;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .image-block__inner {
-      width: 100%;
-      max-width: 100%;
-    }
-
-    .image-block__frame {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      overflow: hidden;
-    }
-
-    .image-block__frame img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    @media (max-width: 960px) {
-      .image-block__frame {
-        aspect-ratio: 4 / 3;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .image-block__frame {
-        aspect-ratio: 3 / 4;
-      }
-    }
-
-    /* =============================================
-       ОБЩИЕ СТИЛИ СЕКЦИЙ
-    ============================================= */
-    .section {
-      padding: var(--space-xl) 0;
-    }
-
-    .section-label {
-      font-size: var(--fs-label);
-      font-weight: 600;
-      color: var(--text-label);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: var(--space-sm);
-    }
-
-    .section-title {
-      font-size: var(--fs-h2);
-      font-weight: 500;
-      line-height: 1.5;
-      letter-spacing: -1.5em;
-      margin-bottom: var(--space-sm);
-    }
-
-    .section-text {
-      font-size: var(--fs-small);
-      line-height: 1.7;
-      color: var(--text-secondary);
-      max-width: 520px;
-    }
-
-
-    /* =============================================
-       ТЕКСТОВЫЕ БЛОКИ (задача / решение)
-    ============================================= */
-    .text-blocks {
-      background-color: #ffffff;
-      color: #06070A;
-      margin: 0;
-      padding: 0;
-    }
-
-    .text-blocks-inner {
-      padding: var(--space-xl) 0 0;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .text-block {
-      display: grid;
-      grid-template-columns: clamp(200px, 36vw, 600px) 1fr;
-      gap: var(--gap-lg);
-      padding: var(--space-lg) 0;
-    }
-
-    .text-block-label {
-      font-size: var(--fs-h1);
-      font-weight: 600;
-      color: #06070A;
-    }
-
-    .text-block-content {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-md);
-      max-width: 1110px;
-    }
-
-    .text-block-title {
-      font-size: var(--fs-h2);
-      font-weight: 400;
-      line-height: 1.5;
-      letter-spacing: -0.01.5em;
-      color: #06070A;
-    }
-
-    .text-block-body {
-      font-size: var(--fs-body);
-      line-height: 1.5;
-      letter-spacing: -0.02em;
-      color: rgba(6,7,10,0.5);
-    }
-
-    /* =============================================
-       МЕТА-БЛОК (колонки с характеристиками)
-    ============================================= */
-    .project-meta {
-      display: flex;
-      padding: var(--space-lg) 0;
-    }
-
-    .meta-col {
-      flex: 1;
-      padding: 0 var(--gap-md);
-      border-left: 2px solid rgba(6,7,10,0.1);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .meta-col:first-child {
-      padding-left: var(--gap-md);
-      border-left: 2px solid rgba(6,7,10,0.1);
-    }
-
-    .meta-col--accent {
-      border-left: 2px solid rgba(6,7,10,0.1);
-      min-width: 450px;
-    }
-
-    .meta-col-label {
-      font-size: var(--fs-label);
-      color: rgba(6,7,10,0.4);
-      font-weight: 400;
-    }
-
-    .meta-col-value {
-      font-size: var(--fs-small);
-      font-weight: 400;
-      color: #06070A;
-    }
-
-    @media (max-width: 768px) {
-      .project-meta {
-        flex-wrap: wrap;
-        gap: var(--gap-md);
-      }
-      .meta-col {
-        flex: 0 0 calc(50% - var(--gap-md));
-        border-left: none;
-        padding-left: 0;
-      }
-      .meta-col--accent {
-        padding-left: 0;
-      }
-    }
-
-    /* =============================================
-       РАБОЧИЙ ПРОТОТИП — блок с заголовком и текстом
-    ============================================= */
-    .prototype-section {
-      background-color: #ffffff;
-      color: #06070A;
-    }
-
-    .prototype-section__inner {
-      width: var(--container-width);
-      margin-inline: auto;
-      padding: var(--space-xl) 0;
-      padding-bottom: var(--space-lg) ;
-    }
-
-    .prototype-section__title {
-      font-size: var(--fs-display);
-      font-weight: 600;
-      line-height: 1.08;
-      letter-spacing: -0.03em;
-      color: #06070A;
-      margin-bottom: var(--space-md);
-    }
-
-    .prototype-section__divider {
-      width: 100%;
-      height: 1px;
-      background-color: rgba(6,7,10,0.12);
-      margin-bottom: var(--space-sm);
-    }
-
-    .prototype-section__grid {
-      display: grid;
-      grid-template-columns: clamp(200px, 28vw, 460px) 1fr;
-      gap: var(--gap-lg);
-    }
-
-    .prototype-section__label {
-      font-size: var(--fs-label);
-      font-weight: 600;
-      color: rgba(6,7,10,0.4);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding-top: 4px;
-      line-height: 1.5;
-    }
-
-    .prototype-section__body {
-      font-size: var(--fs-small);
-      line-height: 1.75;
-      color: #06070A;
-      max-width: 1110px;
-    }
-
-    .prototype-section__body p + p {
-      margin-top: 1.2em;
-    }
-
-    /* =============================================
-       СНАЧАЛА МОБИЛЬНЫЕ
-    ============================================= */
-    .mobile-first-section {
-      background-color: #ffffff;
-      color: #06070A;
-    }
-
-    .mobile-first-section__inner {
-      width: var(--container-width);
-      margin-inline: auto;
-      padding: var(--space-xl) 0;
-      padding-bottom: var(--space-lg);
-    }
-
-    .mobile-first-section__title {
-      font-size: var(--fs-display);
-      font-weight: 600;
-      line-height: 1.08;
-      letter-spacing: -0.03em;
-      color: #06070A;
-      margin-bottom: var(--space-md);
-    }
-
-    .mobile-first-section__divider {
-      width: 100%;
-      height: 1px;
-      background-color: rgba(6,7,10,0.12);
-    }
-
-    .mobile-first-section__grid {
-      display: grid;
-      gap: var(--gap-lg);
-    }
-
-    .mobile-first-section__label {
-      font-size: var(--fs-label);
-      font-weight: 600;
-      color: rgba(6,7,10,0.4);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding-top: 4px;
-      line-height: 1.5;
-    }
-
-    .mobile-first-section__body {
-      font-size: var(--fs-small);
-      line-height: 1.75;
-      color: #06070A;
-      max-width: 1110px;
-    }
-
-    .mobile-first-section__frame {
-      width: var(--container-width);
-      margin-inline: auto;
-      height: 1042px;
-      background-color: #EDEDED;
-      border-radius: 40px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .mobile-first-section__frame-img {
-      width: 1318px;
-      height: auto;
-      display: block;
-    }
-
-    /* =============================================
-       UI СЕКЦИЯ
-    ============================================= */
-    .ui-section {
-      background-color: #ffffff;
-      color: #06070A;
-    }
-
-    .ui-section__inner {
-      width: var(--container-width);
-      margin-inline: auto;
-      padding: var(--space-xl) 0;
-      padding-bottom: var(--space-lg);
-    }
-
-    .ui-section__title {
-      font-size: var(--fs-display);
-      font-weight: 600;
-      line-height: 1.08;
-      letter-spacing: -0.03em;
-      color: #06070A;
-      margin-bottom: var(--space-md);
-    }
-
-    .ui-section__divider {
-      width: 100%;
-      height: 1px;
-      background-color: rgba(6,7,10,0.12);
-      margin-bottom: var(--space-sm);
-    }
-
-    .ui-section__grid {
-      display: grid;
-      grid-template-columns: clamp(200px, 28vw, 460px) 1fr;
-      gap: var(--gap-lg);
-    }
-
-    .ui-section__label {
-      font-size: var(--fs-label);
-      font-weight: 600;
-      color: rgba(6,7,10,0.4);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding-top: 4px;
-      line-height: 1.5;
-    }
-
-    .ui-section__body {
-      font-size: var(--fs-small);
-      line-height: 1.75;
-      color: #06070A;
-      max-width: 1110px;
-    }
-
-    .ui-section__showcase {
-      width: 100vw;
-      position: relative;
-      left: 50%;
-      transform: translateX(-50%);
-      margin-top: var(--space-lg);
-      overflow: hidden;
-    }
-
-    .ui-section__img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    /* =============================================
-       VISUAL GRID
-    ============================================= */
-    .visual-grid {
-      width: var(--container-width);
-      margin-inline: auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-    }
-
-    .visual-card--small {
-      height: 981px;
-      background-color: #EDEDED;
-      border-radius: 40px;
-    }
-
-    .visual-card--wide {
-      grid-column: span 2;
-      height: 1042px;
-      background-color: #EDEDED;
-      border-radius: 40px;
-    }
-
-    @media (max-width: 768px) {
-      .prototype-section__grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .prototype-section__frame {
-      width: var(--container-width);
-      margin-inline: auto;
-      height: 1042px;
-      background-color: #EDEDED;
-      border-radius: 40px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .prototype-section__frame-img {
-      width: 1318px;
-      height: auto;
-      display: block;
-    }
-
-    /* =============================================
-       БЛОК-ЗАМЕТКА (Прототип и подобные)
-    ============================================= */
-    .note-block {
-      background-color: #ffffff;
-      color: #06070A;
-      margin: 0;
-      padding: 0;
-    }
-
-    .note-block-inner {
-      max-width: var(--container-width);
-      margin-inline: auto;
-      margin-top: var(--space-xl);
-
-      margin-bottom: var(--space-lg);
-    }
-
-    .note-title {
-      font-size: var(--fs-content-title);
-      font-weight: 700;
-      line-height: 1.15;
-      letter-spacing: -0.03em;
-      color: #06070A;
-      margin-bottom: var(--space-md);
-    }
-
-    .note-body {
-      font-size: var(--fs-content-text);
-      letter-spacing: -0.02em;
-      line-height: 1.4;
-      color: rgba(6,7,10,0.65);
-      max-width: 1000px;
-      margin-bottom: var(--space-lg);
-    }
-
-    /* =============================================
-       СЕТКА КАРТОЧЕК (концепт-блок)
-    ============================================= */
-    .concept-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto auto;
-      gap: 40px;
-      width: 100%;
-      max-width: 1640px;
-      margin: 0;
-    }
-
-    .concept-card {
-      border-radius: 60px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .concept-card--top {
-      height: 1065px;
-    }
-
-    .concept-card--bottom {
-      grid-column: span 2;
-      height: 1065px;
-    }
-
-    .concept-card--text {
-      background-color: #C9935D;
-      padding: var(--space-lg);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .concept-card--dark {
-      background-color: #0A1620;
-    }
-
-    .concept-card__label {
-      font-size: var(--fs-label);
-      font-weight: 500;
-      color: rgba(6,7,10,0.6);
-      letter-spacing: 0.02em;
-      margin-bottom: var(--space-sm);
-    }
-
-    .concept-card__title {
-      font-size: 70px;
-      font-weight: 700;
-      line-height: 1.15;
-      letter-spacing: -0.03em;
-      color: #ffffff;
-      margin-bottom: var(--space-md);
-    }
-
-    .concept-card__body {
-      font-size: 32px;
-      line-height: 1.5;
-      color: rgba(255, 255, 255, 100);
-      max-width: 660px;
-      letter-spacing: -0.03em;
-    }
-
-    .concept-card__img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    /* =============================================
-       БЛОК С ДВУМЯ ВИДЕО (мобайл + десктоп)
-    ============================================= */
-    .video-showcase {
-      --video-height: 808px;
-      --mobile-video-width: 371px;
-      --desktop-video-width: 1183px;
-      --video-gap: 86px;
-      --section-spacing: 96px;
-      display: flex;
-      align-items: flex-start;
-      gap: var(--video-gap);
-      margin: 0;
-      margin-left: calc((100vw - var(--container-width)) / 2);
-      overflow: visible;
-      width: calc(var(--mobile-video-width) + var(--video-gap) + var(--desktop-video-width));
-      max-width: 100%;
-    }
-
-    .video-mob,
-    .video-desk {
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 40px 80px rgba(0,0,0,0.15);
-      position: relative;
-      background: #000;
-      height: var(--video-height);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      outline: 12px solid rgba(0, 0, 0, 0.3);
-      outline-offset: 0;
-    }
-
-    .video-mob {
-      flex: 0 0 auto;
-      width: var(--mobile-video-width);
-    }
-
-    .video-desk {
-      flex: 0 0 auto;
-      width: var(--desktop-video-width);
-    }
-
-    .video-mob video,
-    .video-desk video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-      background: #000;
-    }
-
-    /* =============================================
-       USERFLOW — полноширинный блок
-    ============================================= */
-    .userflow-showcase {
-      width: 100vw;
-      position: relative;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #0B1C2A;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      padding: var(--space-xl) 0;
-      overflow: hidden;
-    }
-
-    .userflow-copy {
-      width: var(--container-width);
-      max-width: var(--max-width);
-      color: #ffffff;
-      text-align: left;
-      margin: 0 auto;
-    }
-
-    .userflow-copy .note-title,
-    .userflow-copy .note-body {
-      color: #ffffff;
-    }
-
-    .userflow-copy .note-body {
-      color: rgba(255,255,255,0.75);
-      max-width: 900px;
-    }
-
-    .userflow-ribbon {
-      width: 100%;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .userflow-ribbon-track {
-      display: flex;
-      width: 288%;
-      animation: ribbon-scroll 28s linear infinite;
-    }
-
-    .userflow-img {
-      width: 144vw;
-      height: auto;
-      display: block;
-      flex-shrink: 0;
-    }
-
-    @keyframes ribbon-scroll {
-      0% {
-        transform: translateX(0);
-      }
-      100% {
-        transform: translateX(-50%);
-      }
-    }
-    .proto-showcase {
-      width: 100%;
-      max-width: 1640px;
-      height: 1000px;
-      background-color: #0881EA;
-      border-radius: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--gap-lg);
-      margin: 0;
-      overflow: hidden;
-    }
-
-    .proto-img {
-      width: 352px;
-      height: 736px;
-      object-fit: cover;
-      flex-shrink: 0;
-      border-radius: 24px;
-    }
-    .blue-section {
-      background-color: var(--blue-bg);
-      padding: var(--space-xl) 0;
-    }
-
-    .blue-section-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--gap-xl);
-      align-items: center;
-    }
-
-    .blue-section .section-label {
-      color: rgba(255,255,255,0.6);
-    }
-
-    .blue-section .section-title {
-      color: #ffffff;
-    }
-
-    .blue-section .section-text {
-      color: rgba(255,255,255,0.75);
-    }
-
-    .blue-screens {
-      display: flex;
-      gap: var(--gap-md);
-      align-items: flex-end;
-      justify-content: center;
-    }
-
-    .blue-screen {
-      background: rgba(255,255,255,0.12);
-      border-radius: var(--radius-lg);
-      flex: 1;
-      aspect-ratio: 9/18;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(255,255,255,0.3);
-      font-size: var(--fs-label);
-      text-align: center;
-      padding: var(--space-sm);
-    }
-
-    .blue-screen.tall {
-      transform: scale(1.08);
-      transform-origin: bottom center;
-    }
-
-    /* =============================================
-       ТЁМНАЯ СЕКЦИЯ — Геймплей
-    ============================================= */
-    .dark-section {
-      background-color: #0d1b2a;
-      padding: var(--space-xl) 0;
-    }
-
-    .dark-section-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--gap-xl);
-      align-items: center;
-    }
-
-    .screen-mockup {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: var(--radius-lg);
-      aspect-ratio: 4/3;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(255,255,255,0.2);
-      font-size: var(--fs-small);
-    }
-
-    .screen-mockup-tall {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: var(--radius-lg);
-      aspect-ratio: 9/16;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(255,255,255,0.2);
-      font-size: var(--fs-small);
-    }
-
-    /* =============================================
-       СЕКЦИЯ ПАЛИТРА / ЦВЕТОВАЯ СИСТЕМА
-    ============================================= */
-    .palette-section {
-      padding: var(--space-xl) 0;
-    }
-
-    .palette-header {
-      margin-bottom: var(--space-lg);
-    }
-
-    .palette-screens {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--gap-md);
-    }
-
-    .palette-screen {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: var(--radius-md);
-      aspect-ratio: 9/16;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(255,255,255,0.2);
-      font-size: var(--fs-label);
-    }
-
-    /* =============================================
-       СЕКЦИЯ С ТЕЛЕФОНОМ + ОПИСАНИЕ
-    ============================================= */
-    .phone-section {
-      padding: var(--space-xl) 0;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--gap-xl);
-      align-items: center;
-    }
-
-    .results-section {
-      padding: var(--space-xl) 0 var(--space-lg);
-    }
-
-    .results-section .section-title {
-      margin-bottom: var(--space-md);
-    }
-
-    .results-text {
-      font-size: var(--fs-small);
-      line-height: 1.75;
-      color: var(--text-secondary);
-      max-width: 700px;
-    }
-
-    /* =============================================
-       НИЖНИЕ КАРТОЧКИ
-    ============================================= */
-    .bottom-cards {
-      padding: var(--space-lg) 0 var(--space-xxl);
-    }
-
-    .bottom-cards-label {
-      font-size: var(--fs-label);
-      font-weight: 600;
-      color: var(--text-label);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: var(--space-md);
-    }
-
-    .cards-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--gap-md);
-    }
-
-    .project-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.3s ease, border-color 0.3s ease;
-    }
-
-    .project-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(255,255,255,0.2);
-    }
-
-    .card-image {
-      width: 100%;
-      aspect-ratio: 16/9;
-      background: rgba(255,255,255,0.06);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(255,255,255,0.2);
-      font-size: var(--fs-small);
-    }
-
-    .card-body {
-      padding: var(--space-md);
-    }
-
-    .card-title {
-      font-size: var(--fs-h2);
-      font-weight: 600;
-      margin-bottom: var(--gap-sm);
-    }
-
-    .card-desc {
-      font-size: var(--fs-small);
-      color: var(--text-secondary);
-      line-height: 1.5;
-      margin-bottom: var(--gap-sm);
-    }
-
-    .card-tags {
-      font-size: var(--fs-label);
-      color: var(--text-label);
-    }
-
-    /* =============================================
-       АДАПТИВНОСТЬ — только структурные изменения
-    ============================================= */
-    @media (max-width: 960px) {
-      .hero {
-        flex-direction: column;
-        align-items: flex-start;
-        height: auto;
-        padding-top: var(--space-lg);
-        padding-bottom: var(--space-lg);
-      }
-
-      .hero-left {
-        flex: none;
-        width: 100%;
-      }
-
-      .hero-right {
-        width: 100%;
-        height: 50vw;
-      }
-
-      .blue-section-inner,
-      .dark-section-inner,
-      .phone-section {
-        grid-template-columns: 1fr;
-      }
-
-      .text-block {
-        grid-template-columns: 1fr;
-      }
-
-      .palette-screens {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .cards-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .palette-screens {
-        grid-template-columns: 1fr;
-      }
-
-      .blue-screens {
-        flex-direction: column;
-      }
-
-      /* Concept grid — single column on mobile */
-      .concept-grid {
-        grid-template-columns: 1fr;
-        gap: 24px;
-      }
-
-      .concept-card--top,
-      .concept-card--bottom {
-        grid-column: span 1;
-        height: auto;
-      }
-
-      .concept-card--top {
-        min-height: 500px;
-      }
-
-      .concept-card--bottom {
-        min-height: 400px;
-      }
-
-      .concept-card__title {
-        font-size: 48px;
-      }
-
-      .concept-card__body {
-        font-size: 22px;
-      }
-    }
-
-  </style>
 </head>
-<body>
 
-  <!-- ====== HERO ====== -->
-  <div class="hero-frame">
+
+<body data-barba="wrapper">
+
+<div class="transition-wrapper">
+    <div class="loading-screen"></div>
+</div>
+
+
+<div class="truco-page" data-barba="container" data-barba-namespace="truco">
+
+
+
+<!-- ====== HERO ====== -->
+
+<div class="hero-frame">
+
     <div class="hero">
-      <div class="hero-left">
-        <div class="hero-label">TrucoReal</div>
-        <h1 class="hero-title">Запуск MVP </br>iGaming‑платформы для </br>рынка Аргентины</h1>
-      </div>
-    </div>
-  </div>
 
-  <!-- ====== ЗАЛИВКА ====== -->
-  <div class="phones-block">
+        <div class="hero-left">
+
+
+            <div class="hero-label">
+                TrucoReal
+            </div>
+
+
+            <h1 class="hero-title animate-this">
+
+                Запуск MVP </br>
+                iGaming-платформы для </br>
+                рынка Аргентины
+
+            </h1>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+<!-- ====== ЗАЛИВКА ====== -->
+
+
+<div class="phones-block">
+
     <img src="phone-left.png" alt="TrucoReal — интерфейс">
-  </div>
 
-  <section class="about-project">
-    <div class="about-project-grid">
-      <div class="about-project-label">О проекте</div>
-      <div class="about-project-content">
-        TrucoReal — это онлайн-казино, ориентированное на рынок Аргентины. Главной особенностью проекта является возможность играть на реальные деньги в Truco — культовую южноамериканскую карточную игру. Её суть строится на блефе, психологии и обмане соперников. По своей механике Truco напоминает смесь покера и дурака, благодаря чему она идеально вписывается в формат онлайн-гэмблинга.
-      </div>
-    </div>
+</div>
 
-    <div class="about-project-grid about-project-grid--second">
-      <div class="about-project-label">Задача</div>
-      <div class="about-project-content about-project-content--body">
-        Когда я присоединился к проекту, команда уже имела рабочий прототип с реализованной игровой логикой. Однако интерфейс создавался без единой дизайн-системы, выглядел устаревшим и не был готов к запуску MVP.<br><br>Моей задачей было полностью переработать UX, создать современный визуальный стиль и заложить основу для дальнейшего масштабирования продукта.
-      </div>
-    </div>
-  </section>
 
-  <!-- ====== РАБОЧИЙ ПРОТОТИП ====== -->
-  
-  <section class="image-block">
-    <div class="image-block__inner">
-      <div class="image-block__frame">
-        <img src="concept2.png" alt="Концепт интерфейса">
-      </div>
-    </div>
-  </section>
 
-  <!-- ====== РАБОЧИЙ ПРОТОТИП ====== -->
-  <section class="prototype-section">
-    <div class="prototype-section__inner">
-      <h2 class="prototype-section__title">Рабочий прототип<br>сайта и геймплей</h2>
-      <div class="prototype-section__divider"></div>
-      <div class="prototype-section__grid">
-        <div class="prototype-section__label">ВВОДНЫЕ ДАННЫЕ И АНАЛИЗ ПРОТОТИПА</div>
-        <div class="prototype-section__body">Разработчики быстро собрали рабочий прототип с помощью AI-инструментов и вайбкодинга, это позволило оперативно проверить игровые механики и собрать ключевые экраны платформы. Однако интерфейс создавался без единой дизайн-системы и целостного UX-подхода, поэтому перед запуском MVP требовался комплексный анализ, переработка пользовательского опыта и унификация визуального языка.</div>
-      </div>
-    </div>
 
-    <div class="prototype-section__frame">
-      <img src="prot.png" alt="Прототип" class="prototype-section__frame-img">
-    </div>
 
-  </section>
 
-  <!-- ====== ВИЗУАЛЬНОЕ НАПРАВЛЕНИЕ ====== -->
-  <section class="prototype-section">
-    <div class="prototype-section__inner">
-      <h2 class="prototype-section__title">Визуальное <br>направление продукта</h2>
-      <div class="prototype-section__divider"></div>
-      <div class="prototype-section__grid">
-        <div class="prototype-section__label">ВВОДНЫЕ ДАННЫЕ И АНАЛИЗ ПРОТОТИПА</div>
-        <div class="prototype-section__body">
-          <p>На этапе формирования визуальной концепции были проанализированы интерфейсы онлайн-казино Stake и Bet365. Эти продукты стали основными референсами благодаря сдержанному визуальному стилю, продуманной иерархии и удобной организации большого объема контента.</p>
-          <p>Главной задачей было создать интерфейс, который не отвлекает пользователя декоративными элементами и позволяет быстро находить нужные игры, акции и основные сценарии взаимодействия. Для этого в основу концепта легли минималистичная цветовая палитра, четкая типографика, единая система отступов и акцентные элементы, используемые только для ключевых действий.</p>
-          <p>Разработанный концепт был применен к одному из ключевых экранов и после согласования стал визуальной основой для дальнейшего проектирования остальных страниц MVP. Это позволило сформировать единый стиль интерфейса и обеспечить последовательность пользовательского опыта на всем продукте.</p>
-        </div>
-      </div>
-    </div>
 
-    <div class="visual-grid">
-      <div class="visual-card visual-card--small"></div>
-      <div class="visual-card visual-card--small"></div>
-      <div class="visual-card visual-card--wide"></div>
-    </div>
+<section class="about-project">
 
-  </section>
 
-  <!-- Lenis (Плавный скролл) -->
-  <script src="https://unpkg.com/lenis@1.1.21/dist/lenis.min.js"></script>
+<div class="about-project-grid">
 
-  <!-- GSAP -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
-  <script>
-    // ── LENIS ──
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      infinite: false,
-    });
+<div class="about-project-label">
 
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
+О проекте
 
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => { lenis.raf(time * 1000); });
-    gsap.ticker.lagSmoothing(0);
-    gsap.registerPlugin(ScrollTrigger);
+</div>
 
-    // Анимация заголовка по словам — шторка снизу вверх
-    function animateTitle(el, delay) {
-      const text = el.innerHTML;
 
-      // Разбиваем по словам, сохраняя <br>
-      const parts = text.split(/(<br\s*\/?>)/gi);
-      el.innerHTML = parts.map(part => {
-        if (/^<br/i.test(part)) return part;
-        return part.split(/\s+/).filter(w => w).map(word =>
-          `<span class="tw" style="display:inline-block; overflow:hidden; vertical-align:bottom; padding-bottom:0.06em;">` +
-          `<span class="ti" style="display:inline-block; transform:translateY(110%); will-change:transform;">${word}</span>` +
-          `</span>`
-        ).join(' ');
-      }).join('');
 
-      gsap.to(el.querySelectorAll('.ti'), {
-        y: '0%',
-        duration: 1.1,
-        ease: 'power4.out',
-        stagger: 0.05,
-        delay: delay || 0,
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 88%',
-          toggleActions: 'play none none none',
-        }
-      });
-    }
+<div class="about-project-content">
 
-    // Hero — без ScrollTrigger, сразу при загрузке
-    const heroTitle = document.querySelector('.hero-title');
-    if (heroTitle) animateTitle(heroTitle, 0.3);
 
-  </script>
+TrucoReal — это онлайн-казино, ориентированное на рынок Аргентины. Главной особенностью проекта является возможность играть на реальные деньги в Truco — культовую южноамериканскую карточную игру. Её суть строится на блефе, психологии и обмане соперников. По своей механике Truco напоминает смесь покера и дурака, благодаря чему она идеально вписывается в формат онлайн-гэмблинга.
 
-  <!-- ====== ПОЛЬЗОВАТЕЛЬСКИЕ СЦЕНАРИИ ====== -->
-  <section class="prototype-section">
-    <div class="prototype-section__inner">
-      <h2 class="prototype-section__title">Пользовательские<br>сценарии</h2>
-      <div class="prototype-section__divider"></div>
-      <div class="prototype-section__grid">
-        <div class="prototype-section__label">ВВОДНЫЕ ДАННЫЕ И АНАЛИЗ ПРОТОТИПА</div>
-        <div class="prototype-section__body">Разработчики быстро собрали рабочий прототип с помощью AI-инструментов и вайбкодинга, это позволило оперативно проверить игровые механики и собрать ключевые экраны платформы. Однако интерфейс создавался без единой дизайн-системы и целостного UX-подхода, поэтому перед запуском MVP требовался комплексный анализ, переработка пользовательского опыта и унификация визуального языка.</div>
-      </div>
-    </div>
 
-    <div class="prototype-section__frame">
-      <img src="prot.png" alt="Пользовательские сценарии" class="prototype-section__frame-img">
-    </div>
+</div>
 
-  </section>
 
-  <!-- ====== СНАЧАЛА МОБИЛЬНЫЕ ====== -->
-  <section class="mobile-first-section">
-    <div class="mobile-first-section__inner">
-      <h2 class="mobile-first-section__title">Приоритет
-<br>мобильной версии</h2>
+</div>
 
-      <div class="mobile-first-section__grid">
-        <div class="mobile-first-section__body">На рынке Аргентины мобильные устройства являются основным способом доступа в интернет. Более 96% пользователей выходят в сеть со смартфонов. Это сделало мобильную платформу приоритетной при проектировании продукта.
 
-Концепция интерфейса разрабатывалась по принципу Mobile First. Сначала были спроектированы и согласованы ключевые мобильные экраны, после чего принятые решения масштабировались на другие платформы. Такой подход позволил сохранить единый визуальный язык и обеспечить консистентность интерфейса на всех устройствах.</div>
-      </div>
-    </div>
 
-    <div class="video-showcase">
-        <div class="video-mob">
-          <video src="mob.webm" autoplay muted loop playsinline preload="auto"></video>
-        </div>
-        <div class="video-desk">
-          <video src="desc.webm" autoplay muted loop playsinline preload="auto"></video>
-        </div>
-      </div>
 
-  </section>
-  <script>
-    // Остальные заголовки — по скроллу (после рендера всех блоков)
-    document.querySelectorAll('.prototype-section__title, .mobile-first-section__title, .ui-section__title').forEach(el => {
-      animateTitle(el, 0);
-    });
-  </script>
 
-  <!-- ====== UI ====== -->
-  <section class="ui-section">
-    <div class="ui-section__inner">
-      <h2 class="ui-section__title">Финальный дизайн <br>ключевых экранов</h2>
-      <div class="ui-section__divider"></div>
-      <div class="ui-section__grid">
-        <div class="ui-section__label">MOBILE FIRST</div>
-        <div class="ui-section__body">На рынке Аргентины мобильные устройства являются основным способом доступа в интернет. Более 96% пользователей выходят в сеть со смартфонов. Это сделало мобильную платформу приоритетной при проектировании продукта.</div>
-      </div>
-    </div>
+<div class="about-project-grid about-project-grid--second">
 
-    <div class="ui-section__showcase">
-      <img src="all.png" alt="UI" class="ui-section__img">
-    </div>
 
-  </section>
+<div class="about-project-label">
 
+Задача
+
+</div>
+
+
+
+<div class="about-project-content about-project-content--body">
+
+
+Когда я присоединился к проекту, команда уже имела рабочий прототип с реализованной игровой логикой. Однако интерфейс создавался без единой дизайн-системы, выглядел устаревшим и не был готов к запуску MVP.
+
+
+<br><br>
+
+
+Моей задачей было полностью переработать UX, создать современный визуальный стиль и заложить основу для дальнейшего масштабирования продукта.
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<!-- ====== РАБОЧИЙ ПРОТОТИП ====== -->
+
+
+<section class="image-block">
+
+
+<div class="image-block__inner">
+
+
+<div class="image-block__frame">
+
+
+<img 
+src="concept2.png"
+class="reveal-image">
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<section class="prototype-section">
+
+
+<div class="prototype-section__inner">
+
+
+<h2 class="prototype-section__title">
+
+Рабочий прототип<br>
+сайт и геймплей
+
+</h2>
+
+
+
+<div class="prototype-section__divider"></div>
+
+
+
+
+<div class="prototype-section__grid">
+
+
+<div class="prototype-section__label">
+
+ВВОДНЫЕ ДАННЫЕ И АНАЛИЗ ПРОТОТИПА
+
+</div>
+
+
+
+
+<div class="prototype-section__body">
+
+
+Разработчики быстро собрали рабочий прототип с помощью AI-инструментов и вайбкодинга, это позволило оперативно проверить игровые механики и собрать ключевые экраны платформы.
+
+
+Однако интерфейс создавался без единой дизайн-системы и целостного UX-подхода, поэтому перед запуском MVP требовался комплексный анализ, переработка пользовательского опыта и унификация визуального языка.
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="prototype-section__frame">
+
+
+<img src="prot.png" alt="Прототип" class="prototype-section__frame-img">
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- ====== ВИЗУАЛЬНОЕ НАПРАВЛЕНИЕ ====== -->
+
+
+<section class="prototype-section">
+
+
+<div class="prototype-section__inner">
+
+
+<h2 class="prototype-section__title">
+
+Визуальное <br>
+направление продукта
+
+</h2>
+
+
+
+
+<div class="prototype-section__divider"></div>
+
+
+
+
+
+<div class="prototype-section__grid">
+
+
+<div class="prototype-section__label">
+
+ВВОДНЫЕ ДАННЫЕ И АНАЛИЗ ПРОТОТИПА
+
+</div>
+
+
+
+
+<div class="prototype-section__body">
+
+
+<p>
+
+На этапе формирования визуальной концепции были проанализированы интерфейсы онлайн-казино Stake и Bet365.
+
+</p>
+
+
+
+<p>
+
+Главной задачей было создать интерфейс, который не отвлекает пользователя декоративными элементами и позволяет быстро находить нужные игры, акции и основные сценарии взаимодействия.
+
+</p>
+
+
+
+<p>
+
+Разработанный концепт стал визуальной основой для дальнейшего проектирования остальных страниц MVP.
+
+</p>
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="visual-grid">
+
+
+<div class="visual-card visual-card--small"></div>
+
+<div class="visual-card visual-card--small"></div>
+
+<div class="visual-card visual-card--wide"></div>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- ====== ПОЛЬЗОВАТЕЛЬСКИЕ СЦЕНАРИИ ====== -->
+
+
+<section class="prototype-section">
+
+
+<div class="prototype-section__inner">
+
+
+<h2 class="prototype-section__title">
+
+Пользовательские<br>
+сценарии
+
+</h2>
+
+
+
+<div class="prototype-section__divider"></div>
+
+
+
+
+<div class="prototype-section__grid">
+
+
+<div class="prototype-section__label">
+
+ВВОДНЫЕ ДАННЫЕ И АНАЛИЗ ПРОТОТИПА
+
+</div>
+
+
+
+<div class="prototype-section__body">
+
+
+Разработчики быстро собрали рабочий прототип с помощью AI-инструментов и вайбкодинга, это позволило оперативно проверить игровые механики и собрать ключевые экраны платформы.
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="prototype-section__frame">
+
+
+<img src="prot.png" alt="Пользовательские сценарии" class="prototype-section__frame-img">
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+<!-- ====== MOBILE FIRST ====== -->
+
+
+<section class="mobile-first-section">
+
+
+<div class="mobile-first-section__inner">
+
+
+<h2 class="mobile-first-section__title">
+
+Приоритет
+<br>
+мобильной версии
+
+</h2>
+
+<div class="mobile-first-section__grid">
+
+
+<div class="mobile-first-section__body">
+
+
+На рынке Аргентины мобильные устройства являются основным способом доступа в интернет. Более 96% пользователей выходят в сеть со смартфонов.
+
+<br><br>
+
+Концепция интерфейса разрабатывалась по принципу Mobile First.
+
+</div>
+
+</div>
+</div>
+
+<div class="video-showcase">
+<div class="video-mob">
+<video src="mob.webm" autoplay muted loop playsinline preload="auto"></video>
+</div>
+
+<div class="video-desk">
+
+<video src="desc.webm" autoplay muted loop playsinline preload="auto"></video>
+</div>
+</div>
+</section>
+
+<!-- ====== UI ====== -->
+
+
+<section class="ui-section">
+
+
+<div class="ui-section__inner">
+
+
+<h2 class="ui-section__title">
+
+Финальный дизайн <br>
+ключевых экранов
+
+</h2>
+
+<div class="ui-section__divider"></div>
+<div class="ui-section__grid">
+<div class="ui-section__label">
+
+MOBILE FIRST
+</div>
+<div class="ui-section__body">
+На рынке Аргентины мобильные устройства являются основным способом доступа в интернет.
+</div>
+</div>
+</div>
+<div class="ui-section__showcase">
+<img src="all.png" alt="UI" class="ui-section__img">
+</div>
+</section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://unpkg.com/@barba/core"></script>
+<script src="../transition.js"></script>
+
+</body>
 </html>
