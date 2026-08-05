@@ -1,392 +1,191 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>TrucoReal — Кейс</title>
-
-
-<link rel="stylesheet" href="../fonts.css">
-<link rel="stylesheet" href="../style.css">
-<link rel="stylesheet" href="truco.css">
-<link rel="stylesheet" href="../transition.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrucoReal — Кейс</title>
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="truco.css">
+    <link rel="stylesheet" href="/transition.css">
 </head>
+<body>
+    <!-- Анимационная шторка для эффекта Only.digital -->
+    <div class="transition-overlay"></div>
 
-<body data-barba="wrapper">
+    <!-- Пример навигации -->
+    <nav class="site-nav">
+        <a href="/index.html">Главная</a>
+        <a href="/truco/truco.html">Проект Truco</a>
+    </nav>
 
-<div class="transition-wrapper">
-    <div class="loading-screen"></div>
-</div>
-
-<div class="truco-page" data-barba="container" data-barba-namespace="truco">
-
-<!-- ====== HERO ====== -->
-
-<div class="hero-frame">
-
-    <div class="hero">
-
-        <div class="hero-left">
-
-
-            <div class="hero-label">
-                TrucoReal
+    <!-- МЕНЯЮЩИЙСЯ КОНТЕНТ СТРАНИЦЫ TRUCO -->
+    <div class="page-container" data-namespace="truco">
+        <main class="truco-page-content">
+            <!-- ====== HERO ====== -->
+            <div class="hero-frame">
+                <div class="hero">
+                    <div class="hero-left">
+                        <div class="hero-label">TrucoReal</div>
+                        <h1 class="hero-title animate-this">
+                            Запуск MVP <br>
+                            iGaming-платформы для <br>
+                            рынка Аргентины
+                        </h1>
+                    </div>
+                </div>
             </div>
 
-            <h1 class="hero-title animate-this">
+            <!-- ====== ЗАЛИВКА ====== -->
+            <div class="phones-block">
+                <img src="phone-left.png" alt="TrucoReal — интерфейс">
+            </div>
 
-                Запуск MVP </br>
-                iGaming-платформы для </br>
-                рынка Аргентины
+            <!-- ====== ОБ ИГРЕ ====== -->
+            <section class="about-project">
+                <div class="about-project-grid">
+                    <div class="about-project-label">О проекте</div>
+                    <div class="about-project-content">
+                        TrucoReal — это онлайн-казино, ориентированное на рынок Аргентины. Главной особенностью проекта является возможность играть на реальные деньги в Truco — культовую южноамериканскую карточную игру. Её суть строится на блефе, психологии и обмане соперников. По своей механике Truco напоминает смесь покера и дурака, благодаря чему она идеально вписывается в формат онлайн-гэмблинга.
+                    </div>
+                </div>
 
-            </h1>
+                <div class="about-project-grid about-project-grid--second">
+                    <div class="about-project-label">Задача</div>
+                    <div class="about-project-content about-project-content--body">
+                        Когда я присоединился к проекту, команда уже имела рабочий прототип с реализованной игровой логикой. Однако интерфейс создавался без единой дизайн-системы, выглядел устаревшим и не был готов к запуску MVP.
+                        <br><br>
+                        Моей задачей было полностью переработать UX, создать современный визуальный стиль и заложить основу для дальнейшего масштабирования продукта.
+                    </div>
+                </div>
+            </section>
 
+            <!-- ====== РАБОЧИЙ ПРОТОТИП ====== -->
+            <section class="image-block">
+                <div class="image-block__inner">
+                    <div class="image-block__frame">
+                        <img src="concept2.png" class="reveal-image">
+                    </div>
+                </div>
+            </section>
 
-        </div>
+            <section class="prototype-section">
+                <div class="prototype-section__inner">
+                    <h2 class="prototype-section__title">
+                        Рабочий прототип<br>
+                        сайт и геймплей
+                    </h2>
+                    <div class="prototype-section__divider"></div>
+                    <div class="prototype-section__grid">
+                        <div class="prototype-section__label">ВВОДНЫЕ ДАННЫЕ И АНАЛИЗ ПРОТОТИПА</div>
+                        <div class="prototype-section__body">
+                            Разработчики быстро собрали рабочий прототип с помощью AI-инструментов и вайбкодинга, это позволило оперативно проверить игровые механики и собрать ключевые экраны платформы.
+                            Однако интерфейс создавался без единой дизайн-системы и целостного UX-подхода, поэтому перед запуском MVP требовался комплексный анализ, переработка пользовательского опыта и унификация визуального языка.
+                        </div>
+                    </div>
+                </div>
 
+                <div class="prototype-section__frame">
+                    <img src="prot.png" alt="Прототип" class="prototype-section__frame-img">
+                </div>
+            </section>
+            <!-- ====== ВИЗУАЛЬНОЕ НАПРАВЛЕНИЕ ====== -->
+            <section class="prototype-section">
+                <div class="prototype-section__inner">
+                    <h2 class="prototype-section__title">
+                        Визуальное <br>
+                        направление продукта
+                    </h2>
+                    <div class="prototype-section__divider"></div>
+                    <div class="prototype-section__grid">
+                        <div class="prototype-section__label">ВВОДНЫЕ ДАННЫЕ И АНАЛИЗ ПРОТОТИПА</div>
+                        <div class="prototype-section__body">
+                            <p>На этапе формирования визуальной концепции были проанализированы интерфейсы онлайн-казино Stake и Bet365.</p>
+                            <p>Главной задачей было создать интерфейс, который не отвлекает пользователя декоративными элементами и позволяет быстро находить нужные игры, акции и основные сценарии взаимодействия.</p>
+                            <p>Разработанный концепт стал визуальной основой для дальнейшего проектирования остальных страниц MVP.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="visual-grid">
+                    <div class="visual-card visual-card--small"></div>
+                    <div class="visual-card visual-card--small"></div>
+                    <div class="visual-card visual-card--wide"></div>
+                </div>
+            </section>
+
+            <!-- ====== ПОЛЬЗОВАТЕЛЬСКИЕ СЦЕНАРИИ ====== -->
+            <section class="prototype-section">
+                <div class="prototype-section__inner">
+                    <h2 class="prototype-section__title">
+                        Пользовательские<br>
+                        сценарии
+                    </h2>
+                    <div class="prototype-section__divider"></div>
+                    <div class="prototype-section__grid">
+                        <div class="prototype-section__label">ВВОДНЫЕ ДАННЫЕ И АНАЛИЗ ПРОТОТИПА</div>
+                        <div class="prototype-section__body">
+                            Разработчики быстро собрали рабочий прототип с помощью AI-инструментов и вайбкодинга, это позволило оперативно проверить игровые механики и собрать ключевые экраны платформы.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prototype-section__frame">
+                    <img src="prot.png" alt="Пользовательские сценарии" class="prototype-section__frame-img">
+                </div>
+            </section>
+
+            <!-- ====== MOBILE FIRST ====== -->
+            <section class="mobile-first-section">
+                <div class="mobile-first-section__inner">
+                    <h2 class="mobile-first-section__title">
+                        Приоритет<br>
+                        мобильной версии
+                    </h2>
+                    <div class="mobile-first-section__grid">
+                        <div class="mobile-first-section__body">
+                            На рынке Аргентины мобильные устройства являются основным способом доступа в интернет. Более 96% пользователей выходят в сеть со смартфонов.
+                            <br><br>
+                            Концепция интерфейса разрабатывалась по принципу Mobile First.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-showcase">
+                    <div class="video-mob">
+                        <video src="mob.webm" autoplay muted loop playsinline preload="auto"></video>
+                    </div>
+                    <div class="video-desk">
+                        <video src="desc.webm" autoplay muted loop playsinline preload="auto"></video>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ====== UI ====== -->
+            <section class="ui-section">
+                <div class="ui-section__inner">
+                    <h2 class="ui-section__title">
+                        Финальный дизайн <br>
+                        ключевых экранов
+                    </h2>
+                    <div class="ui-section__divider"></div>
+                    <div class="ui-section__grid">
+                        <div class="ui-section__label">MOBILE FIRST</div>
+                        <div class="ui-section__body">
+                            На рынке Аргентины мобильные устройства являются основным способом доступа в интернет.
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-section__showcase">
+                    <img src="all.png" alt="UI" class="ui-section__img">
+                </div>
+            </section>
+        </main>
     </div>
 
-</div>
-
-<!-- ====== ЗАЛИВКА ====== -->
-
-
-<div class="phones-block">
-
-    <img src="phone-left.png" alt="TrucoReal — интерфейс">
-
-</div>
-
-<section class="about-project">
-
-<div class="about-project-grid">
-
-<div class="about-project-label">
-
-О проекте
-
-</div>
-
-<div class="about-project-content">
-
-
-TrucoReal — это онлайн-казино, ориентированное на рынок Аргентины. Главной особенностью проекта является возможность играть на реальные деньги в Truco — культовую южноамериканскую карточную игру. Её суть строится на блефе, психологии и обмане соперников. По своей механике Truco напоминает смесь покера и дурака, благодаря чему она идеально вписывается в формат онлайн-гэмблинга.
-
-</div>
-
-</div>
-
-<div class="about-project-grid about-project-grid--second">
-
-
-<div class="about-project-label">
-
-Задача
-
-</div>
-
-
-
-<div class="about-project-content about-project-content--body">
-
-
-Когда я присоединился к проекту, команда уже имела рабочий прототип с реализованной игровой логикой. Однако интерфейс создавался без единой дизайн-системы, выглядел устаревшим и не был готов к запуску MVP.
-
-
-<br><br>
-
-
-Моей задачей было полностью переработать UX, создать современный визуальный стиль и заложить основу для дальнейшего масштабирования продукта.
-
-</div>
-
-</div>
-
-</section>
-
-<!-- ====== РАБОЧИЙ ПРОТОТИП ====== -->
-
-
-<section class="image-block">
-
-<div class="image-block__inner">
-
-<div class="image-block__frame">
-
-<img 
-src="concept2.png"
-class="reveal-image">
-
-</div>
-
-</div>
-
-</section>
-
-<section class="prototype-section">
-
-<div class="prototype-section__inner">
-
-
-<h2 class="prototype-section__title">
-
-Рабочий прототип<br>
-сайт и геймплей
-
-</h2>
-
-<div class="prototype-section__divider"></div>
-
-<div class="prototype-section__grid">
-
-
-<div class="prototype-section__label">
-
-ВВОДНЫЕ ДАННЫЕ И АНАЛИЗ ПРОТОТИПА
-
-</div>
-
-
-<div class="prototype-section__body">
-
-
-Разработчики быстро собрали рабочий прототип с помощью AI-инструментов и вайбкодинга, это позволило оперативно проверить игровые механики и собрать ключевые экраны платформы.
-
-Однако интерфейс создавался без единой дизайн-системы и целостного UX-подхода, поэтому перед запуском MVP требовался комплексный анализ, переработка пользовательского опыта и унификация визуального языка.
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<div class="prototype-section__frame">
-
-
-<img src="prot.png" alt="Прототип" class="prototype-section__frame-img">
-
-
-</div>
-
-</section>
-
-
-<!-- ====== ВИЗУАЛЬНОЕ НАПРАВЛЕНИЕ ====== -->
-
-
-<section class="prototype-section">
-
-
-<div class="prototype-section__inner">
-
-
-<h2 class="prototype-section__title">
-
-Визуальное <br>
-направление продукта
-
-</h2>
-
-
-<div class="prototype-section__divider"></div>
-
-
-<div class="prototype-section__grid">
-
-
-<div class="prototype-section__label">
-
-ВВОДНЫЕ ДАННЫЕ И АНАЛИЗ ПРОТОТИПА
-
-</div>
-
-<div class="prototype-section__body">
-
-<p>
-
-На этапе формирования визуальной концепции были проанализированы интерфейсы онлайн-казино Stake и Bet365.
-
-</p>
-
-<p>
-
-Главной задачей было создать интерфейс, который не отвлекает пользователя декоративными элементами и позволяет быстро находить нужные игры, акции и основные сценарии взаимодействия.
-
-</p>
-
-<p>
-
-Разработанный концепт стал визуальной основой для дальнейшего проектирования остальных страниц MVP.
-
-</p>
-
-</div>
-
-
-</div>
-
-
-</div>
-
-<div class="visual-grid">
-
-<div class="visual-card visual-card--small"></div>
-
-<div class="visual-card visual-card--small"></div>
-
-<div class="visual-card visual-card--wide"></div>
-
-
-</div>
-
-
-
-</section>
-
-<!-- ====== ПОЛЬЗОВАТЕЛЬСКИЕ СЦЕНАРИИ ====== -->
-
-
-<section class="prototype-section">
-
-
-<div class="prototype-section__inner">
-
-
-<h2 class="prototype-section__title">
-
-Пользовательские<br>
-сценарии
-
-</h2>
-
-<div class="prototype-section__divider"></div>
-
-<div class="prototype-section__grid">
-
-
-<div class="prototype-section__label">
-
-ВВОДНЫЕ ДАННЫЕ И АНАЛИЗ ПРОТОТИПА
-
-</div>
-
-<div class="prototype-section__body">
-
-Разработчики быстро собрали рабочий прототип с помощью AI-инструментов и вайбкодинга, это позволило оперативно проверить игровые механики и собрать ключевые экраны платформы.
-
-</div>
-
-
-</div>
-
-</div>
-
-<div class="prototype-section__frame">
-
-
-<img src="prot.png" alt="Пользовательские сценарии" class="prototype-section__frame-img">
-
-
-</div>
-
-
-
-</section>
-
-<!-- ====== MOBILE FIRST ====== -->
-
-
-<section class="mobile-first-section">
-
-
-<div class="mobile-first-section__inner">
-
-
-<h2 class="mobile-first-section__title">
-
-Приоритет
-<br>
-мобильной версии
-
-</h2>
-
-<div class="mobile-first-section__grid">
-
-
-<div class="mobile-first-section__body">
-
-
-На рынке Аргентины мобильные устройства являются основным способом доступа в интернет. Более 96% пользователей выходят в сеть со смартфонов.
-
-<br><br>
-
-Концепция интерфейса разрабатывалась по принципу Mobile First.
-
-</div>
-
-</div>
-</div>
-
-<div class="video-showcase">
-<div class="video-mob">
-<video src="mob.webm" autoplay muted loop playsinline preload="auto"></video>
-</div>
-
-<div class="video-desk">
-
-<video src="desc.webm" autoplay muted loop playsinline preload="auto"></video>
-</div>
-</div>
-</section>
-
-<!-- ====== UI ====== -->
-
-
-<section class="ui-section">
-
-
-<div class="ui-section__inner">
-
-
-<h2 class="ui-section__title">
-
-Финальный дизайн <br>
-ключевых экранов
-
-</h2>
-
-<div class="ui-section__divider"></div>
-<div class="ui-section__grid">
-<div class="ui-section__label">
-
-MOBILE FIRST
-</div>
-<div class="ui-section__body">
-На рынке Аргентины мобильные устройства являются основным способом доступа в интернет.
-</div>
-</div>
-</div>
-<div class="ui-section__showcase">
-<img src="all.png" alt="UI" class="ui-section__img">
-</div>
-</section>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://unpkg.com/@barba/core"></script>
-<script src="../transition.js"></script>
-
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="/transition.js"></script>
+    <script src="/truco/truco.js"></script>
 </body>
 </html>
