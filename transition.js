@@ -92,7 +92,7 @@ document.addEventListener('click', (e) => {
         if (targetLink.getAttribute('href').match(/\.(pdf|mp4|webm|png|zip)$/i)) return;
         
         e.preventDefault();
-        const targetUrl = targetLink.getAttribute('href');
+        const targetUrl = targetLink.pathname; 
         performTransition(targetUrl);
     }
 });
