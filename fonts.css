@@ -1,0 +1,101 @@
+/* ==========================================================
+   SUISSE INTL FONT
+========================================================== */
+
+
+@font-face {
+
+    font-family: "Suisse Intl";
+
+    src: url("Fonts/SuisseIntl-Light.otf") format("opentype");
+
+    font-weight:300;
+
+    font-style:normal;
+
+    font-display:swap;
+
+}
+
+
+
+@font-face {
+
+    font-family: "Suisse Intl";
+
+    src: url("Fonts/SuisseIntl-Regular.otf") format("opentype");
+
+    font-weight:400;
+
+    font-style:normal;
+
+    font-display:swap;
+
+}
+
+
+
+@font-face {
+
+    font-family: "Suisse Intl";
+
+    src: url("Fonts/SuisseIntl-Medium.otf") format("opentype");
+
+    font-weight:500;
+
+    font-style:normal;
+
+    font-display:swap;
+
+}
+
+
+
+@font-face {
+
+    font-family: "Suisse Intl";
+
+    src: url("Fonts/SuisseIntl-SemiBold.otf") format("opentype");
+
+    font-weight:600;
+
+    font-style:normal;
+
+    font-display:swap;
+
+}
+
+
+
+@font-face {
+
+    font-family: "Suisse Intl";
+
+    src: url("Fonts/SuisseIntl-Bold.otf") format("opentype");
+
+    font-weight:700;
+
+    font-style:normal;
+
+    font-display:swap;
+
+}
+
+
+
+:root {
+
+    --main-font:
+        "Suisse Intl",
+        "Inter",
+        Arial,
+        sans-serif;
+
+
+    --title-font:
+        "Suisse Intl",
+        "Inter",
+        Arial,
+        sans-serif;
+
+}
