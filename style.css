@@ -3,15 +3,17 @@
    VARIABLES
    ========================================================================== */
 
-:root {
+html {
+    scrollbar-gutter: stable;
+}
 
-    /* Fonts */
+:root {
     --font-main: "Suisse Intl", "Inter", sans-serif;
     --font-title: "Suisse Intl", "Inter", sans-serif;
 
 
     /* Colors */
-    --bg-color: #EDEDF0;
+    --bg-color: #ffffff;
     --text-color: #06070A;
     --text-secondary: #656C7B;
     --tag-color: #DBDBDB;
@@ -52,7 +54,6 @@ html {
 body {
 
     margin: 0;
-    padding: 80px 20px;
 
     font-family: var(--font-main);
     font-weight: 400;
@@ -199,48 +200,6 @@ body.preloading {
         50% 100%;
 
     }
-
-}
-
-
-
-/* ==========================================================================
-   LENIS SMOOTH SCROLL
-   ========================================================================== */
-
-
-html.lenis,
-html.lenis body {
-
-    height:auto;
-
-}
-
-
-.lenis.lenis-smooth {
-
-    scroll-behavior:auto !important;
-
-}
-
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-
-    overscroll-behavior:contain;
-
-}
-
-
-.lenis.lenis-stopped {
-
-    overflow:hidden;
-
-}
-
-
-.lenis.lenis-scrolling iframe {
-
-    pointer-events:none;
 
 }
 
@@ -409,7 +368,7 @@ spline-viewer a * {
     font-weight:500;
 
 
-    :transition
+    transition:
         background .25s ease,
         transform .25s var(--ease-main);
 
@@ -779,7 +738,7 @@ spline-viewer a * {
    ========================================================================== */
 
 
-@media (max-width:1140px) {
+/* @media (max-width:1140px) {
 
 
     body {
@@ -787,7 +746,7 @@ spline-viewer a * {
         padding:60px 30px;
 
     }
-
+/*
 
 
     .hero-section {
@@ -974,6 +933,10 @@ spline-viewer a * {
         font-size:16px;
 
     }
+
+}
+
+
 /* ==========================================================================
    CASE STUDY
    ========================================================================== */
@@ -1229,7 +1192,5 @@ spline-viewer a * {
     }
 
 
-
-}
 
 }

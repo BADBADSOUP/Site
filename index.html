@@ -1,104 +1,443 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Главная — Портфолио</title>
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="/transition.css">
-    <link rel="stylesheet" href="/fonts.css">
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Никита — UI/UX Designer</title>
+
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="transition.css">
 </head>
-<body>
-    <!-- Анимационная шторка для эффекта Only.digital -->
-    <div class="transition-overlay"></div>
 
-    <!-- Пример навигации -->
-    <nav class="site-nav">
-        <a href="index.html">Главная</a>
-        <a href="/truco/truco" class="project-card animate-this">
-    </nav>
 
-    <!-- МЕНЯЮЩИЙСЯ КОНТЕНТ ГЛАВНОЙ СТРАНИЦЫ -->
-    <div class="page-container" data-namespace="home">
-        <main class="home-content">
-            <!-- ==========================================================
-                 HERO
-            ========================================================== -->
-            <header class="hero-section">
-                <div class="hero-content">
-                    <div class="hero-text">
-                        <h1 class="hero-title animate-this">Привет, я Никита</h1>
-                        <p class="hero-description animate-this">
-                            UI/UX дизайнер с 15+ годами опыта.
-                            Запускаю проекты в сфере Gamedev и iGaming.
-                            Проектирую сложные Enterprise продукты,
-                            развиваю дизайн-системы и организую процессы
-                            в дизайн-командах.
-                        </p>
-                    </div>
-                </div>
-            </header>
+<body data-barba="wrapper">
 
-            <!-- ==========================================================
-                 PORTFOLIO
-            ========================================================== -->
-            <section class="portfolio-section">
-                <div class="portfolio-grid">
-                    <!-- FORESIGHT -->
-                    <article class="project-card full-width animate-this">
-                        <img src="project1.png" alt="Foresight" class="project-image" loading="lazy">
-                        <h3 class="project-name">Foresight</h3>
-                        <p class="project-desc">Редизайн и перенос в веб платформы для бизнес анализа</p>
-                        <div class="project-tags">#UI/UX #Web #Design system</div>
-                    </article>
+<div class="transition-wrapper">
+    <div class="loading-screen"></div>
+</div>
 
-                    <!-- HEROES QUESTS -->
-                    <article class="project-card animate-this">
-                        <img src="project2.png" alt="Heroes Quests" class="project-image" loading="lazy">
-                        <h3 class="project-name">Heroes Quests</h3>
-                        <p class="project-desc">Мобильная RPG с автоматическими боями.</p>
-                        <div class="project-tags">#UI/UX #Mobile #Gamedev</div>
-                    </article>
 
-                    <!-- TRUCO -->
-                    <a href="truco/truco.html" class="project-card animate-this">
-                        <img src="project3.png" alt="TrucoReal" class="project-image" loading="lazy">
-                        <h3 class="project-name">TrucoReal</h3>
-                        <p class="project-desc">MVP онлайн казино для аргентинского рынка</p>
-                        <div class="project-tags">#UI/UX #iGaming #Mobile #Web</div>
-                    </a>
+<div data-barba="container" data-barba-namespace="home">
 
-                    <!-- PIXEL GUN -->
-                    <article class="project-card full-width animate-this">
-                        <img src="project4.png" alt="Pixel Gun 3D" class="project-image" loading="lazy">
-                        <h3 class="project-name">Pixel Gun 3D</h3>
-                        <p class="project-desc">Онлайн PVP шутер в стилистике Minecraft</p>
-                        <div class="project-tags">#UI/UX #Game #Mobile</div>
-                    </article>
 
-                    <!-- FLY BI VIDEO -->
-                    <a href="flybi/FlyBI.html" class="project-card animate-this">
-                        <video class="project-image" src="trucoprev.mp4" muted loop autoplay playsinline preload="metadata"></video>
-                        <h3 class="project-name">Fly BI</h3>
-                        <p class="project-desc">Self-service BI платформа для анализа данных и построения дашбордов</p>
-                        <div class="project-tags">#UI/UX #Web #SaaS</div>
-                    </a>
 
-                    <!-- CASINO -->
-                    <article class="project-card animate-this">
-                        <img src="project6.png" alt="Casino Zenith" class="project-image" loading="lazy">
-                        <h3 class="project-name">Casino Zenith</h3>
-                        <p class="project-desc">Навигация и структура для онлайн казино</p>
-                        <div class="project-tags">#UI/UX #Mobile #Product</div>
-                    </article>
-                </div>
-            </section>
-        </main>
-    </div>
 
-    <!-- SCRIPTS -->
-    <script src="https://cloudflare.com"></script>
-    <script src="/transition.js"></script>
-    <script src="/script.js"></script>
+
+<!-- ==========================================================
+     HERO
+========================================================== -->
+
+
+<header class="hero-section">
+
+
+<div class="hero-content">
+
+
+<div class="hero-text">
+
+
+
+<h1 class="hero-title animate-this">
+
+Привет, я Никита
+
+</h1>
+
+
+
+<p class="hero-description animate-this">
+
+UI/UX дизайнер с 15+ годами опыта.
+Запускаю проекты в сфере Gamedev и iGaming.
+Проектирую сложные Enterprise продукты,
+развиваю дизайн-системы и организую процессы
+в дизайн-командах.
+
+</p>
+
+
+
+</div>
+
+
+</div>
+
+
+</header>
+
+
+
+
+
+
+
+<!-- ==========================================================
+     PORTFOLIO
+========================================================== -->
+
+
+<section class="portfolio-section">
+
+
+<main class="portfolio-grid">
+
+
+
+
+
+<!-- FORESIGHT -->
+
+
+<article class="project-card full-width animate-this">
+
+
+<img
+
+src="project1.png"
+
+alt="Foresight"
+
+class="project-image"
+
+loading="lazy"
+
+>
+
+
+<h3 class="project-name">
+
+Foresight
+
+</h3>
+
+
+
+<p class="project-desc">
+
+Редизайн и перенос в веб платформы для бизнес анализа
+
+</p>
+
+
+
+<div class="project-tags">
+
+#UI/UX #Web #Design system
+
+</div>
+
+
+</article>
+
+
+
+
+
+
+
+
+<!-- HEROES QUESTS -->
+
+
+<article class="project-card animate-this">
+
+
+<img
+
+src="project2.png"
+
+alt="Heroes Quests"
+
+class="project-image"
+
+loading="lazy"
+
+>
+
+
+
+<h3 class="project-name">
+
+Heroes Quests
+
+</h3>
+
+
+
+<p class="project-desc">
+
+Мобильная RPG с автоматическими боями.
+
+</p>
+
+
+
+<div class="project-tags">
+
+#UI/UX #Mobile #Gamedev
+
+</div>
+
+
+</article>
+
+
+
+
+
+
+
+
+<!-- TRUCO -->
+
+
+<a href="truco/truco.html" class="project-card animate-this">
+
+
+<img
+
+src="project3.png"
+
+alt="TrucoReal"
+
+class="project-image"
+
+loading="lazy"
+
+>
+
+
+
+<h3 class="project-name">
+
+TrucoReal
+
+</h3>
+
+
+
+<p class="project-desc">
+
+MVP онлайн казино для аргентинского рынка
+
+</p>
+
+
+
+<div class="project-tags">
+
+#UI/UX #iGaming #Mobile #Web
+
+</div>
+
+
+
+</a>
+
+
+
+
+
+
+
+
+<!-- PIXEL GUN -->
+
+
+<article class="project-card full-width animate-this">
+
+
+<img
+
+src="project4.png"
+
+alt="Pixel Gun 3D"
+
+class="project-image"
+
+loading="lazy"
+
+>
+
+
+
+<h3 class="project-name">
+
+Pixel Gun 3D
+
+</h3>
+
+
+
+<p class="project-desc">
+
+Онлайн PVP шутер в стилистике Minecraft
+
+</p>
+
+
+
+<div class="project-tags">
+
+#UI/UX #Game #Mobile
+
+</div>
+
+
+
+</article>
+
+
+
+
+
+
+
+
+<!-- FLY BI VIDEO -->
+
+
+<article class="project-card animate-this">
+
+
+<video
+
+class="project-image"
+
+src="trucoprev.mp4"
+
+muted
+
+loop
+
+autoplay
+
+playsinline
+
+preload="metadata"
+
+></video>
+
+
+
+<h3 class="project-name">
+
+Fly BI
+
+</h3>
+
+
+
+<p class="project-desc">
+
+Self-service BI платформа для анализа данных и построения дашбордов
+
+</p>
+
+
+
+<div class="project-tags">
+
+#UI/UX #Web #SaaS
+
+</div>
+
+
+
+</article>
+
+
+
+
+
+
+
+
+<!-- CASINO -->
+
+
+<article class="project-card animate-this">
+
+
+<img
+
+src="project6.png"
+
+alt="Casino Zenith"
+
+class="project-image"
+
+loading="lazy"
+
+>
+
+
+
+<h3 class="project-name">
+
+Casino Zenith
+
+</h3>
+
+
+
+<p class="project-desc">
+
+Навигация и структура для онлайн казино
+
+</p>
+
+
+
+<div class="project-tags">
+
+#UI/UX #Mobile #Product
+
+</div>
+
+
+
+</article>
+
+
+
+
+
+
+</main>
+
+
+</section>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- SCRIPTS -->
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/@barba/core@2.10.3/dist/barba.umd.js"></script>
+<script src="script.js"></script>
+
+
+
 </body>
+
 </html>
