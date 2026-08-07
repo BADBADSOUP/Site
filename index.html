@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Никита — UI/UX Designer</title>
+
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="transition.css">
+</head>
+
+
+<body data-barba="wrapper">
+
+<div class="transition-wrapper">
+    <div class="loading-screen"></div>
+</div>
+
+
+<!-- ==========================================================
+     NAVIGATION
+     ========================================================== -->
+
+
+<nav class="navbar">
+
+  <div class="navbar__inner">
+
+
+    <!-- Left: Logo + Brand Name -->
+
+    <a href="/" class="navbar__brand">
+
+      <div class="navbar__logo">
+
+        <span class="navbar__logo-placeholder"></span>
+
+      </div>
+
+      <span class="navbar__brand-name">Никита Жопкин</span>
+
+    </a>
+
+
+
+    <!-- Right: Navigation Links -->
+
+    <ul class="navbar__nav">
+
+      <li><a href="#projects" class="navbar__link">Проекты</a></li>
+
+      <li><a href="#about" class="navbar__link">Обо мне</a></li>
+
+      <li><a href="#contacts" class="navbar__link">Контакты</a></li>
+
+    </ul>
+
+
+
+  </div>
+
+</nav>
+
+
+
+<div data-barba="container" data-barba-namespace="home">
+
+
+
+<!-- ==========================================================
+     HERO
+     ========================================================== -->
+
+
+<header class="hero-section" data-nav-theme="light">
+
+
+<div class="hero-content">
+
+
+<div class="hero-text">
+
+
+
+<h1 class="hero-title-main animate-this">
+
+Привет, я Жопка
+
+</h1>
+
+
+
+<p class="hero-description hero-description--animated animate-this">
+
+UI/UX дизайнер с 15+ годами опыта.
+Запускаю проекты в сфере Gamedev и iGaming.
+Проектирую сложные Enterprise продукты,
+развиваю дизайн-системы и организую процессы
+в дизайн-командах.
+
+</p>
+
+
+
+</div>
+
+
+</div>
+</header>
+
+
+
+
+
+<!-- ==========================================================
+     FILTER
+     ========================================================== -->
+
+
+<section class="filter-section" data-nav-theme="light">
+
+
+<div class="filter-container">
+
+
+<button class="filter-btn active" data-filter="all">
+    Все проекты 6
+</button>
+
+
+<button class="filter-btn" data-filter="igaming">
+    iGaming 2
+</button>
+
+
+<button class="filter-btn" data-filter="business">
+    Busines intelegens 2
+</button>
+
+
+<button class="filter-btn" data-filter="gamedev">
+    Gamedev 2
+</button>
+
+
+<button class="filter-btn" data-filter="other">
+    Остальное 1
+</button>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- ==========================================================
+     PORTFOLIO
+     ========================================================== -->
+
+
+<section class="portfolio-section" data-nav-theme="light">
+
+
+<main class="portfolio-grid">
+
+
+
+
+
+<!-- FORESIGHT -->
+
+
+<article class="project-card full-width animate-this" data-category="other">
+
+
+<img
+
+src="project1.png"
+
+alt="Foresight"
+
+class="project-image"
+
+loading="lazy"
+
+>
+
+
+<h3 class="project-name">
+
+Foresight
+
+</h3>
+
+
+
+<p class="project-desc">
+
+Редизайн и перенос в веб платформы для бизнес анализа
+
+</p>
+
+
+
+<div class="project-tags">
+
+#UI/UX #Web #Design system
+
+</div>
+
+
+</article>
+
+
+
+
+
+
+
+
+<!-- HEROES QUESTS -->
+
+
+<article class="project-card animate-this" data-category="gamedev">
+
+
+<img
+
+src="project2.png"
+
+alt="Heroes Quests"
+
+class="project-image"
+
+loading="lazy"
+
+>
+
+
+
+<h3 class="project-name">
+
+Heroes Quests
+
+</h3>
+
+
+
+<p class="project-desc">
+
+Мобильная RPG с автоматическими боями.
+
+</p>
+
+
+
+<div class="project-tags">
+
+#UI/UX #Mobile #Gamedev
+
+</div>
+
+
+</article>
+
+
+
+
+
+
+
+
+<!-- TRUCO -->
+
+
+<a href="truco/truco.html" class="project-card animate-this" data-category="igaming">
+
+
+<img
+
+src="project3.png"
+
+alt="TrucoReal"
+
+class="project-image"
+
+loading="lazy"
+
+>
+
+
+
+<h3 class="project-name">
+
+TrucoReal
+
+</h3>
+
+
+
+<p class="project-desc">
+
+MVP онлайн казино для аргентинского рынка
+
+</p>
+
+
+
+<div class="project-tags">
+
+#UI/UX #iGaming #Mobile #Web
+
+</div>
+
+
+
+</a>
+
+
+
+
+
+
+
+
+<!-- PIXEL GUN -->
+
+
+<article class="project-card full-width animate-this" data-category="gamedev">
+
+
+<img
+
+src="project4.png"
+
+alt="Pixel Gun 3D"
+
+class="project-image"
+
+loading="lazy"
+
+>
+
+
+
+<h3 class="project-name">
+
+Pixel Gun 3D
+
+</h3>
+
+
+
+<p class="project-desc">
+
+Онлайн PVP шутер в стилистике Minecraft
+
+</p>
+
+
+
+<div class="project-tags">
+
+#UI/UX #Game #Mobile
+
+</div>
+
+
+
+</article>
+
+
+
+
+
+
+
+
+<!-- FLY BI VIDEO -->
+
+
+<article class="project-card animate-this" data-category="business">
+
+
+<video
+
+class="project-image"
+
+src="trucoprev.mp4"
+
+muted
+
+loop
+
+autoplay
+
+playsinline
+
+preload="metadata"
+
+></video>
+
+
+
+<h3 class="project-name">
+
+Fly BI
+
+</h3>
+
+
+
+<p class="project-desc">
+
+Self-service BI платформа для анализа данных и построения дашбордов
+
+</p>
+
+
+
+<div class="project-tags">
+
+#UI/UX #Web #SaaS
+
+</div>
+
+
+
+</article>
+
+
+
+
+
+
+
+
+<!-- CASINO -->
+
+
+<article class="project-card animate-this" data-category="igaming">
+
+
+<img
+
+src="project6.png"
+
+alt="Casino Zenith"
+
+class="project-image"
+
+loading="lazy"
+
+>
+
+
+
+<h3 class="project-name">
+
+Casino Zenith
+
+</h3>
+
+
+
+<p class="project-desc">
+
+Навигация и структура для онлайн казино
+
+</p>
+
+
+
+<div class="project-tags">
+
+#UI/UX #Mobile #Product
+
+</div>
+
+
+
+</article>
+
+
+
+
+
+
+</main>
+
+
+</section>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- SCRIPTS -->
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+<script src="https://unpkg.com/@barba/core@2.10.3/dist/barba.umd.js"></script>
+<script src="script.js"></script>
+
+
+
+</body>
+
+</html>
