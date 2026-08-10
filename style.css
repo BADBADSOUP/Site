@@ -49,6 +49,7 @@ html.lenis body {
     --section-xl: clamp(80px, 8vw, 160px);
     --section-lg: clamp(60px, 6vw, 120px);
     --section-md: clamp(24px, 6vw, 90px);
+    --section-xs: clamp(26px, 2vw, 42px);
 
     /* Animation */
     --ease-main: cubic-bezier(0.16, 1, 0.3, 1);
@@ -435,7 +436,7 @@ spline-viewer a * {
 
     max-width:1000px;
 
-    margin:0 auto 42px;
+    margin-bottom: var(--section-xs);
 
 }
 
@@ -633,9 +634,55 @@ spline-viewer a * {
 
     flex-wrap:wrap;
 
-    justify-content:center;
+    justify-content:var(--filter-justify, center);
 
-    gap:40px;
+    gap:var(--filter-gap, 40px);
+
+}
+
+
+
+@media (max-width: 768px) {
+
+    .filter-section {
+
+        margin-left: -16px;
+
+        margin-right: -16px;
+
+    }
+
+    .filter-container {
+
+        flex-wrap: nowrap;
+
+        white-space: nowrap;
+
+        overflow-x: auto;
+
+        overflow-y: visible;
+
+        -webkit-overflow-scrolling: touch;
+
+        justify-content: flex-start;
+
+        gap: 24px;
+
+        padding: 4px 16px;
+
+    }
+
+    .filter-container .filter-btn {
+
+        flex-shrink: 0;
+
+    }
+
+    .filter-container::-webkit-scrollbar,
+    .filter-container::-webkit-scrollbar-thumb,
+    .filter-container::-webkit-scrollbar-track {
+        display: none;
+    }
 
 }
 
@@ -1132,17 +1179,17 @@ body.nav-dark {
     }
 
     .navbar__logo {
-        width: 36px;
-        height: 36px;
+        width: 28px;
+        height: 28px;
     }
 
     .navbar__logo-placeholder {
-        width: 16px;
-        height: 16px;
+        width: 14px;
+        height: 14px;
     }
 
     .navbar__brand-name {
-        font-size: 14px;
+        font-size: 20px;
     }
 
     .navbar__nav {
@@ -1162,7 +1209,7 @@ body.nav-dark {
 @media (max-width: 480px) {
 
     .navbar {
-        height: 60px;
+        height: 70px;
     }
 
     .navbar__inner {
@@ -1339,7 +1386,7 @@ body.nav-dark {
 
     .hero-section {
 
-        margin-top:60px;
+        margin-top: 70px;
 
     }
 
@@ -1353,6 +1400,8 @@ body.nav-dark {
     .hero-title-main {
 
         font-size:46px;
+
+        font-weight: 600;
 
         letter-spacing:-0.035em;
 
@@ -1370,8 +1419,6 @@ body.nav-dark {
     .hero-description--animated {
 
         font-size:18px;
-
-        margin-bottom:32px;
 
         text-align: left;
 
