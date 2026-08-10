@@ -1,0 +1,24 @@
+/* ==========================================================
+   BARBA PAGE TRANSITION
+========================================================== */
+
+
+.transition-wrapper {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    pointer-events: none;
+    overflow: hidden;
+    /* Создаём новый stacking context выше всего остального */
+    isolation: isolate;
+}
+
+
+.loading-screen {
+    position: absolute;
+    inset: 0;
+    background: #0B1C2A;
+    transform: translateX(100%);
+    pointer-events: auto;
+    z-index: 999999;
+}
