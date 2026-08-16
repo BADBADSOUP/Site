@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pixel Gun 3D — Кейс</title>
+
+
+<link rel="icon" href="../favicon.png" type="image/png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="pg3d.css">
+<link rel="stylesheet" href="../transition.css">
+
+
+</head>
+
+
+<body data-barba="wrapper">
+
+
+<div class="custom-cursor">Кейсы</div>
+
+
+<div class="transition-wrapper">
+    <div class="loading-screen"></div>
+</div>
+
+
+<!-- ==========================================================
+     NAVIGATION
+     ========================================================== -->
+
+
+<nav class="navbar">
+
+  <div class="navbar__inner">
+
+
+    <!-- Left: Logo + Brand Name -->
+
+    <a href="/" class="navbar__brand">
+
+       <div class="navbar__logo">
+
+          <svg class="navbar__logo-img" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 0L19.5041 1.36228C22.4414 9.30014 28.6999 15.5586 36.6377 18.4959L38 19L36.6377 19.5041C28.6999 22.4414 22.4414 28.6999 19.5041 36.6377L19 38L18.4959 36.6377C15.5586 28.6999 9.30013 22.4414 1.36227 19.5041L0 19L1.36228 18.4959C9.30014 15.5586 15.5586 9.30013 18.4959 1.36227L19 0Z" fill="currentColor"/>
+          </svg>
+
+       </div>
+
+      <span class="navbar__brand-name">Никита Копытов</span>
+
+    </a>
+
+
+
+    <!-- Right: Navigation Links -->
+
+    <ul class="navbar__nav" id="navbarNav">
+
+      <li><a href="#projects" class="navbar__link">Проекты</a></li>
+
+      <li><a href="#about" class="navbar__link">Обо мне</a></li>
+
+      <li><a href="#contacts" class="navbar__link">Контакты</a></li>
+
+    </ul>
+
+
+
+    <!-- Mobile: Burger Menu Button -->
+
+    <div class="navbar__burger" id="navbarBurger" aria-label="Открыть меню" aria-expanded="false">
+
+      <span class="navbar__burger-line"></span>
+
+      <span class="navbar__burger-line"></span>
+
+      <span class="navbar__burger-line"></span>
+
+    </div>
+
+
+
+    <!-- Mobile: Menu Overlay -->
+
+    <nav class="navbar__mobile-menu" id="navbarMobileMenu">
+
+      <div class="navbar__menu-close" id="navbarMenuClose">
+
+        <span class="navbar__menu-close-line"></span>
+
+        <span class="navbar__menu-close-line"></span>
+
+      </div>
+
+      <ul class="navbar__mobile-nav">
+
+        <li><a href="#projects" class="navbar__mobile-link">Проекты</a></li>
+
+        <li><a href="#about" class="navbar__mobile-link">Обо мне</a></li>
+
+        <li><a href="#contacts" class="navbar__mobile-link">Контакты</a></li>
+
+      </ul>
+
+    </nav>
+
+
+  </div>
+
+</nav>
+
+
+<div class="pg3d-page" data-barba="container" data-barba-namespace="pg3d">
+
+
+  <!-- ====== HERO ====== -->
+
+
+<div class="hero-frame hero-frame--bg" data-nav-theme="dark">
+
+    <div class="hero">
+
+        <div class="hero-left">
+
+
+            <div class="hero-label">
+                Pixel Gun 3D
+            </div>
+
+
+            <h1 class="hero-title">
+
+                Реализация фичи «Хаб мероприятий» для Pixel Gun 3D в рамках спринта
+
+            </h1>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+<!-- ====== ЗАЛИВКА ====== -->
+
+<section class="about-project" data-nav-theme="light">
+
+
+<div class="about-project-grid">
+
+
+    <div class="about-project-content animate-this">
+
+Pixel Gun 3D - это многопользовательский соревновательный онлайн шутер от первого лица, в стилистике Minecraft. Игра включает в себя десятки карт и более тысячи видов оружия, которые можно использовать в различных игровых режимах
+
+
+    </div>
+
+</div>
+
+
+
+</section>
+
+
+
+<!-- ====== ПЛАТФОРМЫ ====== -->
+
+
+<div class="platforms-block animate-this" data-reveal-simple>
+
+    <img src="apple.png" alt="Apple" class="platform-img">
+    <img src="steam.png" alt="Steam" class="platform-img">
+    <img src="app.png" alt="App Store" class="platform-img">
+    <img src="epic.png" alt="Epic Games" class="platform-img">
+
+</div>
+
+
+
+
+<!-- ====== РАБОЧИЙ ПРОТОТИП ====== -->
+
+
+<section class="prototype-section" data-nav-theme="dark">
+
+<div class="prototype-section__inner">
+
+<h2 class="prototype-section__title">
+
+Вводные данные
+
+</h2>
+
+
+<div class="prototype-section__grid">
+
+    <div class="prototype-section__body animate-this">
+
+Раз в месяц в игре проходят специальные ивенты. Они помогают возвращать ушедших игроков, разнообразить игровой процесс для постоянной аудитории и создавать дополнительные возможности для монетизации
+
+    </div>
+
+</div>
+
+
+<!-- ====== ДВУХКОЛОННЫЙ ТЕКСТ ====== -->
+
+<div class="two-column-text">
+
+    <div class="two-column-text__col">
+
+        <h3 class="two-column-text__title">
+
+            Проблема
+
+        </h3>
+
+        <div class="two-column-text__divider"></div>
+
+        <p class="two-column-text__body animate-this">
+
+            Игроки недовольны большим количеством платного контента. Получение ценных наград требует много времени, усилий или покупок, поэтому большинство игроков не может получить все награды Каждая активность имела отдельную кнопку входа на главном экране. Это ограничивало количество одновременно запущенных ивентов
+
+        </p>
+
+
+    </div>
+
+    <div class="two-column-text__col">
+
+        <h3 class="two-column-text__title">
+
+            Задача
+
+        </h3>
+
+        <div class="two-column-text__divider"></div>
+
+        <p class="two-column-text__body animate-this">
+            Создать переиспользуемые шаблоны ивентов с простой прогрессией без монетизации. Предусмотреть сезонные скины для быстрой смены визуального оформления без изменения игровой логики. Разработать одельный экран-хаб в котором будут собраны все активные мероприятия
+        </p>
+
+
+    </div>
+
+</div>
+<img src="top.png" alt="События" width="1640" height="768">
+</div>
+
+
+
+</section>
+
+
+
+<!-- ====== ВИЗУАЛЬНОЕ НАПРАВЛЕНИЕ ====== -->
+
+
+<section class="visual-direction-section" data-nav-theme="dark">
+
+<div class="visual-direction__inner">
+
+<h2 class="visual-direction__title">
+
+Анализ конкурентов
+</h2>
+
+<div class="visual-direction__divider"></div>
+
+<div class="visual-direction__grid">
+
+    <div class="visual-direction__body">
+
+    <p class="animate-this">
+
+Изучаю, как аналогичная проблема решена у конкурентов - в играх схожих жанров и проектах с сопоставимой возрастной аудиторией. В результате выделил два основных подхода:
+
+    </p>
+
+    <div class="approaches-grid">
+
+        <div class="approach-block animate-this">
+
+            <h3 class="approach-block__title">Вариант 1</h3>
+
+            Экран со списком активных событий с переходом на отдельный экран каждого события
+
+        </div>
+
+        <div class="approach-block animate-this">
+
+            <h3 class="approach-block__title">Вариант 2</h3>
+
+            Единый экран событий с боковой навигацией между событиями без перехода на отдельные экраны
+
+        </div>
+
+    </div>
+
+    </div>
+
+
+    <div class="image-showcase-block animate-this">
+
+        <img src="Frame7556.png" alt="События" class="image-showcase-block__img">
+
+    </div>
+
+
+</div>
+
+</section>
+
+<!-- ====== хаб ====== -->
+
+
+<section class="visual-direction-section" data-nav-theme="dark">
+
+<div class="visual-direction__inner">
+
+<h2 class="visual-direction__title">
+
+Меню хаба
+</h2>
+
+<div class="visual-direction__divider"></div>
+
+<div class="visual-direction__grid">
+
+    <div class="visual-direction__body">
+
+    <p class="animate-this">
+
+После обсуждения концепций со стейкхолдерами и командой остановились на варианте с навигацией через боковое меню. Опросы показали, что игрокам удобнее переключаться между ивентами из единого меню и сразу видеть доступный контент, не переходя на отдельный экран каждого мероприятия. Приступаю к визуализации концепта
+
+    </p>
+
+    </div>
+
+
+    <div class="image-showcase-block animate-this">
+
+        <img src="Frame7559.png" alt="События" class="image-showcase-block__img">
+
+    </div>
+
+
+</div>
+
+</section>
+
+ <!-- ====== Ивенты ====== -->
+
+
+<section class="visual-direction-section" data-nav-theme="dark">
+
+<div class="visual-direction__inner">
+
+<h2 class="visual-direction__title">
+
+Подготовка ивентов
+</h2>
+
+<div class="visual-direction__divider"></div>
+
+<div class="visual-direction__grid">
+
+    <div class="visual-direction__body">
+
+    <p class="animate-this">
+
+После обсуждения концепций со стейкхолдерами и командой остановились на варианте с навигацией через боковое меню. Опросы показали, что игрокам удобнее переключаться между ивентами из единого меню и сразу видеть доступный контент, не переходя на отдельный экран каждого мероприятия. Приступаю к визуализации концепта
+
+    </p>
+
+
+    </div>
+
+
+    <img src="Frame1.png" alt="События" width="1640" height="768">
+
+    <div class="events-fullwidth-block">
+        <img src="Frame23.png" alt="Ивенты" class="events-fullwidth-block__img">
+    </div>
+
+
+
+</div>
+
+</section>
+
+
+<!-- ====== Кастомизация ====== -->
+
+
+<section class="visual-direction-section" data-nav-theme="dark">
+
+<div class="visual-direction__inner">
+
+<h2 class="visual-direction__title">
+
+Кастомизация
+</h2>
+
+<div class="visual-direction__divider"></div>
+
+<div class="visual-direction__grid">
+
+    <div class="visual-direction__body">
+
+    <p class="animate-this">
+
+После обсуждения концепций со стейкхолдерами и командой остановились на варианте с навигацией через боковое меню. Опросы показали, что игрокам удобнее переключаться между ивентами из единого меню и сразу видеть доступный контент, не переходя на отдельный экран каждого мероприятия. Приступаю к визуализации концепта
+
+    </p>
+
+
+    </div>
+
+
+    <div class="comparison-slider" data-comparison-slider>
+        <div class="comparison-slider__before" style="background-image: url('Frame21.png')"></div>
+        <div class="comparison-slider__after" style="background-image: url('Frame22.png')"></div>
+        <div class="comparison-slider__handle" data-comparison-handle>
+            <span class="comparison-slider__handle-line"></span>
+            <span class="comparison-slider__handle-circle">
+                <span class="comparison-slider__handle-arrow comparison-slider__handle-arrow--left">&lsaquo;</span>
+                <span class="comparison-slider__handle-arrow comparison-slider__handle-arrow--right">&rsaquo;</span>
+            </span>
+        </div>
+    </div>
+
+
+</div>
+
+</section>
+
+
+ <!-- ====== Календарь ====== -->
+
+
+<section class="ui-section">
+
+<div class="ui-section__inner">
+
+<h2 class="ui-section__title" data-nav-theme="dark">
+Дополнительно
+</h2>
+
+
+<div class="ui-section__grid">
+<div class="ui-section__label">
+
+Календарь событий
+</div>
+                <div class="ui-section__body animate-this">В ходе разработки фичи было решено добавить первым пунктом меню "календарь событий". Таблица с информацией о текущих и будущих активностях</div>
+<div class="ui-section__body animate-this">Гипотеза: Календарь повысит Retention. Игроки не получающие уведомления о новом контенте смогут видеть предстоящие мероприятия и возвращаться в игру</div>
+</div>
+
+    <img src="Calendar.png" alt="События" width="1640" height="768">
+
+</section>
+
+
+<!-- ====== Презентация ====== -->
+
+
+<section class="ui-section">
+
+<div class="ui-section__inner">
+
+
+ <div class="ui-section__grid--presentation">
+    <div class="ui-section__label">
+
+Анонс активностей
+</div>
+    <div class="ui-section__body animate-this"><div class="ui-section__body--two-column">При входе в игру показывается окно с анонсом или уведомление о старте мероприятия. Окно не менялось много лет и выглядит непрезентабельным. Предлагаю, в рамках фичи, поменять подход к дизайну окна</div></div>
+</div>
+
+    <img src="Frame7560.png" alt="События" width="1640" height="768">
+
+   <div class="ui-section__image-gap"></div>
+
+    <img src="Frame7561.png" alt="События" width="1640" height="768">
+
+</section>
+
+<!-- ====== не достаточно ====== -->
+
+
+<section class="visual-direction-section" data-nav-theme="dark">
+
+<div class="visual-direction__inner">
+
+<h2 class="visual-direction__title">
+
+Одного экрана недостаточно
+</h2>
+
+<div class="visual-direction__divider"></div>
+
+<div class="visual-direction__grid">
+
+    <div class="visual-direction__body">
+
+    <p class="animate-this">
+
+Из-за обилия легаси кода не все мероприятия удалось поместить на один экран. Для таких мероприятий подготовил экран с превью наград и кратким описанием события и ссылкой на отдельный экран
+
+    </p>
+
+
+    </div>
+
+
+    <img src="Frame7562.png" alt="События" width="1640" height="768">
+
+
+</div>
+
+</section>
+
+<!-- ====== Итоги ====== -->
+
+
+<section class="visual-direction-section" data-nav-theme="dark">
+
+<div class="visual-direction__inner">
+
+<h2 class="visual-direction__title">
+
+Итоги
+</h2>
+
+<div class="visual-direction__divider"></div>
+
+<div class="visual-direction__grid">
+
+    <div class="visual-direction__body">
+
+    <p class="animate-this">
+
+Комьюнити тепло приняло обновление. Исходя из отчета комьюнити-менеджера игроки отмечают:
+Разнообразия контента
+Отсутствие жесткой монетизации
+Больше возможностей получения контента (оружие, скины и т.д.)
+Дополнительный источник расходников (валюта, ключи)
+Удобство навигации
+
+    </p>
+
+
+    </div>
+
+
+</div>
+
+</section>
+
+
+<!-- ====== Футер ====== -->
+
+
+<footer class="pg3d-footer">
+
+    <div class="pg3d-footer__inner">
+
+        <p class="pg3d-footer__copy">&copy; 2026 Pixel Gun 3D. Все права защищены.</p>
+
+    </div>
+
+</footer>
+
+</div>
+
+
+<!-- SCRIPTS -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+<script src="https://unpkg.com/@barba/core@2.10.3/dist/barba.umd.js"></script>
+<script src="../script.js"></script>
+
+</body>
+</html>

@@ -3,6 +3,10 @@
    Base styles
 ========================================================== */
 
+/* Убираем верхний padding body — navbar наложится на HERO */
+body {
+    padding-top: 0;
+}
 
 /* ==========================================================
     VARIABLES — scoped to .truco-page to prevent leaking into other pages

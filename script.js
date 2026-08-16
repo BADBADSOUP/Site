@@ -15,13 +15,16 @@ if ("scrollRestoration" in history) {
    ========================================================================== */
 
 let lenis;
+let navbarWasHidden = false; // Ваше состояние для navbar
 
 function initLenis() {
+    // Безопасное уничтожение старого экземпляра при перезагрузке
     if (lenis) {
         lenis.destroy();
         gsap.ticker.remove(lenisRaf);
     }
 
+    // Инициализация Lenis
     lenis = new Lenis({
         duration:        1.2,
         easing:          t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -29,18 +32,24 @@ function initLenis() {
         wheelMultiplier: 1,
     });
 
+    // Синхронизируем ScrollTrigger с Lenis при каждом скролле
+    lenis.on("scroll", ScrollTrigger.update);
+
+    // Добавляем тикер GSAP
     gsap.ticker.add(lenisRaf);
     gsap.ticker.lagSmoothing(0);
-
-    // Синхронизируем ScrollTrigger с Lenis
-    lenis.on("scroll", ScrollTrigger.update);
 }
 
+// ПРАВИЛЬНЫЙ ТИКЕР: С обязательной проверкой if(lenis), чтобы страница не ломалась
 function lenisRaf(time) {
-    lenis.raf(time * 1000);
+    if (lenis) {
+        lenis.raf(time * 1000);
+    }
 }
 
+// Запуск
 initLenis();
+
 
 
 /* ==========================================================================
@@ -61,8 +70,8 @@ const ANIM = {
     // Заголовки h1, h2, h3, .hero-label — анимация по словам
     headings: {
         hero: {
-            duration:   2,      // длительность анимации одного слова
-            stagger:    0.08,   // задержка между словами
+            duration:   0.7,      // длительность анимации одного слова
+            stagger:    0.03,   // задержка между словами
             delay:      0.1,    // начальная задержка
             ease:       "expo.out",
         },
@@ -102,6 +111,13 @@ function loadPageStyles(namespace) {
             link.onload  = () => { loadedStyles.add("truco"); resolve(); };
             link.onerror = () => resolve();
             document.head.appendChild(link);
+        } else if (namespace === "pg3d" && !loadedStyles.has("pg3d")) {
+            const link = document.createElement("link");
+            link.rel  = "stylesheet";
+            link.href = "/pg3d/pg3d.css";
+            link.onload  = () => { loadedStyles.add("pg3d"); resolve(); };
+            link.onerror = () => resolve();
+            document.head.appendChild(link);
         } else {
             resolve();
         }
@@ -122,6 +138,9 @@ function splitLines(container) {
     els.forEach(el => {
         // Skip project-name headings — no text animation
         if (el.classList.contains("project-name")) return;
+
+        // Skip project-title headings — no text animation
+        if (el.classList.contains("project-title")) return;
 
         // Если уже был split — восстанавливаем оригинальный HTML
         if (el.dataset.split) {
@@ -249,13 +268,48 @@ function destroyContainerScrollTriggers(container) {
     });
 }
 
+function initMobileMenu() {
+    const burger = document.getElementById("navbarBurger");
+    const mobileMenu = document.getElementById("navbarMobileMenu");
+    const closeBtn = document.getElementById("navbarMenuClose");
+    if (!burger || !mobileMenu) return;
+    const openMenu = () => {
+        burger.setAttribute("aria-expanded", "true");
+        mobileMenu.classList.add("is-open");
+        document.body.style.overflow = "hidden";
+    };
+    const closeMenu = () => {
+        burger.setAttribute("aria-expanded", "false");
+        mobileMenu.classList.remove("is-open");
+        document.body.style.overflow = "";
+    };
+    burger.addEventListener("click", openMenu);
+    if (closeBtn) closeBtn.addEventListener("click", closeMenu);
+    mobileMenu.addEventListener("click", (e) => {
+        if (e.target === mobileMenu) closeMenu();
+    });
+    mobileMenu.querySelectorAll(".navbar__mobile-link").forEach(link => {
+        link.addEventListener("click", closeMenu);
+    });
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && mobileMenu.classList.contains("is-open")) {
+            closeMenu();
+        }
+    });
+}
+
+
 function initPage(container) {
     initHeadingAnimations(container);
     initNavbarWordAnimation();
     initNavigationTheme();
     initVisualParallax(container);
     initTextReveal(container);
+    initPortfolioCards(container);
     initPortfolioFilter(container);
+    initMobileMenu();
+    initComparisonSliders(container);
+    initComparisonSliderAnimation(container);
     pageInitDone = true;
 }
 
@@ -266,6 +320,7 @@ function initPage(container) {
 
 barba.hooks.before((data) => {
     const navbar = document.querySelector(".navbar");
+    const cursor = document.querySelector(".custom-cursor");
 
     if (lenis) lenis.stop();
 
@@ -280,10 +335,22 @@ barba.hooks.before((data) => {
     destroyContainerScrollTriggers(data.current.container);
     destroyVisualParallax();
 
+    // Запоминаем состояние navbar: скрыт ли он из-за скролла
+    if (navbar) {
+        navbarWasHidden = navbar.classList.contains("navbar--hidden");
+    }
+
     // Скрываем navbar — предотвращает видимость во время перехода
     if (navbar) {
         navbar.classList.add("navbar--hidden");
         navbar.classList.add("navbar--transparent");
+    }
+
+    // Скрываем курсор при переходе между страницами
+    if (cursor) {
+        cursor.classList.remove("active");
+        document.documentElement.classList.remove("cursor-hidden");
+        cursor.style.display = "none";
     }
 
     // Скрываем navbar слова до того как анимация пройдёт —
@@ -315,21 +382,35 @@ barba.hooks.afterLeave(async (data) => {
 barba.hooks.after((data) => {
     data.next.container.style.visibility = "visible";
 
+    // Управляем видимостью кастомного курсора
+    const cursor = document.querySelector(".custom-cursor");
+    if (cursor) {
+        const isHome = data.next.namespace === "home";
+        cursor.style.display = isHome ? "" : "none";
+        if (isHome) {
+            initCursor();
+        }
+    }
+
     // Сбрасываем поверхность navbar в прозрачное состояние для новой страницы
+    // НЕ раскрываем navbar здесь — он останется скрытым до окончания curtain-анимации
     const navbar = document.querySelector(".navbar");
     if (navbar) {
-        navbar.classList.remove("navbar--hidden");
         navbar.classList.add("navbar--transparent");
     }
 
-    // Перезапускаем Lenis для новой страницы
-    initLenis();
-
-    // Переподключаем navbar scroll listener к новому Lenis
-    initNavbarScrollHide();
-
     const el = document.querySelector(".loading-screen");
-    if (!el) return;
+    if (!el) {
+        // Если loading screen уже есть — сразу инициализируем страницу
+        setTimeout(() => {
+            initLenis();
+            initNavbarScrollHide();
+            initPage(data.next.container);
+            // Всегда раскрываем navbar на новой странице
+            if (navbar) navbar.classList.remove("navbar--hidden");
+        }, ANIM.afterCurtain);
+        return;
+    }
     gsap.killTweensOf(el);
     gsap.set(el, { x: "0%" });
     gsap.to(el, {
@@ -339,7 +420,11 @@ barba.hooks.after((data) => {
         onComplete: () => {
             gsap.set(el, { x: "100%" });
             setTimeout(() => {
+                initLenis();
+                initNavbarScrollHide();
                 initPage(data.next.container);
+                // Всегда раскрываем navbar на новой странице
+                if (navbar) navbar.classList.remove("navbar--hidden");
             }, ANIM.afterCurtain);
         }
     });
@@ -358,6 +443,7 @@ barba.init({
         once(data) {
             initialPageLoaded = true;
             if (data.next.namespace === "truco") loadedStyles.add("truco");
+            if (data.next.namespace === "pg3d") loadedStyles.add("pg3d");
             data.next.container.style.visibility = "visible";
             setTimeout(() => {
                 initPage(data.next.container);
@@ -375,21 +461,44 @@ function initCursor() {
     const cursor = document.querySelector(".custom-cursor");
     if (!cursor || window.innerWidth < 768) return;
 
-    document.addEventListener("mousemove", e => {
-        gsap.set(cursor, { x: e.clientX, y: e.clientY });
-    });
+    /* Кастомный курсор только на главной странице */
+    const isHomePage = document.querySelector("[data-barba-namespace=\"home\"]");
+    if (!isHomePage) {
+        cursor.style.display = "none";
+        return;
+    }
 
-    document.addEventListener("mouseover", e => {
-        const img = e.target.closest(".project-image");
-        if (img) cursor.classList.add("active");
-    });
+    // Remove old listeners to prevent duplicates on Barba transitions
+    document.removeEventListener("mousemove", onCursorMouseMove);
+    document.removeEventListener("mouseover", onCursorMouseOver);
+    document.removeEventListener("mouseout", onCursorMouseOut);
 
-    document.addEventListener("mouseout", e => {
-        const img = e.target.closest(".project-image");
-        if (img && !img.contains(e.relatedTarget)) {
-            cursor.classList.remove("active");
-        }
-    });
+    document.addEventListener("mousemove", onCursorMouseMove);
+    document.addEventListener("mouseover", onCursorMouseOver);
+    document.addEventListener("mouseout", onCursorMouseOut);
+}
+
+function onCursorMouseMove(e) {
+    const cursor = document.querySelector(".custom-cursor");
+    if (cursor) gsap.set(cursor, { x: e.clientX, y: e.clientY });
+}
+
+function onCursorMouseOver(e) {
+    const img = e.target.closest(".project-image, .portfolio-img");
+    if (img) {
+        const cursor = document.querySelector(".custom-cursor");
+        if (cursor) cursor.classList.add("active");
+        document.documentElement.classList.add("cursor-hidden");
+    }
+}
+
+function onCursorMouseOut(e) {
+    const img = e.target.closest(".project-image, .portfolio-img");
+    if (img && !img.contains(e.relatedTarget)) {
+        const cursor = document.querySelector(".custom-cursor");
+        if (cursor) cursor.classList.remove("active");
+        document.documentElement.classList.remove("cursor-hidden");
+    }
 }
 
 initCursor();
@@ -669,7 +778,7 @@ function splitTextIntoLines(el) {
 }
 
 function initTextReveal(container) {
-    const els = container.querySelectorAll(".animate-this:not([data-reveal-init])");
+    const els = container.querySelectorAll(".animate-this:not([data-reveal-init]):not(.project-item)");
     if (!els.length) return;
 
     els.forEach(el => {
@@ -736,6 +845,7 @@ function initTextReveal(container) {
                  gsap.to(lines, {
                      yPercent: 0,
                      opacity: 1,
+                     delay:   0.2,
                      duration: ANIM.description.duration,
                      stagger: ANIM.description.stagger,
                      ease: ANIM.description.ease
@@ -743,6 +853,45 @@ function initTextReveal(container) {
              },
              once: true
          });
+    });
+
+    ScrollTrigger.refresh();
+}
+
+
+function initPortfolioCards(container) {
+    const cards = container.querySelectorAll(".project-item.animate-this:not([data-portfolio-init])");
+    if (!cards.length) return;
+
+    cards.forEach((card) => {
+        card.dataset.portfolioInit = "true";
+
+        // Стартовое состояние: скрыта, опущена, уменьшена
+        gsap.set(card, { opacity: 0, y: 50, scale: 0.93, lazy: false });
+
+        const rect = card.getBoundingClientRect();
+
+        // Анимация появления: fade-in + подъем + масштаб до 1
+        const playReveal = () => {
+            gsap.to(card, {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 1.4,
+                ease: "power4.out"
+            });
+        };
+
+        if (rect.top < window.innerHeight) {
+            playReveal();
+        } else {
+            ScrollTrigger.create({
+                trigger: card,
+                start: "top 85%",
+                onEnter: playReveal,
+                once: true
+            });
+        }
     });
 
     ScrollTrigger.refresh();
@@ -817,6 +966,9 @@ function initNavbarScrollHide() {
 
     const showDelay = 200;
 
+    // Skip the initial updateNavbar call — doesn't unhide navbar if it was hidden during page transition
+    let skipInitialUpdate = true;
+
     // Initial state: transparent surface, no scroll yet
     navbar.classList.add("navbar--transparent");
 
@@ -825,8 +977,6 @@ function initNavbarScrollHide() {
         const currentScrollY = lenis ? lenis.scroll : (window.scrollY || 0);
 
         const scrollDelta = currentScrollY - lastScrollY;
-
-
 
         // Surface: transparent when at top, frosted when scrolled > 20px
         if (currentScrollY > surfaceThreshold) {
@@ -870,7 +1020,7 @@ function initNavbarScrollHide() {
 
             }
 
-        } else {
+        } else if (!skipInitialUpdate && !navbarWasHidden) {
 
             navbar.classList.remove("navbar--hidden");
 
@@ -884,7 +1034,7 @@ function initNavbarScrollHide() {
 
         }
 
-
+        skipInitialUpdate = false;
 
         lastScrollY = currentScrollY;
 
@@ -1103,4 +1253,92 @@ document.addEventListener("DOMContentLoaded", () => {
         if (logo) logo.style.display = "none";
     });
 });
+
+function initComparisonSliders(container) {
+    const sliders = container.querySelectorAll("[data-comparison-slider]");
+    sliders.forEach(slider => {
+        const afterLayer = slider.querySelector(".comparison-slider__after");
+        const handle = slider.querySelector("[data-comparison-handle]");
+        if (!afterLayer || !handle) return;
+
+        let isDragging = false;
+
+        const setPosition = (clientX) => {
+            const rect = slider.getBoundingClientRect();
+            let x = clientX - rect.left;
+            x = Math.max(0, Math.min(x, rect.width));
+            const pct = (x / rect.width) * 100;
+            afterLayer.style.clipPath = `inset(0 0 0 ${pct}%)`;
+            handle.style.left = `${pct}%`;
+        };
+
+        slider.addEventListener("mousedown", (e) => {
+            isDragging = true;
+            setPosition(e.clientX);
+        });
+
+        window.addEventListener("mousemove", (e) => {
+            if (!isDragging) return;
+            setPosition(e.clientX);
+        });
+
+        window.addEventListener("mouseup", () => {
+            isDragging = false;
+        });
+
+        slider.addEventListener("touchstart", (e) => {
+            isDragging = true;
+            setPosition(e.touches[0].clientX);
+        }, { passive: true });
+
+        window.addEventListener("touchmove", (e) => {
+            if (!isDragging) return;
+            setPosition(e.touches[0].clientX);
+        }, { passive: true });
+
+        window.addEventListener("touchend", () => {
+            isDragging = false;
+        });
+    });
+}
+
+function initComparisonSliderAnimation(container) {
+    const sliders = container.querySelectorAll("[data-comparison-slider]");
+
+    sliders.forEach(slider => {
+        const afterLayer = slider.querySelector(".comparison-slider__after");
+        const handle = slider.querySelector("[data-comparison-handle]");
+
+        if (!afterLayer || !handle) return;
+
+        const state = {
+            value: 35
+        };
+
+        const setPosition = (pct) => {
+            afterLayer.style.clipPath = `inset(0 0 0 ${pct}%)`;
+            handle.style.left = `${pct}%`;
+        };
+
+        setPosition(35);
+
+        ScrollTrigger.create({
+            trigger: slider,
+            start: "top 75%",
+            once: true,
+
+            onEnter: () => {
+                gsap.timeline({
+                    delay: 0.3
+                })
+                .to(state, {
+                    value: 50,
+                    duration: 0.7,
+                    ease: "power3.out",
+                    onUpdate: () => setPosition(state.value)
+                });
+            }
+        });
+    });
+}
 

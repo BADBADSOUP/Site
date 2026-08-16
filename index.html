@@ -2,535 +2,151 @@
 <html lang="ru">
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Масштабируемое портфолио дизайнера</title>
 
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Никита — UI/UX Designer</title>
-
-<link rel="icon" href="favicon.png" type="image/png">
-
-<link rel="stylesheet" href="fonts.css">
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="transition.css">
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="transition.css">
+  <link rel="stylesheet" href="style.css">
 </head>
-
 
 <body data-barba="wrapper">
 
+  <div class="custom-cursor">Показать кейс</div>
 
-<div class="custom-cursor">Показать кейс</div>
-
-
-<div class="transition-wrapper">
+  <div class="transition-wrapper">
     <div class="loading-screen"></div>
-</div>
+  </div>
 
+  <!-- NAVIGATION -->
 
-<!-- ==========================================================
-     NAVIGATION
-     ========================================================== -->
+  <nav class="navbar">
+    <div class="navbar__inner">
 
+      <!-- Left: Logo + Brand Name -->
+      <a href="/" class="navbar__brand">
+        <div class="navbar__logo">
+          <svg class="navbar__logo-img" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 0L19.5041 1.36228C22.4414 9.30014 28.6999 15.5586 36.6377 18.4959L38 19L36.6377 19.5041C28.6999 22.4414 22.4414 28.6999 19.5041 36.6377L19 38L18.4959 36.6377C15.5586 28.6999 9.30013 22.4414 1.36227 19.5041L0 19L1.36228 18.4959C9.30014 15.5586 15.5586 9.30013 18.4959 1.36227L19 0Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <span class="navbar__brand-name">Никита Копытов</span>
+      </a>
 
-<nav class="navbar">
+      <!-- Right: Navigation Links -->
+      <ul class="navbar__nav" id="navbarNav">
+        <li><a href="#projects" class="navbar__link">Проекты</a></li>
+        <li><a href="#about" class="navbar__link">Обо мне</a></li>
+        <li><a href="#contacts" class="navbar__link">Контакты</a></li>
+      </ul>
 
-  <div class="navbar__inner">
+      <!-- Mobile: Burger Menu Button -->
+      <div class="navbar__burger" id="navbarBurger" aria-label="Открыть меню" aria-expanded="false">
+        <span class="navbar__burger-line"></span>
+        <span class="navbar__burger-line"></span>
+        <span class="navbar__burger-line"></span>
+      </div>
 
+      <!-- Mobile: Menu Overlay -->
+      <nav class="navbar__mobile-menu" id="navbarMobileMenu">
+        <div class="navbar__menu-close" id="navbarMenuClose">
+          <span class="navbar__menu-close-line"></span>
+          <span class="navbar__menu-close-line"></span>
+        </div>
+        <ul class="navbar__mobile-nav">
+          <li><a href="#projects" class="navbar__mobile-link">Проекты</a></li>
+          <li><a href="#about" class="navbar__mobile-link">Обо мне</a></li>
+          <li><a href="#contacts" class="navbar__mobile-link">Контакты</a></li>
+        </ul>
+      </nav>
 
-    <!-- Left: Logo + Brand Name -->
+    </div>
+  </nav>
 
-    <a href="/" class="navbar__brand">
+  <div data-barba="container" data-barba-namespace="home">
 
-       <div class="navbar__logo">
+    <main class="container">
 
-         <svg class="navbar__logo-img" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-           <path d="M19 0L19.5041 1.36228C22.4414 9.30014 28.6999 15.5586 36.6377 18.4959L38 19L36.6377 19.5041C28.6999 22.4414 22.4414 28.6999 19.5041 36.6377L19 38L18.4959 36.6377C15.5586 28.6999 9.30013 22.4414 1.36227 19.5041L0 19L1.36228 18.4959C9.30014 15.5586 15.5586 9.30013 18.4959 1.36227L19 0Z" fill="currentColor"/>
-         </svg>
+      <!-- Текстовый блок над карточками -->
+      <section class="hero-block">
+        <h1 class="hero-text">
+          UI/UX дизайнер с 15+ годами опыта. Запускаю Gamedev и iGaming проекты. Проектирую сложные Enterprise продукты, развиваю дизайн-системы. Организую процессы в дизайн-командах.
+        </h1>
+      </section>
 
-       </div>
+     <!-- Сетка проектов -->
+      <div class="projects-grid">
 
-      <span class="navbar__brand-name">Никита Копытов</span>
+        <!-- Блок 1 (Широкий) -->
+        <a href="truco/truco.html" class="project-link animate-this project-item project-item--first">
+          <div class="image-container">
+            <div class="portfolio-image-wrapper">
+              <img src="project1.png" alt="Foresight" class="portfolio-img">
+            </div>
+          </div>
+          <div class="project-meta">Foresight</div>
+          <h2 class="project-title">Редизайн и перенос в веб платформы для бизнес анализа</h2>
+        </a>
 
-    </a>
+        <!-- Блок 2 (Левый вертикальный) -->
+        <a href="pg3d/pg3d.html" class="project-link animate-this project-item project-item--second">
+          <div class="portfolio-image-wrapper">
+            <img src="project2.png" alt="Foresight" class="portfolio-img">
+          </div>
+          <div class="project-meta">Foresight</div> 
+          <h2 class="project-title">MVP онлайн казино для аргентинского рынка</h2>
+        </a>
 
+        <!-- Блок 3 (Правый вертикальный) -->
+        <article class="project-item animate-this project-item--third">
+          <div class="portfolio-image-wrapper">
+            <img src="project3.png" alt="Foresight" class="portfolio-img">
+          </div>
+          <div class="project-meta">Foresight</div>
+          <h2 class="project-title">Мобильная RPG с автоматическими боями</h2>
+        </article>
 
+        <!-- Блок 4 (Широкий — дублирует геометрию Блока 1) -->
+        <article class="project-item animate-this project-item--fourth">
+          <div class="image-container">
+            <div class="portfolio-image-wrapper">
+              <img src="project4.png" alt="Описание проекта 4" class="portfolio-img">
+            </div>
+          </div>
+          <div class="project-meta">Foresight</div>
+          <h2 class="project-title">Проектирование сложной дизайн-системы для финтех платформы</h2>
+        </article>
 
-    <!-- Right: Navigation Links -->
+        <!-- Блок 5 (Левый вертикальный — дублирует геометрию Блока 2) -->
+        <article class="project-item animate-this project-item--fifth">
+          <div class="portfolio-image-wrapper">
+            <img src="project5.png" alt="Описание проекта 5" class="portfolio-img">
+          </div>
+          <div class="project-meta">Foresight</div>
+          <h2 class="project-title">UX/UI аудит и оптимизация конверсии крипто-кошелька</h2>
+        </article>
 
-    <ul class="navbar__nav">
+        <!-- Блок 6 (Правый вертикальный — дублирует геометрию Блока 3) -->
+        <article class="project-item animate-this project-item--sixth">
+          <div class="portfolio-image-wrapper">
+            <img src="project6.png" alt="Описание проекта 6" class="portfolio-img">
+          </div>
+          <div class="project-meta">Foresight</div>
+          <h2 class="project-title">Разработка веб-интерфейса для облачного SaaS продукта</h2>
+        </article>
 
-      <li><a href="#projects" class="navbar__link">Проекты</a></li>
-
-      <li><a href="#about" class="navbar__link">Обо мне</a></li>
-
-      <li><a href="#contacts" class="navbar__link">Контакты</a></li>
-
-    </ul>
-
-
+      </div>
+    </main>
 
   </div>
 
-</nav>
-
-
-
-<div data-barba="container" data-barba-namespace="home">
-
-
-
-<!-- ==========================================================
-     HERO
-     ========================================================== -->
-
-
-<header class="hero-section" data-nav-theme="light">
-
-
-<div class="hero-content">
-
-
-<div class="hero-text">
-
-
-
-<h1 class="hero-title-main animate-this">
-
-Привет, я Жопка
-
-</h1>
-
-
-
-<p class="hero-description hero-description--animated animate-this">
-
-UI/UX дизайнер с 15+ годами опыта.
-Запускаю проекты в сфере Gamedev и iGaming.
-Проектирую сложные Enterprise продукты,
-развиваю дизайн-системы и организую процессы
-в дизайн-командах.
-
-</p>
-
-
-
-</div>
-
-
-</div>
-</header>
-
-
-
-
-
-<!-- ==========================================================
-     FILTER
-     ========================================================== -->
-
-
-<section class="filter-section" data-nav-theme="light">
-
-
-<div class="filter-container">
-
-
-<button class="filter-btn active" data-filter="all">
-    Все проекты <span class="filter-btn__count">6</span>
-</button>
-
-
-<button class="filter-btn" data-filter="igaming">
-    iGaming <span class="filter-btn__count">2</span>
-</button>
-
-
-<button class="filter-btn" data-filter="business">
-    Saas <span class="filter-btn__count">2</span>
-</button>
-
-
-<button class="filter-btn" data-filter="gamedev">
-    Gamedev <span class="filter-btn__count">2</span>
-</button>
-
-
-<button class="filter-btn" data-filter="other">
-    Остальное <span class="filter-btn__count">1</span>
-</button>
-
-
-</div>
-
-
-</section>
-
-
-
-
-
-<!-- ==========================================================
-     PORTFOLIO
-     ========================================================== -->
-
-
-<section class="portfolio-section" data-nav-theme="light">
-
-
-<main class="portfolio-grid">
-
-
-
-
-
-<!-- FORESIGHT -->
-
-
-<article class="project-card full-width animate-this" data-category="other">
-
-
-<img
-
-src="project1.png"
-
-alt="Foresight"
-
-class="project-image"
-
-loading="lazy"
-
->
-
-
-<h3 class="project-name">
-
-Foresight
-
-</h3>
-
-
-
-<p class="project-desc">
-
-Редизайн и перенос в веб платформы для бизнес анализа
-
-</p>
-
-
-
-<div class="project-tags">
-
-#UI/UX #Web #Design system
-
-</div>
-
-
-</article>
-
-
-
-
-
-
-
-
-<!-- HEROES QUESTS -->
-
-
-<article class="project-card animate-this" data-category="gamedev">
-
-
-<img
-
-src="project2.png"
-
-alt="Heroes Quests"
-
-class="project-image"
-
-loading="lazy"
-
->
-
-
-
-<h3 class="project-name">
-
-Heroes Quests
-
-</h3>
-
-
-
-<p class="project-desc">
-
-Мобильная RPG с автоматическими боями.
-
-</p>
-
-
-
-<div class="project-tags">
-
-#UI/UX #Mobile #Gamedev
-
-</div>
-
-
-</article>
-
-
-
-
-
-
-
-
-<!-- TRUCO -->
-
-
-<a href="truco/truco.html" class="project-card animate-this" data-category="igaming">
-
-
-<img
-
-src="project3.png"
-
-alt="TrucoReal"
-
-class="project-image"
-
-loading="lazy"
-
->
-
-
-
-<h3 class="project-name">
-
-TrucoReal
-
-</h3>
-
-
-
-<p class="project-desc">
-
-MVP онлайн казино для аргентинского рынка
-
-</p>
-
-
-
-<div class="project-tags">
-
-#UI/UX #iGaming #Mobile #Web
-
-</div>
-
-
-
-</a>
-
-
-
-
-
-
-
-
-<!-- PIXEL GUN -->
-
-
-<article class="project-card full-width animate-this" data-category="gamedev">
-
-
-<img
-
-src="project4.png"
-
-alt="Pixel Gun 3D"
-
-class="project-image"
-
-loading="lazy"
-
->
-
-
-
-<h3 class="project-name">
-
-Pixel Gun 3D
-
-</h3>
-
-
-
-<p class="project-desc">
-
-Онлайн PVP шутер в стилистике Minecraft
-
-</p>
-
-
-
-<div class="project-tags">
-
-#UI/UX #Game #Mobile
-
-</div>
-
-
-
-</article>
-
-
-
-
-
-
-
-
-<!-- FLY BI VIDEO -->
-
-
-<article class="project-card animate-this" data-category="business">
-
-
-<video
-
-class="project-image"
-
-src="trucoprev.mp4"
-
-muted
-
-loop
-
-autoplay
-
-playsinline
-
-preload="metadata"
-
-></video>
-
-
-
-<h3 class="project-name">
-
-Fly BI
-
-</h3>
-
-
-
-<p class="project-desc">
-
-Self-service BI платформа для анализа данных и построения дашбордов
-
-</p>
-
-
-
-<div class="project-tags">
-
-#UI/UX #Web #SaaS
-
-</div>
-
-
-
-</article>
-
-
-
-
-
-
-
-
-<!-- CASINO -->
-
-
-<article class="project-card animate-this" data-category="igaming">
-
-
-<img
-
-src="project6.png"
-
-alt="Casino Zenith"
-
-class="project-image"
-
-loading="lazy"
-
->
-
-
-
-<h3 class="project-name">
-
-Casino Zenith
-
-</h3>
-
-
-
-<p class="project-desc">
-
-Навигация и структура для онлайн казино
-
-</p>
-
-
-
-<div class="project-tags">
-
-#UI/UX #Mobile #Product
-
-</div>
-
-
-
-</article>
-
-
-
-
-
-
-</main>
-
-
-</section>
-
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-<!-- SCRIPTS -->
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
-<script src="https://unpkg.com/@barba/core@2.10.3/dist/barba.umd.js"></script>
-<script src="script.js"></script>
-
-
+  <!-- SCRIPTS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+  <script src="https://unpkg.com/@barba/core@2.10.3/dist/barba.umd.js"></script>
+  <script src="script.js"></script>
 
 </body>
 

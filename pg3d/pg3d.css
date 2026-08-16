@@ -1,0 +1,815 @@
+/* ==========================================================
+   PIXEL GUN 3D CASE
+   Base styles
+========================================================== */
+
+/* Убираем верхний padding body — navbar наложится на HERO */
+body {
+    padding-top: 0;
+}
+
+
+
+/* ==========================================================
+     VARIABLES — scoped to .pg3d-page to prevent leaking into other pages
+     when pg3d.css is loaded dynamically on Barba navigation.
+     ========================================================== */
+
+.pg3d-page {
+
+    /* Colors */
+    --black: #06070A;
+    --white: #FFFFFF;
+    --border: rgba(6,7,10,.12);
+
+
+    /* Container */
+
+    --max-width: 1640px;
+
+    --padding-x:
+        clamp(20px, 5vw, 80px);
+
+    --container:
+        min(
+            calc(100vw - (var(--padding-x) * 2)),
+            var(--max-width)
+        );
+
+
+    /* Typography */
+
+    --display:
+        clamp(42px,5.2vw,84px);
+
+    --h1:
+        clamp(30px,3vw,30px);
+
+    --h2:
+        clamp(24px,2vw,30px);
+
+    --h3:
+        clamp(24px,2vw,40px);
+
+    --body:
+        clamp(24px,1.5vw,24px);
+
+    --small:
+        clamp(16px,1.2vw,20px);
+
+
+    /* Spacing */
+
+    --section-xl:
+        clamp(120px,12vw,220px);
+
+    --section-lg:
+        clamp(80px,8vw,140px);
+
+    --section-sm:
+        clamp(28px,5vw,64px);
+
+
+
+    /* Radius */
+
+    --radius:
+        clamp(40px,5vw,60px);
+    --radius-sm:
+        clamp(16px,5vw,24px);
+
+
+    /* Page background colors */
+    --page-bg-hero:    #0D2D49;
+    --page-bg-section: #FFFFFF;
+
+}
+
+
+/* ==========================================================
+    RESET — handled by style.css, no need to duplicate here
+    ========================================================== */
+
+
+/* ==========================================================
+    PAGE BACKGROUND — Centralized background color management
+    for all top-level sections on the pixel gun case page.
+    ========================================================== */
+
+
+.pg3d-page .hero-frame {
+    background:var(--page-bg-hero);
+}
+
+.pg3d-page .prototype-section {
+    background:#17191B;
+}
+
+.pg3d-page .ui-section {
+    background:#17191B;
+}
+
+.pg3d-page .about-project {
+    background:var(--page-bg-section);
+}
+
+.pg3d-page img:not(.platform-img),
+.pg3d-page video {
+    max-width:100%;
+    display:block;
+}
+
+
+/* ==========================================================
+    BARBA TRANSITION — задаётся в transition.css корня,
+    здесь только переопределяем если нужно
+    ========================================================== */
+
+
+
+/* ==========================================================
+    GLOBAL CONTAINER
+    ========================================================== */
+
+
+.pg3d-page .container,
+.pg3d-page .hero,
+.pg3d-page .about-project-grid,
+.pg3d-page .prototype-section__inner,
+.pg3d-page .visual-direction__inner,
+.pg3d-page .ui-section__inner {
+    width:var(--container);
+    margin-inline:auto;
+}
+
+
+/* ==========================================================
+    HERO
+    ========================================================== */
+
+
+.pg3d-page .hero-frame {
+    width:100%;
+}
+
+.pg3d-page .hero-frame--bg {
+    background-image: url("bg.png");
+    background-color: white;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-bottom-left-radius: var(--radius);
+    border-bottom-right-radius: var(--radius);
+    overflow: hidden;
+}
+
+.pg3d-page .hero {
+    position: relative;
+    z-index: 1;
+    height:clamp(420px, 45vw, 720px);
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+}
+
+
+.pg3d-page .hero-label {
+    font-size:var(--h1);
+    font-weight:500;
+    margin-bottom:32px;
+    color:white;
+    letter-spacing:-0.02em;
+}
+
+.pg3d-page .hero-title {
+    font-size:var(--display);
+    line-height:1;
+    font-weight:500;
+    letter-spacing:-0.04em;
+    color:white;
+    max-width:1460px;
+}
+
+
+/* ==========================================================
+    ABOUT PROJECT
+    ========================================================== */
+
+
+.pg3d-page .about-project {
+    color: var(--black);
+    padding-top: var(--section-lg);
+    padding-bottom: 60px;
+}
+
+.pg3d-page .about-project-grid {
+    display:grid;
+    grid-template-columns: minmax(0, 900px) 1fr;
+    gap:60px;
+}
+
+.pg3d-page .about-project-content {
+    font-size:var(--h2);
+    line-height:1.3;
+    letter-spacing:-0.02em;
+    max-width:1110px;
+    font-weight: 500;
+}
+
+
+/* ==========================================================
+    PLATFORMS BLOCK
+    ========================================================== */
+
+
+.pg3d-page .platforms-block {
+    width:var(--container);
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    gap:26px;
+    padding-bottom: var(--section-lg);
+}
+
+.pg3d-page .platform-img {
+    width:200px;
+    height:60px;
+    object-fit:contain;
+}
+
+
+/* ==========================================================
+    PROTOTYPE SECTIONS
+    ========================================================== */
+
+
+.pg3d-page .prototype-section {
+    color:var(--white);
+    border-top-left-radius:  var(--radius);
+    border-top-right-radius: var(--radius);
+}
+
+.pg3d-page .prototype-section__inner {
+    padding: var(--section-xl) 0 0;
+}
+
+.pg3d-page .prototype-section__title {
+    font-size:var(--h2);
+    font-weight:400;
+    line-height:1.05;
+    letter-spacing:-0.04em;
+    max-width:1100px;
+    margin-bottom:32px;
+}
+
+.pg3d-page .prototype-section__body {
+    font-size:var(--h3);
+    line-height:1.3;
+    letter-spacing:-0.02em;
+    max-width:1290px;
+}
+
+.pg3d-page .prototype-section__body p {
+    margin-bottom:24px;
+}
+
+.pg3d-page .prototype-section__body p:last-child {
+    margin-bottom:0;
+}
+
+
+/* ==========================================================
+    TWO-COLUMN TEXT
+    ========================================================== */
+
+
+.pg3d-page .two-column-text {
+    width:var(--container);
+    margin:0 auto;
+    display:grid;
+    grid-template-columns: 600px 600px;
+    gap:90px;
+    padding: var(--section-lg) 0;
+}
+
+.pg3d-page .two-column-text__col {
+    display:flex;
+    flex-direction:column;
+}
+
+.pg3d-page .two-column-text__title {
+    font-size:var(--h2);
+    font-weight:400;
+    letter-spacing:-0.03em;
+    color:var(--white);
+    margin-bottom:20px;
+}
+
+.pg3d-page .two-column-text__divider {
+    width:100%;
+    height:1px;
+    background: rgb(255 255 255 / 12%);
+}
+
+.pg3d-page .two-column-text__body {
+    font-size:var(--body);
+    line-height:1.4;
+    letter-spacing:-0.02em;
+    color:#B5B7B9;
+    max-width:600px;
+    font-weight: 400;
+    margin-top: 28px;
+}
+
+.pg3d-page .two-column-text__body p:last-child {
+    margin-bottom:0;
+}
+
+
+/* ==========================================================
+    VISUAL DIRECTION SECTION
+    ========================================================== */
+
+
+.pg3d-page .visual-direction-section {
+    color:var(--white);
+    background:#17191B;
+}
+
+.pg3d-page .visual-direction__inner {
+    padding: var(--section-xl) 0 0 0;
+}
+
+.pg3d-page .visual-direction__title {
+    font-size:var(--display);
+    font-weight:500;
+    line-height:1.05;
+    letter-spacing:-0.04em;
+    max-width:1100px;
+    margin-bottom:60px;
+}
+
+.pg3d-page .visual-direction__divider {
+    width:100%;
+    height:0px;
+    background:var(--border);
+    margin-bottom:20px;
+}
+
+.pg3d-page .visual-direction__body {
+    font-size:var(--body);
+    line-height:1.5;
+    letter-spacing:-0.02em;
+    max-width:1110px;
+    color: #B5B7B9;
+}
+
+.pg3d-page .visual-direction__body p {
+    margin-bottom:24px;
+}
+
+.pg3d-page .visual-direction__body p:last-child {
+    margin-bottom:120px;
+}
+
+
+/* ==========================================================
+    APPROACHES GRID
+    ========================================================== */
+
+
+.pg3d-page .approaches-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:32px;
+    margin-top:var(--section-sm);
+}
+
+.pg3d-page .approach-block {
+    background:#25272E;
+    border-radius:var(--radius-sm);
+    padding:clamp(24px,4vw,40px);
+    font-family:"Roboto Mono",monospace;
+    font-size:var(--small);
+    line-height:1.3;
+    letter-spacing:-0.02em;
+    color:#B5B7B9;
+}
+
+.pg3d-page .approach-block__title {
+    font-family:"Roboto Mono",monospace;
+    font-size:clamp(18px,2vw,24px);
+    font-weight:600;
+    letter-spacing:-0.02em;
+    color:var(--white);
+    margin-bottom:16px;
+}
+
+
+/* ==========================================================
+    IMAGE SHOWCASE BLOCK
+    ========================================================== */
+
+
+.pg3d-page .image-showcase-block {
+    width:var(--container);
+    margin-top:120px;
+    height:768px;
+    background:#25272E;
+    border-radius:var(--radius-sm);
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.pg3d-page .image-showcase-block__img {
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+}
+
+
+/* ==========================================================
+    FULL-WIDTH EVENTS BLOCK
+    ========================================================== */
+
+
+.pg3d-page .events-fullwidth-block {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    box-sizing: border-box;
+    margin-top: 140px;
+    height: auto;
+    background: #1A1B21;
+    display: block;
+    overflow: hidden;
+}
+
+.pg3d-page .events-fullwidth-block__img {
+    width:100%;
+    height:auto;
+    display:block;
+}
+
+
+/* ==========================================================
+    BEFORE / AFTER COMPARISON SLIDER
+    ========================================================== */
+
+
+.pg3d-page .comparison-slider {
+    position:relative;
+    width:var(--container);
+    aspect-ratio: 1640 / 768;
+    margin-top:120px;
+    margin-inline:auto;
+    overflow:hidden;
+    border-radius:var(--radius-sm);
+    cursor:ew-resize;
+    user-select:none;
+    -webkit-user-select:none;
+    background:#25272E;
+    line-height:0;
+}
+
+.pg3d-page .comparison-slider__before,
+.pg3d-page .comparison-slider__after {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+.pg3d-page .comparison-slider__before {
+    z-index:1;
+}
+
+.pg3d-page .comparison-slider__after {
+    z-index:2;
+    clip-path:inset(0 0 0 50%);
+}
+
+.pg3d-page .comparison-slider__handle {
+    position:absolute;
+    top:0;
+    left:50%;
+    z-index:3;
+    transform:translateX(-50%);
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    pointer-events:none;
+}
+
+.pg3d-page .comparison-slider__handle-line {
+    position:absolute;
+    left:50%;
+    top:0;
+    bottom:0;
+    width:2px;
+    background:#fff;
+    transform:translateX(-50%);
+}
+
+.pg3d-page .comparison-slider__handle-circle {
+    position:relative;
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    flex-shrink:0;
+}
+
+.pg3d-page .comparison-slider__handle-arrow {
+    font-size:18px;
+    color:#111;
+    line-height:1;
+    font-weight:700;
+}
+
+.pg3d-page .comparison-slider__handle-arrow--left {
+    margin-right:2px;
+}
+
+.pg3d-page .comparison-slider__handle-arrow--right {
+    margin-left:2px;
+}
+
+
+/* ==========================================================
+    FOOTER
+    ========================================================== */
+
+
+.pg3d-footer {
+    position:relative;
+    width:100vw;
+    margin-left:calc(-50vw + 50%);
+    margin-right:calc(-50vw + 50%);
+    box-sizing:border-box;
+    height:800px;
+    background:#1A1B21;
+    display:block;
+    overflow:hidden;
+    padding:40px 0;
+}
+
+.pg3d-footer__inner {
+    width:var(--container);
+    margin-inline:auto;
+}
+
+.pg3d-footer__copy {
+    font-size:14px;
+    color:rgba(255,255,255,0.4);
+    text-align:center;
+    margin:0;
+}
+
+
+/* ==========================================================
+    UI SECTION
+    ========================================================== */
+
+
+.pg3d-page .ui-section {
+    color:var(--white);
+}
+
+.pg3d-page .ui-section__inner {
+    padding: var(--section-lg) 0 0 0;
+}
+
+.pg3d-page .ui-section__title {
+    font-size:var(--display);
+    font-weight:600;
+    line-height:1.05;
+    letter-spacing:-0.04em;
+    margin-bottom:60px;
+}
+
+.pg3d-page .ui-section__grid {
+    display:grid;
+    grid-template-columns: minmax(220px,420px) 1fr 1fr;
+    gap:60px;
+    margin-bottom: 120px;
+}
+
+.pg3d-page .ui-section__grid--presentation {
+    display:grid;
+    grid-template-columns: minmax(220px,420px) 1fr;
+    gap:60px;
+    margin-bottom: 120px;
+}
+
+.pg3d-page .ui-section__label {
+    font-family:"Roboto Mono",monospace;
+    font-size:var(--body);
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--white);
+}
+
+.pg3d-page .ui-section__body {
+    font-size:var(--body);
+    line-height:1.5;
+    max-width:1100px;
+    letter-spacing:-0.02em;
+    color: #B5B7B9;
+}
+
+.pg3d-page .ui-section__body--two-column {
+    column-count:2;
+    column-gap:40px;
+    column-rule:1px solid rgba(255,255,255,0.1);
+}
+
+
+/* ==========================================================
+    RESPONSIVE
+    ========================================================== */
+
+
+/* -------------------------
+    TABLET
+------------------------- */
+
+@media (max-width: 960px) {
+
+    .pg3d-page {
+        --padding-x:24px;
+    }
+
+    .pg3d-page .hero {
+        height:auto;
+        min-height:500px;
+        padding: 80px 0;
+    }
+
+    .pg3d-page .hero-title {
+        max-width:100%;
+    }
+
+    .pg3d-page .about-project-grid,
+    .pg3d-page .prototype-section__grid,
+    .pg3d-page .visual-direction__grid,
+    .pg3d-page .ui-section__grid,
+    .pg3d-page .ui-section__grid--presentation {
+        grid-template-columns:1fr;
+        gap:32px;
+    }
+
+    .pg3d-page .two-column-text {
+        grid-template-columns: 1fr;
+        gap:32px;
+    }
+
+    .pg3d-page .approaches-grid {
+        grid-template-columns: 1fr;
+        gap:24px;
+    }
+
+    .pg3d-page .image-showcase-block {
+        width:100%;
+        height:500px;
+    }
+
+    .pg3d-page .comparison-slider {
+        width:100%;
+        margin-top:80px;
+    }
+
+    .pg3d-page .comparison-slider__handle-circle {
+        width:36px;
+        height:36px;
+    }
+
+    .pg3d-page .comparison-slider__handle-arrow {
+        font-size:14px;
+    }
+
+    .pg3d-page .ui-section__body--two-column {
+        column-count:1;
+        column-gap:0;
+        column-rule:none;
+    }
+
+    .pg3d-page .prototype-section__title,
+    .pg3d-page .visual-direction__title,
+    .pg3d-page .ui-section__title {
+        margin-bottom:40px;
+    }
+
+}
+
+
+/* -------------------------
+    MOBILE
+------------------------- */
+
+@media (max-width:600px) {
+
+    .pg3d-page {
+        --padding-x:16px;
+    }
+
+    .pg3d-page .hero {
+        min-height:420px;
+        padding: 60px 0;
+    }
+
+    .pg3d-page .hero-label {
+        margin-bottom:20px;
+    }
+
+    .pg3d-page .hero-title {
+        font-size: clamp(40px, 11vw, 56px);
+    }
+
+    .pg3d-page .about-project {
+        padding: 80px 0;
+    }
+
+    .pg3d-page .about-project-content {
+        font-size:20px;
+    }
+
+    .pg3d-page .prototype-section__inner,
+    .pg3d-page .visual-direction__inner,
+    .pg3d-page .ui-section__inner {
+        padding-top:80px;
+        padding-bottom:60px;
+    }
+
+    .pg3d-page .prototype-section__title,
+    .pg3d-page .visual-direction__title,
+    .pg3d-page .ui-section__title {
+        font-size: clamp(38px, 10vw, 52px);
+    }
+
+    .pg3d-page .prototype-section__body,
+    .pg3d-page .visual-direction__body,
+    .pg3d-page .ui-section__body {
+        font-size:18px;
+    }
+
+}
+
+
+/* ==========================================================
+    ACCESSIBILITY / PERFORMANCE
+    ========================================================== */
+
+
+@media (prefers-reduced-motion:reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation:none!important;
+        transition:none!important;
+        scroll-behavior:auto!important;
+    }
+
+}
+
+/* ==========================================================
+    GSAP INITIAL STATES
+    ========================================================== */
+
+/* Скрываем заголовки до split — предотвращает мигание */
+.pg3d-page h1,
+.pg3d-page h2,
+.pg3d-page h3,
+.pg3d-page .hero-label {
+    opacity: 0;
+}
+
+.pg3d-page [data-split="true"] {
+    opacity: 1;
+}
+
+.pg3d-page {
+    width: 100%;
+    min-height: 100vh;
+    background: var(--page-bg-section);
+    overflow: hidden;
+}
+
+.ui-section__image-gap {
+    height: clamp(40px, 5vw, 100px);
+}
