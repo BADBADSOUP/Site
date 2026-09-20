@@ -272,7 +272,8 @@ function initMobileMenu() {
     const burger = document.getElementById("navbarBurger");
     const mobileMenu = document.getElementById("navbarMobileMenu");
     const closeBtn = document.getElementById("navbarMenuClose");
-    if (!burger || !mobileMenu) return;
+    if (!burger || !mobileMenu || burger.dataset.menuInit) return;
+    burger.dataset.menuInit = "true";
     const openMenu = () => {
         burger.setAttribute("aria-expanded", "true");
         mobileMenu.classList.add("is-open");
@@ -334,6 +335,11 @@ barba.hooks.before((data) => {
 
     destroyContainerScrollTriggers(data.current.container);
     destroyVisualParallax();
+
+    // Снимаем события кастомного курсора
+    if (typeof destroyCursor === "function") {
+        destroyCursor();
+    }
 
     // Запоминаем состояние navbar: скрыт ли он из-за скролла
     if (navbar) {
@@ -457,6 +463,12 @@ barba.init({
    CURSOR
    ========================================================================== */
 
+function destroyCursor() {
+    document.removeEventListener("mousemove", onCursorMouseMove);
+    document.removeEventListener("mouseover", onCursorMouseOver);
+    document.removeEventListener("mouseout", onCursorMouseOut);
+}
+
 function initCursor() {
     const cursor = document.querySelector(".custom-cursor");
     if (!cursor || window.innerWidth < 768) return;
@@ -465,13 +477,12 @@ function initCursor() {
     const isHomePage = document.querySelector("[data-barba-namespace=\"home\"]");
     if (!isHomePage) {
         cursor.style.display = "none";
+        destroyCursor();
         return;
     }
 
     // Remove old listeners to prevent duplicates on Barba transitions
-    document.removeEventListener("mousemove", onCursorMouseMove);
-    document.removeEventListener("mouseover", onCursorMouseOver);
-    document.removeEventListener("mouseout", onCursorMouseOut);
+    destroyCursor();
 
     document.addEventListener("mousemove", onCursorMouseMove);
     document.addEventListener("mouseover", onCursorMouseOver);
@@ -972,6 +983,14 @@ function initNavbarScrollHide() {
     // Initial state: transparent surface, no scroll yet
     navbar.classList.add("navbar--transparent");
 
+    if (window._navbarScrollHandler) {
+        if (lenis) {
+            lenis.off("scroll", window._navbarScrollHandler);
+        } else {
+            window.removeEventListener("scroll", window._navbarScrollHandler);
+        }
+    }
+
     function updateNavbar() {
 
         const currentScrollY = lenis ? lenis.scroll : (window.scrollY || 0);
@@ -1040,7 +1059,7 @@ function initNavbarScrollHide() {
 
     }
 
-
+    window._navbarScrollHandler = updateNavbar;
 
 
 
@@ -1261,6 +1280,16 @@ function initComparisonSliders(container) {
         const handle = slider.querySelector("[data-comparison-handle]");
         if (!afterLayer || !handle) return;
 
+        // Удаляем старые обработчики, если они есть
+        const oldMousedown = slider._onMousedown;
+        if (oldMousedown) {
+            slider.removeEventListener("mousedown", oldMousedown);
+        }
+        const oldTouchstart = slider._onTouchstart;
+        if (oldTouchstart) {
+            slider.removeEventListener("touchstart", oldTouchstart, { passive: true });
+        }
+
         let isDragging = false;
 
         const setPosition = (clientX) => {
@@ -1272,33 +1301,47 @@ function initComparisonSliders(container) {
             handle.style.left = `${pct}%`;
         };
 
-        slider.addEventListener("mousedown", (e) => {
-            isDragging = true;
-            setPosition(e.clientX);
-        });
-
-        window.addEventListener("mousemove", (e) => {
+        const onMouseMove = (e) => {
             if (!isDragging) return;
             setPosition(e.clientX);
-        });
+        };
 
-        window.addEventListener("mouseup", () => {
+        const onMouseUp = () => {
             isDragging = false;
-        });
+            window.removeEventListener("mousemove", onMouseMove);
+            window.removeEventListener("mouseup", onMouseUp);
+        };
 
-        slider.addEventListener("touchstart", (e) => {
-            isDragging = true;
-            setPosition(e.touches[0].clientX);
-        }, { passive: true });
-
-        window.addEventListener("touchmove", (e) => {
+        const onTouchMove = (e) => {
             if (!isDragging) return;
             setPosition(e.touches[0].clientX);
-        }, { passive: true });
+        };
 
-        window.addEventListener("touchend", () => {
+        const onTouchEnd = () => {
             isDragging = false;
-        });
+            window.removeEventListener("touchmove", onTouchMove, { passive: true });
+            window.removeEventListener("touchend", onTouchEnd);
+        };
+
+        const onMousedown = (e) => {
+            isDragging = true;
+            setPosition(e.clientX);
+            window.addEventListener("mousemove", onMouseMove);
+            window.addEventListener("mouseup", onMouseUp);
+        };
+
+        const onTouchstart = (e) => {
+            isDragging = true;
+            setPosition(e.touches[0].clientX);
+            window.addEventListener("touchmove", onTouchMove, { passive: true });
+            window.addEventListener("touchend", onTouchEnd);
+        };
+
+        slider._onMousedown = onMousedown;
+        slider._onTouchstart = onTouchstart;
+
+        slider.addEventListener("mousedown", onMousedown);
+        slider.addEventListener("touchstart", onTouchstart, { passive: true });
     });
 }
 
