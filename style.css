@@ -1054,6 +1054,8 @@ html.lenis body {
 
 /* Начальное состояние карточки: она невидима и ждет команды от JS */
 .project-item.animate-this {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   opacity: 1;
   transform: translateY(30px) scale(0.96);
   will-change: transform, opacity; /* Оптимизация для плавной анимации */
