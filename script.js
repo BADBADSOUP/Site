@@ -1280,7 +1280,8 @@ function initTextReveal(container) {
                 delay:   ANIM.intro.delay,
                 duration: ANIM.intro.duration,
                 stagger: ANIM.intro.stagger,
-                ease: ANIM.intro.ease
+                ease: ANIM.intro.ease,
+                force3D: true
             });
         } else {
             ScrollTrigger.create({
@@ -1387,7 +1388,10 @@ function initPortfolioCards(container) {
         });
     });
 
-    Promise.all(imagePromises).then(() => {
+    Promise.race([
+        Promise.all(imagePromises),
+        new Promise(resolve => setTimeout(resolve, 1500))
+    ]).then(() => {
         cards.forEach((card) => {
             card.dataset.portfolioInit = "true";
 
@@ -1800,15 +1804,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     initNavMenu();
     initCustomScrollbar();
-
-    // If Barba's `once` hook hasn't fired yet, initialize page animations.
-    // If Barba's `once` has already fired (initialPageLoaded = true), it handles
-    // initialization via its own setTimeout, so we skip to avoid double init.
-    if (!initialPageLoaded) {
-        const container = document.querySelector("[data-barba=\"container\"]") || document.body;
-        initPage(container);
-        ScrollTrigger.refresh();
-    }
 
     // initHomeEntrance();
 

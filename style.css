@@ -673,11 +673,6 @@ html.cursor-hidden * {
     line-height: inherit;
 }
 
-/* Hide headings until JS does split — prevents flash on load */
-h1, h2, h3, .hero-label {
-    opacity: 0;
-}
-
 /* After split JS adds data-split="true" and reveals headings */
 [data-split="true"] {
     opacity: 1;
@@ -685,16 +680,21 @@ h1, h2, h3, .hero-label {
 
 /* Reveal line animation */
 .reveal-line-wrapper {
-    display: inline-block;
+    display: block;
     overflow: hidden;
     vertical-align: top;
     line-height: inherit;
 }
 
 .reveal-line-inner {
-    display: inline-block;
+    display: block;
     vertical-align: top;
     line-height: inherit;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+    transform: translateZ(0);
+    will-change: transform, opacity;
 }
 
 
@@ -703,7 +703,6 @@ h1, h2, h3, .hero-label {
    ========================================================================== */
 
 .animate-this {
-    opacity: 0;
     transform: translateY(40px);
 }
 
