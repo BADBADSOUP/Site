@@ -471,42 +471,6 @@ function destroyContainerScrollTriggers(container) {
 
 
 
-function initHomeEntrance() {
-    const isHomePage = document.querySelector("[data-barba-namespace=\"home\"]");
-    if (!isHomePage) return;
-    if (document.body.dataset.homeEntranceDone) return;
-    document.body.dataset.homeEntranceDone = "true";
-
-    const logo = document.querySelector(".site-logo");
-    const menuTrigger = document.querySelector("#trigger");
-    const elements = [logo, menuTrigger].filter(Boolean);
-
-    if (!elements.length) return;
-
-    document.body.classList.add("home-entrance-hidden");
-
-    elements.forEach(el => {
-        gsap.set(el, { opacity: 0, y: -20 });
-    });
-
-    gsap.delayedCall(ANIM.afterCurtain / 1000 || 0, () => {
-        document.body.classList.remove("home-entrance-hidden");
-        gsap.fromTo(elements,
-            { opacity: 0, y: 20 },
-            {
-                opacity: 1, y: 0, duration: 1, stagger: 0.1, ease: "expo.out",
-                onComplete() {
-                    // transform: translate(0px,0px), оставленный GSAP после анимации —
-                    // это НЕ "none", а значит .site-logo превращается в свой stacking
-                    // context и mix-blend-mode на логотипе перестаёт видеть остальную
-                    // страницу (блендится только сам с собой). Явно убираем transform
-                    // после того, как анимация входа отыграла — блендинг оживает.
-                    if (logo) gsap.set(logo, { clearProps: "transform" });
-                }
-            }
-        );
-    });
-}
 
 
 function initProjectsFilter(container = document) {
@@ -554,7 +518,6 @@ function initProjectsFilter(container = document) {
 
 function initPage(container) {
     initHeadingAnimations(container);
-    initVisualParallax(container);
     initTextReveal(container);
     initPortfolioCards(container);
     initProjectsFilter(container);
@@ -771,7 +734,6 @@ barba.hooks.before((data) => {
     }
 
     destroyContainerScrollTriggers(data.current ? data.current.container : data.next.container);
-    destroyVisualParallax();
 
      if (cursor) {
         cursor.classList.remove("active");
@@ -1480,14 +1442,8 @@ window.addEventListener("resize", () => {
    ========================================================================== */
 
 
-function initVisualParallax(container) {
-    // Parallax effects removed — images are static
-}
 
 
-function destroyVisualParallax() {
-    // Parallax effects removed — no cleanup needed
-}
 
 
 /* ==========================================================================
@@ -1805,7 +1761,6 @@ document.addEventListener("DOMContentLoaded", () => {
     initNavMenu();
     initCustomScrollbar();
 
-    // initHomeEntrance();
 
     const spline = document.querySelector("spline-viewer");
     if (!spline) return;
