@@ -15,29 +15,30 @@ if ("scrollRestoration" in history) {
    ========================================================================== */
 
 let lenis;
-let navbarWasHidden = false; // Ваше состояние для navbar
 
 function initLenis() {
-    // Безопасное уничтожение старого экземпляра при перезагрузке
-    if (lenis) {
-        lenis.destroy();
-        gsap.ticker.remove(lenisRaf);
-    }
+    // Инициализация Lenis один раз — переиспользуется между страницами
+    if (lenis) return;
 
-    // Инициализация Lenis
     lenis = new Lenis({
-        duration:        1.2,
+        duration:        0.8,
         easing:          t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel:     true,
         wheelMultiplier: 1,
     });
 
-    // Синхронизируем ScrollTrigger с Lenis при каждом скролле
     lenis.on("scroll", ScrollTrigger.update);
-
-    // Добавляем тикер GSAP
     gsap.ticker.add(lenisRaf);
     gsap.ticker.lagSmoothing(0);
+}
+
+// Сброс скролла на существующем инстансе Lenis (без пересоздания)
+function resetLenisScroll() {
+    if (lenis) {
+        lenis.stop();
+        lenis.scrollTo(0, { immediate: true });
+        lenis.start();
+    }
 }
 
 // ПРАВИЛЬНЫЙ ТИКЕР: С обязательной проверкой if(lenis), чтобы страница не ломалась
@@ -51,6 +52,113 @@ function lenisRaf(time) {
 initLenis();
 
 
+// ==========================================================================
+// CUSTOM SCROLLBAR — работает через Lenis scroll events
+// ==========================================================================
+
+let scrollbar = null;
+let scrollbarThumb = null;
+let scrollbarHideTimer = null;
+let isScrollbarDragging = false;
+let dragStartY = 0;
+let thumbStartTop = 0;
+let maxThumbTop = 0;
+
+function updateScrollbar() {
+    if (!scrollbar || !scrollbarThumb || isScrollbarDragging) return;
+
+    const scrollTop = lenis ? lenis.scroll : window.scrollY;
+    const viewportHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    const trackHeight = viewportHeight - 24;
+    const thumbHeight = Math.max(40, trackHeight * (viewportHeight / documentHeight));
+    const maxScroll = documentHeight - viewportHeight;
+
+    if (maxScroll > 0) {
+        maxThumbTop = trackHeight - thumbHeight;
+        const thumbTop = (scrollTop / maxScroll) * maxThumbTop;
+        scrollbarThumb.style.height = thumbHeight + "px";
+        scrollbarThumb.style.transform = `translateY(${thumbTop}px)`;
+    } else {
+        scrollbarThumb.style.height = trackHeight + "px";
+        scrollbarThumb.style.transform = "translateY(0)";
+    }
+
+    if (!scrollbar.classList.contains("is-scrolling")) {
+        scrollbar.classList.add("is-scrolling");
+    }
+    clearTimeout(scrollbarHideTimer);
+    scrollbarHideTimer = setTimeout(() => {
+        scrollbar.classList.remove("is-scrolling");
+    }, 800);
+}
+
+function initCustomScrollbar() {
+    scrollbar = document.querySelector(".custom-scrollbar");
+    if (!scrollbar) return;
+
+    scrollbarThumb = scrollbar.querySelector(".custom-scrollbar-thumb");
+    if (!scrollbarThumb) return;
+
+    // Listen to Lenis scroll events (virtualized scroll position)
+    if (lenis) {
+        lenis.on("scroll", updateScrollbar);
+    }
+    // Fallback to native scroll for non-Lenis contexts
+    window.addEventListener("scroll", updateScrollbar, { passive: true });
+    window.addEventListener("resize", updateScrollbar);
+
+    // Drag-to-scroll
+    scrollbarThumb.addEventListener("mousedown", (e) => {
+        isScrollbarDragging = true;
+        dragStartY = e.clientY;
+        thumbStartTop = parseFloat(scrollbarThumb.style.transform?.match(/[\d.-]+/)?.[0] || 0);
+        document.body.style.userSelect = "none";
+    });
+
+    const onMouseMove = (e) => {
+        if (!isScrollbarDragging) return;
+        const deltaY = e.clientY - dragStartY;
+        const viewportHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        const maxScroll = documentHeight - viewportHeight;
+        if (maxScroll <= 0) return;
+
+        const trackHeight = viewportHeight - 24;
+        const thumbHeight = Math.max(40, trackHeight * (viewportHeight / documentHeight));
+        const currentMaxThumbTop = trackHeight - thumbHeight;
+
+        let newTop = thumbStartTop + deltaY;
+        newTop = Math.max(0, Math.min(currentMaxThumbTop, newTop));
+
+        // Update thumb position visually while dragging
+        scrollbarThumb.style.transform = `translateY(${newTop}px)`;
+
+        const scrollRatio = newTop / currentMaxThumbTop;
+        const targetScroll = scrollRatio * maxScroll;
+
+        if (lenis) {
+            lenis.scrollTo(targetScroll, { immediate: true, disableLerp: true });
+        } else {
+            window.scrollTo(0, targetScroll);
+        }
+    };
+
+    const onMouseUp = () => {
+        if (!isScrollbarDragging) return;
+        isScrollbarDragging = false;
+        document.body.style.userSelect = "";
+    };
+
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+
+    // Initial position update
+    updateScrollbar();
+}
+
+
 
 /* ==========================================================================
    ANIMATION SETTINGS — все настройки анимаций здесь
@@ -60,26 +168,45 @@ const ANIM = {
 
     // Шторка перехода между страницами
     curtain: {
-        duration:   0.55,   // длительность въезда/выезда шторки (сек)
-        ease:       "power3.inOut",
+        duration:   1,   // длительность въезда/выезда шторки (сек)
+        ease:       "power4.inOut",
     },
 
     // Задержка запуска анимаций после открытия шторки (мс)
-    afterCurtain: 0,
+    afterCurtain: 5,
 
-    // Заголовки h1, h2, h3, .hero-label — анимация по словам
+    // Заголовки — анимация по словам
+    // Никита Копытов
     headings: {
-        hero: {
-            duration:   0.7,      // длительность анимации одного слова
-            stagger:    0.03,   // задержка между словами
-            delay:      0.1,    // начальная задержка
+        h1: {
+            duration:   0.85,
+            stagger:    0.03,
+            delay:      0.6,
+            ease:       "expo.out",
+        },
+        h2: {
+            duration:   0.8,
+            stagger:    0.025,
+            ease:       "power2.out",
+            scrollStart: "top 88%",
+        },
+        h3: {
+            duration:   0.7,
+            stagger:    0.02,
+            ease:       "power3.out",
+            scrollStart: "top 85%",
+        },
+        label: {
+            duration:   1.0,
+            stagger:    0.04,
+            delay:      0.4,
             ease:       "expo.out",
         },
         section: {
             duration:   2,
             stagger:    0.015,
             ease:       "expo.out",
-            scrollStart: "top 88%", // точка запуска при скролле
+            scrollStart: "top 88%",
         },
     },
 
@@ -88,7 +215,39 @@ const ANIM = {
         duration:   2,
         stagger:    0.08,
         gap:        0.3,   // задержка после h1 перед description (сек)
+        ease:       "power3.out",
+    },
+
+    // Hero image reveal — for .hero_image blocks
+    heroImage: {
+        duration:   0.9,
+        delay:      0.5,
+        ease:       "power4.out",
+        scrollStart: "top 82%",
+    },
+
+    // Custom reveal for .reveal-custom elements
+    custom: {
+        duration:   0.4,
+        stagger:    0.1,
+        delay:      0.02,
+        ease:       "power3.out",
+        scrollStart: "top 88%",
+    },
+
+    // UIUX дизайнер с 15+
+    intro: {
+        duration:   1.4,
+        stagger:    0.06,
+        delay:      0.7,   // небольшая задержка после начала перехода
         ease:       "expo.out",
+    },
+
+    // Portfolio card animations
+    portfolio: {
+        firstDelay: 1,
+        duration: 2,
+        ease: "power4.out",
     },
 
 };
@@ -107,8 +266,15 @@ function loadPageStyles(namespace) {
         if (namespace === "truco" && !loadedStyles.has("truco")) {
             const link = document.createElement("link");
             link.rel  = "stylesheet";
-            link.href = "/truco/truco.css";
+            link.href = "/trucotest/trucotest.css";
             link.onload  = () => { loadedStyles.add("truco"); resolve(); };
+            link.onerror = () => resolve();
+            document.head.appendChild(link);
+        } else if (namespace === "foresight" && !loadedStyles.has("foresight")) {
+            const link = document.createElement("link");
+            link.rel  = "stylesheet";
+            link.href = "/foresight/foresight.css";
+            link.onload  = () => { loadedStyles.add("foresight"); resolve(); };
             link.onerror = () => resolve();
             document.head.appendChild(link);
         } else if (namespace === "pg3d" && !loadedStyles.has("pg3d")) {
@@ -142,6 +308,9 @@ function splitLines(container) {
         // Skip project-title headings — no text animation
         if (el.classList.contains("project-title")) return;
 
+        // Skip hero-intro — handled by initTextReveal (line-by-line animation)
+        if (el.classList.contains("hero-intro")) return;
+
         // Если уже был split — восстанавливаем оригинальный HTML
         if (el.dataset.split) {
             el.innerHTML = el.dataset.original || el.textContent;
@@ -158,15 +327,16 @@ function splitLines(container) {
         el.style.opacity = "";  // Clear any inline opacity from restore step
 
         const html = el.dataset.original;
-        // Разбиваем на части: слова, пробелы и <br>
-        const parts = html.split(/(<br\s*\/?>|\s+)/gi);
+        // Разбиваем на части: слова, пробелы, <br> и HTML-теги (чтобы не ломать теги с атрибутами)
+        const parts = html.split(/(<br\s*\/?>|<[^>]+>|\s+)/gi);
 
-        // Каждое слово оборачиваем в .line-wrapper > .line-inner
+        // Каждое слово оборачываем в .line-wrapper > .line-inner
         el.innerHTML = parts
             .filter(part => part.length > 0)
             .map(part => {
                 if (/^<br/i.test(part)) return part; // <br> оставляем как есть
                 if (/^\s+$/.test(part)) return part; // пробелы тоже
+                if (/^<[a-zA-Z]/.test(part)) return part; // HTML-теги оставляем как есть
                 // Слово → обёртка
                 return `<span class="line-wrapper"><span class="line-inner">${part}</span></span>`;
             })
@@ -190,8 +360,23 @@ function initHeadingAnimations(container) {
     });
 
     groups.forEach((lines, heading) => {
-        const isHero = heading.matches("h1, .hero-label");
-        const cfg = isHero ? ANIM.headings.hero : ANIM.headings.section;
+        const tagName = heading.tagName.toLowerCase();
+        const isSection = heading.matches("h2, h3");
+        let cfg;
+
+        if (tagName === "h1") {
+            cfg = ANIM.headings.h1;
+        } else if (tagName === "h2") {
+            cfg = ANIM.headings.h2;
+        } else if (tagName === "h3") {
+            cfg = ANIM.headings.h3;
+        } else if (heading.classList.contains("hero-label")) {
+            cfg = ANIM.headings.label;
+        } else {
+            cfg = ANIM.headings.section;
+        }
+
+        const isImmediate = !isSection;
 
         gsap.fromTo(lines,
             { y: "110%" },
@@ -200,21 +385,37 @@ function initHeadingAnimations(container) {
                 duration: cfg.duration,
                 stagger:  cfg.stagger,
                 ease:     cfg.ease,
-                delay:    isHero ? cfg.delay : 0,
-                scrollTrigger: isHero ? null : {
+                delay:    isImmediate ? (cfg.delay || 0) : 0,
+                scrollTrigger: isImmediate ? null : {
                     trigger: heading,
-                    start:   ANIM.headings.section.scrollStart,
+                    start:   cfg.scrollStart || ANIM.headings.section.scrollStart,
                     once:    true
                 }
             }
         );
     });
 
-    // Анимация hero-description по строкам — после h1
+     // Анимация hero-description по строкам — после h1
     initDescriptionAnimation(container);
 
-    // Анимация filter-section
-    initFilterSectionAnimation(container);
+    // Анимация star-badge — появляется после фамилии
+    initStarBadgeAnimation(container);
+}
+
+function initStarBadgeAnimation(container) {
+    const badge = container.querySelector(".star-badge");
+    if (!badge || badge.dataset.starBadgeInit) return;
+    badge.dataset.starBadgeInit = "true";
+
+    gsap.set(badge, { opacity: 0, scale: 0, rotate: 0 });
+    gsap.to(badge, {
+        opacity: 1,
+        scale: 1,
+        rotate: 0,
+        duration: 0.8,
+        delay: ANIM.headings.h1.delay + 0.4,
+        ease: "expo.out"
+    });
 }
 
 function initDescriptionAnimation(container) {
@@ -240,7 +441,7 @@ function initDescriptionAnimation(container) {
     desc.style.opacity = "1";
 
     // Анимируем строки после завершения h1
-    const delay = ANIM.headings.hero.delay + ANIM.description.gap;
+    const delay = (ANIM.headings.h1.delay + ANIM.headings.h1.duration) + ANIM.description.gap;
     gsap.set(desc.querySelectorAll(".reveal-line-inner"), { yPercent: 110, opacity: 0 });
     gsap.to(desc.querySelectorAll(".reveal-line-inner"), {
         yPercent: 0,
@@ -268,49 +469,253 @@ function destroyContainerScrollTriggers(container) {
     });
 }
 
-function initMobileMenu() {
-    const burger = document.getElementById("navbarBurger");
-    const mobileMenu = document.getElementById("navbarMobileMenu");
-    const closeBtn = document.getElementById("navbarMenuClose");
-    if (!burger || !mobileMenu) return;
-    const openMenu = () => {
-        burger.setAttribute("aria-expanded", "true");
-        mobileMenu.classList.add("is-open");
-        document.body.style.overflow = "hidden";
-    };
-    const closeMenu = () => {
-        burger.setAttribute("aria-expanded", "false");
-        mobileMenu.classList.remove("is-open");
-        document.body.style.overflow = "";
-    };
-    burger.addEventListener("click", openMenu);
-    if (closeBtn) closeBtn.addEventListener("click", closeMenu);
-    mobileMenu.addEventListener("click", (e) => {
-        if (e.target === mobileMenu) closeMenu();
+
+
+function initHomeEntrance() {
+    const isHomePage = document.querySelector("[data-barba-namespace=\"home\"]");
+    if (!isHomePage) return;
+    if (document.body.dataset.homeEntranceDone) return;
+    document.body.dataset.homeEntranceDone = "true";
+
+    const logo = document.querySelector(".site-logo");
+    const menuTrigger = document.querySelector("#trigger");
+    const elements = [logo, menuTrigger].filter(Boolean);
+
+    if (!elements.length) return;
+
+    document.body.classList.add("home-entrance-hidden");
+
+    elements.forEach(el => {
+        gsap.set(el, { opacity: 0, y: -20 });
     });
-    mobileMenu.querySelectorAll(".navbar__mobile-link").forEach(link => {
-        link.addEventListener("click", closeMenu);
+
+    gsap.delayedCall(ANIM.afterCurtain / 1000 || 0, () => {
+        document.body.classList.remove("home-entrance-hidden");
+        gsap.fromTo(elements,
+            { opacity: 0, y: 20 },
+            {
+                opacity: 1, y: 0, duration: 1, stagger: 0.1, ease: "expo.out",
+                onComplete() {
+                    // transform: translate(0px,0px), оставленный GSAP после анимации —
+                    // это НЕ "none", а значит .site-logo превращается в свой stacking
+                    // context и mix-blend-mode на логотипе перестаёт видеть остальную
+                    // страницу (блендится только сам с собой). Явно убираем transform
+                    // после того, как анимация входа отыграла — блендинг оживает.
+                    if (logo) gsap.set(logo, { clearProps: "transform" });
+                }
+            }
+        );
     });
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && mobileMenu.classList.contains("is-open")) {
-            closeMenu();
-        }
+}
+
+
+function initProjectsFilter(container = document) {
+    const filterSection = container.querySelector(".projects-filter-section");
+    if (!filterSection || filterSection.dataset.projectsFilterInit) return;
+    filterSection.dataset.projectsFilterInit = "true";
+
+    const buttons = filterSection.querySelectorAll(".projects-filter-btn");
+    const cards = container.querySelectorAll(".project-link, .project-item");
+
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const filter = btn.dataset.filter;
+            buttons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            cards.forEach(card => {
+                const category = card.dataset.category;
+                const shouldShow = filter === "all" || category === filter;
+
+                gsap.killTweensOf(card);
+
+                if (shouldShow) {
+                    card.style.display = "";
+                    gsap.fromTo(card,
+                        { opacity: 0, y: 20 },
+                        { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }
+                    );
+                } else {
+                    gsap.to(card, {
+                        opacity: 0,
+                        y: 20,
+                        duration: 0.3,
+                        ease: "power3.in",
+                        onComplete: () => {
+                            card.style.display = "none";
+                        }
+                    });
+                }
+            });
+        });
     });
 }
 
 
 function initPage(container) {
     initHeadingAnimations(container);
-    initNavbarWordAnimation();
-    initNavigationTheme();
     initVisualParallax(container);
     initTextReveal(container);
     initPortfolioCards(container);
-    initPortfolioFilter(container);
-    initMobileMenu();
+    initProjectsFilter(container);
     initComparisonSliders(container);
     initComparisonSliderAnimation(container);
+    initAutoplayVideos(container);
+    initUserflowBelt(container);
     pageInitDone = true;
+}
+
+/* ==========================================================================
+   USERFLOW BELT — бесшовная лента
+   Считаем ширину одной картинки, клонируем до заполнения экрана + 1,
+   запускаем CSS-анимацию translateX(0 → -oneImgWidth).
+   ========================================================================== */
+
+function initUserflowBelt(container) {
+    const track = container.querySelector(".userflow-track");
+    if (!track) return;
+
+    const firstImg = track.querySelector(".userflow-img");
+    if (!firstImg) return;
+
+    function setup() {
+        const imgW = firstImg.offsetWidth;
+        if (!imgW) return;
+
+        // Удаляем все старые копии кроме первой
+        while (track.children.length > 1) {
+            track.removeChild(track.lastChild);
+        }
+
+        // Добавляем копии пока трек не покроет экран с запасом одной картинки
+        const needed = Math.ceil(window.innerWidth / imgW) + 2;
+        for (let i = 0; i < needed; i++) {
+            const clone = firstImg.cloneNode(true);
+            clone.removeAttribute("id");
+            clone.setAttribute("aria-hidden", "true");
+            clone.alt = "";
+            track.appendChild(clone);
+        }
+
+        // Анимируем ровно на одну картинку — бесшовный сброс
+        track.style.setProperty("--userflow-shift", `-${imgW}px`);
+        track.style.animation = `userflow-loop ${imgW / 80}s linear infinite`;
+    }
+
+    if (firstImg.complete && firstImg.naturalWidth) {
+        setup();
+    } else {
+        firstImg.addEventListener("load", setup, { once: true });
+    }
+
+    window.addEventListener("resize", () => {
+        clearTimeout(window._userflowResizeTimer);
+        window._userflowResizeTimer = setTimeout(setup, 200);
+    });
+}
+
+function initAutoplayVideos(container) {
+    const videos = container.querySelectorAll("video[autoplay]");
+    videos.forEach(video => {
+        video.load();
+        video.play().catch(() => {});
+    });
+}
+
+/* ==========================================================================
+   CONCEPT STICKY SCROLL
+   ========================================================================== */
+
+function initConceptScroll(container) {
+    const wrapper = container.querySelector(".concept-scroll-wrapper");
+    if (!wrapper) return;
+
+    const section = wrapper.querySelector(".ui-section--concept");
+    const showcase = wrapper.querySelector(".ui-section--concept .ui-section__showcase");
+    const img = wrapper.querySelector(".ui-section__img--concept");
+    if (!section || !showcase || !img) return;
+
+    if (wrapper._conceptST) {
+        wrapper._conceptST.kill();
+        wrapper._conceptST = null;
+    }
+
+    function setup() {
+        if (window.innerWidth <= 768) {
+            wrapper.style.height = "";
+            gsap.set(img, { clearProps: "y" });
+            if (wrapper._conceptST) { wrapper._conceptST.kill(); wrapper._conceptST = null; }
+            return;
+        }
+
+        const vh = window.innerHeight;
+        const showcaseWidth = showcase.offsetWidth;
+        const naturalW = img.naturalWidth;
+        const naturalH = img.naturalHeight;
+
+        // Если размеры ещё не посчитаны — откладываем до следующего rAF
+        if (!naturalW || !naturalH || !showcaseWidth) {
+            requestAnimationFrame(setup);
+            return;
+        }
+
+        const imgH = (showcaseWidth / naturalW) * naturalH;
+        const scrollDistance = imgH - vh;
+        if (scrollDistance <= 0) return;
+
+        wrapper.style.height = (vh + scrollDistance) + "px";
+
+        gsap.set(img, { y: 0 });
+
+        if (wrapper._conceptST) { wrapper._conceptST.kill(); }
+
+        wrapper._conceptST = ScrollTrigger.create({
+            trigger: wrapper,
+            start: "top top",
+            end: "+=" + scrollDistance,
+            pin: section,
+            pinSpacing: false,
+            scrub: true,
+            anticipatePin: 1,
+            onUpdate: self => {
+                gsap.set(img, { y: -(scrollDistance * self.progress) });
+            },
+            onRefresh: self => {
+                // Пересчитываем scrollDistance при refresh (ресайз)
+                const sw = showcase.offsetWidth;
+                const nw = img.naturalWidth;
+                const nh = img.naturalHeight;
+                if (!sw || !nw || !nh) return;
+                const newImgH = (sw / nw) * nh;
+                const newDist = newImgH - window.innerHeight;
+                if (newDist > 0) {
+                    wrapper.style.height = (window.innerHeight + newDist) + "px";
+                    self.end = self.start + newDist;
+                }
+            },
+            invalidateOnRefresh: true,
+        });
+    }
+
+    function init() {
+        requestAnimationFrame(() => requestAnimationFrame(setup));
+    }
+
+    if (img.complete && img.naturalWidth) {
+        init();
+    } else {
+        img.addEventListener("load", init, { once: true });
+    }
+
+    // Сохраняем ссылку на init чтобы finalize мог перезапустить после refresh
+    wrapper._conceptInit = init;
+
+    window._conceptResizeHandler && window.removeEventListener("resize", window._conceptResizeHandler);
+    window._conceptResizeHandler = () => {
+        clearTimeout(window._conceptResizeTimer);
+        window._conceptResizeTimer = setTimeout(init, 200);
+    };
+    window.addEventListener("resize", window._conceptResizeHandler);
 }
 
 
@@ -318,9 +723,25 @@ function initPage(container) {
    BARBA HOOKS
    ========================================================================== */
 
+/* Определяем, ведёт ли переход на главную страницу.
+   Сознательно НЕ используем data.next.namespace — в этой сборке Barba
+   (@barba/core@2.10.3) это поле ненадёжно на фазе "before" (может быть
+   пустым). data.next.url доступен всегда и с самого начала, поэтому
+   решение "домой или нет" принимаем строго по пути в URL. */
+function isHomeUrl(url) {
+    if (!url) return false;
+    try {
+        const href = typeof url === "string" ? url : url.href;
+        const path = new URL(href, window.location.origin).pathname;
+        return path === "/" || /\/index\.html?$/.test(path);
+    } catch (e) {
+        return false;
+    }
+}
+
 barba.hooks.before((data) => {
-    const navbar = document.querySelector(".navbar");
-    const cursor = document.querySelector(".custom-cursor");
+    const cursor = document.getElementById("main-cursor");
+    const menuTrigger = document.querySelector("#trigger");
 
     if (lenis) lenis.stop();
 
@@ -329,105 +750,140 @@ barba.hooks.before((data) => {
     document.body.style.top = `-${scrollY}px`;
     document.body.style.width = "100%";
 
-    // Отключаем наблюдатель за темами навбара
-    destroyNavigationTheme();
+    // Force-close nav menu if still animating (state may be stuck in "closing")
+    if (menuTrigger && menuTrigger.getAttribute("aria-expanded") === "true") {
+        const menu = document.querySelector("#menu");
+        if (menu) {
+            gsap.set(menu, { opacity: 0, pointerEvents: "none" });
+        }
+        if (menuTrigger) menuTrigger.setAttribute("aria-expanded", "false");
+    }
 
-    destroyContainerScrollTriggers(data.current.container);
+    // Fade out logo and menu during transition
+    const menu = document.querySelector("#menu");
+    const logo = document.querySelector(".site-logo");
+    if (menu) gsap.set(menu, { opacity: 0 });
+    if (logo) gsap.set(logo, { opacity: 0 });
+
+    // Reset home entrance guard when leaving home page
+    if (!isHomeUrl(data.next.url)) {
+        delete document.body.dataset.homeEntranceDone;
+    }
+
+    destroyContainerScrollTriggers(data.current ? data.current.container : data.next.container);
     destroyVisualParallax();
 
-    // Запоминаем состояние navbar: скрыт ли он из-за скролла
-    if (navbar) {
-        navbarWasHidden = navbar.classList.contains("navbar--hidden");
-    }
-
-    // Скрываем navbar — предотвращает видимость во время перехода
-    if (navbar) {
-        navbar.classList.add("navbar--hidden");
-        navbar.classList.add("navbar--transparent");
-    }
-
-    // Скрываем курсор при переходе между страницами
-    if (cursor) {
+     if (cursor) {
         cursor.classList.remove("active");
         document.documentElement.classList.remove("cursor-hidden");
         cursor.style.display = "none";
     }
 
-    // Скрываем navbar слова до того как анимация пройдёт —
-    // предотвращает видимость уже-анимированных слов во время перехода
-    const navbarInners = document.querySelectorAll(".navbar .line-inner");
-    if (navbarInners.length) {
-        gsap.set(navbarInners, { y: "110%", opacity: 0 });
+    if (scrollbar) {
+        scrollbar.classList.remove("is-scrolling");
+        scrollbar.style.opacity = "0";
     }
 
-    const el = document.querySelector(".loading-screen");
-    if (!el) return;
-    gsap.killTweensOf(el);
-    gsap.fromTo(el,
-        { x: "100%" },
-        { x: "0%", duration: ANIM.curtain.duration, ease: ANIM.curtain.ease }
-    );
+    // --- Navigation between pages — always use dark curtain ---
+    const dark = document.querySelector(".dark-curtain");
+    if (dark) {
+        gsap.killTweensOf(dark);
+        gsap.fromTo(dark,
+            { y: "100%" },
+            { y: "0%", duration: ANIM.curtain.duration, ease: ANIM.curtain.ease }
+        );
+    }
 });
 
 barba.hooks.afterLeave(async (data) => {
     document.body.style.position = "";
     document.body.style.top = "";
     document.body.style.width = "";
+    // Сбрасываем overflow на случай, если мобильное меню было открыто при переходе
+    document.body.style.overflow = "";
 
     data.next.container.style.visibility = "hidden";
-    await loadPageStyles(data.next.namespace);
+    await loadPageStyles(data.next.container.dataset.barbaNamespace || data.next.namespace);
     window.scrollTo(0, 0);
 });
 
 barba.hooks.after((data) => {
     data.next.container.style.visibility = "visible";
 
-    // Управляем видимостью кастомного курсора
-    const cursor = document.querySelector(".custom-cursor");
+    const cursor = document.getElementById("main-cursor");
     if (cursor) {
-        const isHome = data.next.namespace === "home";
-        cursor.style.display = isHome ? "" : "none";
+        const isHome = (data.next.container.dataset.barbaNamespace || data.next.namespace) === "home";
         if (isHome) {
+            cursor.classList.remove("active");
+            document.documentElement.classList.remove("cursor-hidden");
             initCursor();
+        } else {
+            cursor.style.display = "none";
+            cursor.classList.remove("active");
+            cursor._xTo = null;
+            cursor._yTo = null;
+            document.documentElement.classList.remove("cursor-hidden");
+            document.removeEventListener("mousemove", onCursorMouseMove);
+            document.removeEventListener("mouseover", onCursorMouseOver);
+            document.removeEventListener("mouseout", onCursorMouseOut);
         }
     }
 
-    // Сбрасываем поверхность navbar в прозрачное состояние для новой страницы
-    // НЕ раскрываем navbar здесь — он останется скрытым до окончания curtain-анимации
-    const navbar = document.querySelector(".navbar");
-    if (navbar) {
-        navbar.classList.add("navbar--transparent");
-    }
+    const finalize = () => {
+        resetLenisScroll();
+        ScrollTrigger.refresh();
 
-    const el = document.querySelector(".loading-screen");
-    if (!el) {
-        // Если loading screen уже есть — сразу инициализируем страницу
-        setTimeout(() => {
-            initLenis();
-            initNavbarScrollHide();
-            initPage(data.next.container);
-            // Всегда раскрываем navbar на новой странице
-            if (navbar) navbar.classList.remove("navbar--hidden");
-        }, ANIM.afterCurtain);
-        return;
-    }
-    gsap.killTweensOf(el);
-    gsap.set(el, { x: "0%" });
-    gsap.to(el, {
-        x: "-100%",
-        duration: ANIM.curtain.duration,
-        ease: ANIM.curtain.ease,
-        onComplete: () => {
-            gsap.set(el, { x: "100%" });
-            setTimeout(() => {
-                initLenis();
-                initNavbarScrollHide();
-                initPage(data.next.container);
-                // Всегда раскрываем navbar на новой странице
-                if (navbar) navbar.classList.remove("navbar--hidden");
-            }, ANIM.afterCurtain);
+        if (scrollbar) {
+            scrollbar.style.opacity = "";
         }
-    });
+        if (scrollbarThumb) {
+            scrollbarThumb.style.opacity = "";
+        }
+        updateScrollbar();
+
+        // Reset nav menu state after transition
+        menuState = "closed";
+        const menu = document.querySelector("#menu");
+        const menuTrigger = document.querySelector("#trigger");
+        const logo = document.querySelector(".site-logo");
+        if (menu && menuTrigger) {
+            // Полный сброс через _reset — синхронизирует локальный state в замыкании
+            if (typeof menu._reset === "function") {
+                menu._reset();
+            } else {
+                gsap.set(menu, { pointerEvents: "auto", scale: window.innerWidth < 1900 ? 0.8 : 1 });
+                menuTrigger.setAttribute("aria-expanded", "false");
+                gsap.set(menu.querySelector("#surface"), { width: 208, height: 77 });
+                gsap.set(menu.querySelector("#trigger"), { width: 208, height: 77 });
+                gsap.set(menu.querySelector("#items"), { opacity: 0, pointerEvents: "none" });
+            }
+            gsap.set(menu, { opacity: 0 });
+
+            // Fade in menu and logo after curtain transition
+            gsap.to(menu, { opacity: 1, duration: 0.5, ease: "expo.out", delay: 0.1 });
+            if (logo) gsap.to(logo, { opacity: 1, duration: 0.5, ease: "power2.out", delay: 0.1 });
+        }
+    };
+
+    // Start page text animations while curtain is closing (before curtain fully closes)
+    initPage(data.next.container);
+
+    // Dark curtain continues rising up past the fold, then resets
+    const dark = document.querySelector(".dark-curtain");
+    if (dark) {
+        gsap.killTweensOf(dark);
+        gsap.to(dark, {
+            y: "-100%",
+            duration: ANIM.curtain.duration,
+            ease: ANIM.curtain.ease,
+            onComplete: () => {
+                gsap.set(dark, { y: "100%" });
+                setTimeout(finalize, ANIM.afterCurtain);
+            }
+        });
+    } else {
+        setTimeout(finalize, ANIM.afterCurtain);
+    }
 });
 
 
@@ -436,20 +892,109 @@ barba.hooks.after((data) => {
    ========================================================================== */
 
 barba.init({
-    transitions: [{
-        async leave() {
-            await new Promise(resolve => setTimeout(resolve, ANIM.curtain.duration * 1000));
+    transitions: [
+        {
+            name: "home-to-internal",
+            from: { namespace: ["home"] },
+            once(data) {
+                initialPageLoaded = true;
+                const nextNS = data.next.container.dataset.barbaNamespace || data.next.namespace;
+                if (nextNS === "truco") loadedStyles.add("truco");
+                if (nextNS === "foresight") loadedStyles.add("foresight");
+                if (nextNS === "pg3d") loadedStyles.add("pg3d");
+                data.next.container.style.visibility = "visible";
+
+                const dark = document.querySelector(".dark-curtain");
+                if (dark) {
+                    gsap.set(dark, { y: "0%" });
+
+                    // Задержка перед открытием — только при первом входе
+                    gsap.delayedCall(0.4, () => {
+                        // Запускаем анимации страницы под шторкой — как при переходе между страницами
+                        initPage(data.next.container);
+
+                        gsap.to(dark, {
+                            y: "-100%",
+                            duration: ANIM.curtain.duration,
+                            ease: ANIM.curtain.ease,
+                            onComplete: () => {
+                                gsap.set(dark, { y: "100%" });
+                                setTimeout(() => {
+                                    resetLenisScroll();
+                                    ScrollTrigger.refresh();
+                                    updateScrollbar();
+                                    initCursor();
+                                    const menu = document.querySelector("#menu");
+                                    const menuTrigger = document.querySelector("#trigger");
+                                    const logo = document.querySelector(".site-logo");
+                                    if (menu && menuTrigger) {
+                                        if (typeof menu._reset === "function") menu._reset();
+                                        gsap.set(menu, { opacity: 0 });
+                                        gsap.to(menu, { opacity: 1, duration: 0.5, ease: "expo.out", delay: 0.1 });
+                                        if (logo) gsap.to(logo, { opacity: 1, duration: 0.5, ease: "power2.out", delay: 0.1 });
+                                    }
+                                }, ANIM.afterCurtain);
+                            }
+                        });
+                    });
+                } else {
+                    initPage(data.next.container);
+                }
+            },
+            leave(data) {
+                return new Promise(resolve => {
+                    setTimeout(resolve, ANIM.curtain.duration * 1000);
+                });
+            }
         },
-        once(data) {
-            initialPageLoaded = true;
-            if (data.next.namespace === "truco") loadedStyles.add("truco");
-            if (data.next.namespace === "pg3d") loadedStyles.add("pg3d");
-            data.next.container.style.visibility = "visible";
-            setTimeout(() => {
-                initPage(data.next.container);
-            }, ANIM.afterCurtain);
+        {
+            name: "default",
+            once(data) {
+                initialPageLoaded = true;
+                data.next.container.style.visibility = "visible";
+
+                const dark = document.querySelector(".dark-curtain");
+                if (dark) {
+                    gsap.set(dark, { y: "0%" });
+
+                    gsap.delayedCall(0.4, () => {
+                        initPage(data.next.container);
+
+                        gsap.to(dark, {
+                            y: "-100%",
+                            duration: ANIM.curtain.duration,
+                            ease: ANIM.curtain.ease,
+                            onComplete: () => {
+                                gsap.set(dark, { y: "100%" });
+                                setTimeout(() => {
+                                    resetLenisScroll();
+                                    ScrollTrigger.refresh();
+                                    updateScrollbar();
+                                    initCursor();
+                                    const menu = document.querySelector("#menu");
+                                    const menuTrigger = document.querySelector("#trigger");
+                                    const logo = document.querySelector(".site-logo");
+                                    if (menu && menuTrigger) {
+                                        if (typeof menu._reset === "function") menu._reset();
+                                        gsap.set(menu, { opacity: 0 });
+                                        gsap.to(menu, { opacity: 1, duration: 0.5, ease: "expo.out", delay: 0.1 });
+                                        if (logo) gsap.to(logo, { opacity: 1, duration: 0.5, ease: "power2.out", delay: 0.1 });
+                                    }
+                                }, ANIM.afterCurtain);
+                            }
+                        });
+                    });
+                } else {
+                    initPage(data.next.container);
+                }
+            },
+            leave(data) {
+                return new Promise(resolve => {
+                    setTimeout(resolve, ANIM.curtain.duration * 1000);
+                });
+            }
         }
-    }]
+    ]
 });
 
 
@@ -458,17 +1003,20 @@ barba.init({
    ========================================================================== */
 
 function initCursor() {
-    const cursor = document.querySelector(".custom-cursor");
+    const cursor = document.getElementById("main-cursor");
     if (!cursor || window.innerWidth < 768) return;
 
-    /* Кастомный курсор только на главной странице */
-    const isHomePage = document.querySelector("[data-barba-namespace=\"home\"]");
-    if (!isHomePage) {
-        cursor.style.display = "none";
-        return;
-    }
+    cursor.style.display = "";
 
-    // Remove old listeners to prevent duplicates on Barba transitions
+    // Сбрасываем состояние — курсор невидим, маленький, в центре
+    gsap.set(cursor, { xPercent: -50, yPercent: -50 });
+
+    // Пересоздаём quickTo при каждом возврате на главную —
+    // старые инстансы могли остаться от предыдущей сессии
+    cursor._xTo = gsap.quickTo(cursor, "x", { duration: 0.6, ease: "power3" });
+    cursor._yTo = gsap.quickTo(cursor, "y", { duration: 0.6, ease: "power3" });
+
+    // Снимаем старые listeners перед добавлением новых
     document.removeEventListener("mousemove", onCursorMouseMove);
     document.removeEventListener("mouseover", onCursorMouseOver);
     document.removeEventListener("mouseout", onCursorMouseOut);
@@ -479,14 +1027,20 @@ function initCursor() {
 }
 
 function onCursorMouseMove(e) {
-    const cursor = document.querySelector(".custom-cursor");
-    if (cursor) gsap.set(cursor, { x: e.clientX, y: e.clientY });
+    const cursor = document.getElementById("main-cursor");
+    if (!cursor) return;
+    if (cursor._xTo && cursor._yTo) {
+        cursor._xTo(e.clientX);
+        cursor._yTo(e.clientY);
+    } else {
+        gsap.set(cursor, { x: e.clientX, y: e.clientY });
+    }
 }
 
 function onCursorMouseOver(e) {
     const img = e.target.closest(".project-image, .portfolio-img");
     if (img) {
-        const cursor = document.querySelector(".custom-cursor");
+        const cursor = document.getElementById("main-cursor");
         if (cursor) cursor.classList.add("active");
         document.documentElement.classList.add("cursor-hidden");
     }
@@ -495,7 +1049,7 @@ function onCursorMouseOver(e) {
 function onCursorMouseOut(e) {
     const img = e.target.closest(".project-image, .portfolio-img");
     if (img && !img.contains(e.relatedTarget)) {
-        const cursor = document.querySelector(".custom-cursor");
+        const cursor = document.getElementById("main-cursor");
         if (cursor) cursor.classList.remove("active");
         document.documentElement.classList.remove("cursor-hidden");
     }
@@ -503,102 +1057,9 @@ function onCursorMouseOut(e) {
 
 initCursor();
 
-
-
-
 /* ==========================================================================
-    PORTFOLIO FILTER
-    ========================================================================== */
-
-
-function initPortfolioFilter(container = document) {
-
-    const filterSection = container.querySelector(".filter-section");
-
-    if (!filterSection || filterSection.dataset.filterInit) return;
-
-    filterSection.dataset.filterInit = "true";
-
-    const buttons = filterSection.querySelectorAll(".filter-btn");
-
-    const cards = container.querySelectorAll(".project-card");
-
-    buttons.forEach(btn => {
-
-        btn.addEventListener("click", () => {
-
-            const filter = btn.dataset.filter;
-
-            buttons.forEach(b => b.classList.remove("active"));
-
-            btn.classList.add("active");
-
-            cards.forEach(card => {
-
-                const category = card.dataset.category;
-
-                const shouldShow = filter === "all" || category === filter;
-
-                gsap.killTweensOf(card);
-
-                if (shouldShow) {
-
-                    card.style.display = "";
-
-                    card.style.opacity = "0";
-
-                    card.style.transform = "translateY(20px)";
-
-                    gsap.to(card, {
-
-                        opacity: 1,
-
-                        y: 0,
-
-                        duration: 0.4,
-
-                        ease: "power3.out",
-
-                        clearProps: "transform"
-
-                    });
-
-                } else {
-
-                    gsap.to(card, {
-
-                        opacity: 0,
-
-                        y: 20,
-
-                        duration: 0.3,
-
-                        ease: "power3.in",
-
-                        onComplete: () => {
-
-                            card.style.display = "none";
-
-                        }
-
-                    });
-
-                }
-
-            });
-
-        });
-
-    });
-
-}
-
-
-/* ==========================================================================
-    WORD SPLIT & REVEAL — navbar, filter-section
-    Reuses the existing .line-wrapper > .line-inner pattern and ANIM settings.
-    ========================================================================== */
-
+   WORD SPLIT & REVEAL
+   ========================================================================== */
 
 function splitWords(element) {
 
@@ -655,36 +1116,6 @@ function splitWords(element) {
 }
 
 
-function initNavbarWordAnimation() {
-
-    const navbar = document.querySelector(".navbar");
-    if (!navbar) return;
-
-    const brandName  = navbar.querySelector(".navbar__brand-name");
-    const navLinks   = navbar.querySelectorAll(".navbar__link");
-
-    if (brandName && !brandName.dataset.splitWords) splitWords(brandName);
-    navLinks.forEach(link => {
-        if (!link.dataset.splitWords) splitWords(link);
-    });
-
-    const inners = navbar.querySelectorAll(".line-inner");
-    if (!inners.length) return;
-
-    gsap.set(inners, { y: "110%", opacity: 0 });
-
-    gsap.to(inners, {
-        y: "0%",
-        opacity: 1,
-        duration: ANIM.headings.hero.duration,
-        stagger: 0.03,
-        ease: ANIM.headings.hero.ease,
-        delay: ANIM.headings.hero.delay
-    });
-
-}
-
-
 /* ==========================================================================
    TEXT REVEAL ANIMATION (line-by-line)
    Elements with .animate-this split into visual lines and revealed
@@ -701,10 +1132,10 @@ function splitTextIntoLines(el) {
         return;
     }
 
-    // Skip elements already handled by heading animation
-    if (el.tagName === "H1" || el.tagName === "H2" || el.tagName === "H3" ||
+    // Skip elements already handled by heading animation — except hero-intro
+    if ((el.tagName === "H1" || el.tagName === "H2" || el.tagName === "H3" ||
         el.classList.contains("hero-title") || el.classList.contains("hero-title-main") ||
-        el.classList.contains("hero-label")) {
+        el.classList.contains("hero-label")) && !el.classList.contains("hero-intro")) {
         el.dataset.revealSkip = "true";
         return;
     }
@@ -778,8 +1209,9 @@ function splitTextIntoLines(el) {
 }
 
 function initTextReveal(container) {
-    const els = container.querySelectorAll(".animate-this:not([data-reveal-init]):not(.project-item)");
-    if (!els.length) return;
+    const els = container.querySelectorAll(".animate-this:not([data-reveal-init]):not(.project-item):not(.reveal-custom)");
+    const allCustom = container.querySelectorAll(".reveal-custom");
+    if (!els.length && !allCustom.length) return;
 
     els.forEach(el => {
         el.dataset.revealInit = "true";
@@ -838,22 +1270,92 @@ function initTextReveal(container) {
         const lines = el.querySelectorAll(".reveal-line-inner");
         if (!lines.length) return;
 
-         ScrollTrigger.create({
-             trigger: el,
-             start: "top 85%",
-             onEnter: () => {
-                 gsap.to(lines, {
-                     yPercent: 0,
-                     opacity: 1,
-                     delay:   0.2,
-                     duration: ANIM.description.duration,
-                     stagger: ANIM.description.stagger,
-                     ease: ANIM.description.ease
-                 });
-             },
-             once: true
-         });
+        const isHeroIntro = el.classList.contains("hero-intro");
+
+        if (isHeroIntro) {
+            // Animate immediately (for hero text that should play before/after curtain)
+            gsap.to(lines, {
+                yPercent: 0,
+                opacity: 1,
+                delay:   ANIM.intro.delay,
+                duration: ANIM.intro.duration,
+                stagger: ANIM.intro.stagger,
+                ease: ANIM.intro.ease
+            });
+        } else {
+            ScrollTrigger.create({
+                trigger: el,
+                start: "top 85%",
+                onEnter: () => {
+                    gsap.to(lines, {
+                        yPercent: 0,
+                        opacity: 1,
+                        delay:   0.07,
+                        duration: ANIM.description.duration,
+                        stagger: ANIM.description.stagger,
+                        ease: ANIM.description.ease
+                    });
+                },
+                once: true
+            });
+        }
     });
+
+    // Handle .reveal-custom elements — animate with custom params
+    const customEls = container.querySelectorAll(".reveal-custom:not([data-reveal-own-anim])");
+    if (customEls.length) {
+        customEls.forEach(el => {
+            if (!el.dataset.revealInit) {
+                el.dataset.revealInit = "true";
+                splitTextIntoLines(el);
+                if (el.querySelector(".reveal-line-inner")) {
+                    gsap.set(el, { opacity: 1, transform: "none" });
+                }
+            }
+
+            const lines = el.querySelectorAll(".reveal-line-inner");
+            if (!lines.length) return;
+
+            gsap.set(lines, { yPercent: 110, opacity: 0 });
+            gsap.to(lines, {
+                yPercent: 0,
+                opacity: 1,
+                delay:   ANIM.custom.delay,
+                duration: ANIM.custom.duration,
+                stagger: ANIM.custom.stagger,
+                ease:    ANIM.custom.ease,
+                scrollTrigger: {
+                    trigger: el,
+                    start:   ANIM.custom.scrollStart,
+                    once:    true
+                }
+            });
+        });
+    }
+
+    // Hero image reveal
+    const heroImage = container.querySelector(".hero_image");
+    if (heroImage && !heroImage.dataset.heroImageInit) {
+        heroImage.dataset.heroImageInit = "true";
+        const heroImg = heroImage.querySelector("img");
+        if (heroImg) {
+            gsap.set(heroImg, { opacity: 1, y: 500 });
+            ScrollTrigger.create({
+                trigger: heroImage,
+                start: ANIM.heroImage.scrollStart,
+                onEnter: () => {
+                    gsap.to(heroImg, {
+                        opacity: 1,
+                        y: 0,
+                        duration: ANIM.heroImage.duration,
+                        delay: ANIM.heroImage.delay,
+                        ease: ANIM.heroImage.ease
+                    });
+                },
+                once: true
+            });
+        }
+    }
 
     ScrollTrigger.refresh();
 }
@@ -863,380 +1365,441 @@ function initPortfolioCards(container) {
     const cards = container.querySelectorAll(".project-item.animate-this:not([data-portfolio-init])");
     if (!cards.length) return;
 
+    // Собираем все изображения из всех карточек, чтобы дождаться их загрузки
+    // прежде чем создавать ScrollTriggers. Это предотвращает смещение макета
+    // при загрузке/декодировании изображений после расчёта позиций ScrollTrigger.
+    const imagePromises = [];
     cards.forEach((card) => {
-        card.dataset.portfolioInit = "true";
-
-        // Стартовое состояние: скрыта, опущена, уменьшена
-        gsap.set(card, { opacity: 0, y: 50, scale: 0.93, lazy: false });
-
-        const rect = card.getBoundingClientRect();
-
-        // Анимация появления: fade-in + подъем + масштаб до 1
-        const playReveal = () => {
-            gsap.to(card, {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                duration: 1.4,
-                ease: "power4.out"
-            });
-        };
-
-        if (rect.top < window.innerHeight) {
-            playReveal();
-        } else {
-            ScrollTrigger.create({
-                trigger: card,
-                start: "top 85%",
-                onEnter: playReveal,
-                once: true
-            });
-        }
-    });
-
-    ScrollTrigger.refresh();
-}
-
-
-function initFilterSectionAnimation(container) {
-
-    const section = container.querySelector(".filter-section");
-    if (!section) return;
-
-    const buttons = section.querySelectorAll(".filter-btn");
-    buttons.forEach(splitWords);
-
-    // Скрываем кнопки до анимации
-    gsap.set(buttons, { opacity: 0 });
-
-    // Анимируем каждую кнопку по очереди
-    const tl = gsap.timeline({
-        scrollTrigger: {
-            trigger: section,
-            start: ANIM.headings.section.scrollStart,
-            once: true
-        },
-        delay: 0.7
-    });
-
-    buttons.forEach((btn, i) => {
-        const inners = btn.querySelectorAll(".line-inner");
-
-        tl.to(btn, {
-            opacity: 1,
-            duration: 0.5,
-            ease: "power2.out"
-        }, i * 0.05);
-
-        if (inners.length) {
-            gsap.set(inners, { y: "110%", opacity: 0 });
-            tl.to(inners, {
-                y: "0%",
-                opacity: 1,
-                duration: ANIM.headings.section.duration,
-                stagger: 0.01,
-                ease: ANIM.headings.section.ease
-            }, i * 0.05);
-        }
-    });
-
-}
-
-
-
-/* ==========================================================================
-    NAVBAR SCROLL HIDE
-    Hide on scroll down, show on scroll up.
-    Plus: transparent → frosted glass surface transition.
-    ========================================================================== */
-
-function initNavbarScrollHide() {
-
-    const navbar = document.querySelector(".navbar");
-
-    if (!navbar) return;
-
-    let lastScrollY = window.scrollY || 0;
-
-    const threshold = 80;
-
-    const surfaceThreshold = 120;
-
-    let showTimeout = null;
-
-    const showDelay = 200;
-
-    // Skip the initial updateNavbar call — doesn't unhide navbar if it was hidden during page transition
-    let skipInitialUpdate = true;
-
-    // Initial state: transparent surface, no scroll yet
-    navbar.classList.add("navbar--transparent");
-
-    function updateNavbar() {
-
-        const currentScrollY = lenis ? lenis.scroll : (window.scrollY || 0);
-
-        const scrollDelta = currentScrollY - lastScrollY;
-
-        // Surface: transparent when at top, frosted when scrolled > 20px
-        if (currentScrollY > surfaceThreshold) {
-
-            navbar.classList.remove("navbar--transparent");
-
-        } else {
-
-            navbar.classList.add("navbar--transparent");
-
-        }
-
-
-        if (currentScrollY > threshold) {
-
-            if (scrollDelta > 0) {
-
-                navbar.classList.add("navbar--hidden");
-
-                if (showTimeout) {
-
-                    clearTimeout(showTimeout);
-
-                    showTimeout = null;
-
+        const imgs = card.querySelectorAll("img");
+        imgs.forEach((img) => {
+            if (img.complete) {
+                if (typeof img.decode === "function") {
+                    imagePromises.push(img.decode().catch(() => {}));
                 }
-
             } else {
-
-                if (!showTimeout) {
-
-                    showTimeout = setTimeout(() => {
-
-                        navbar.classList.remove("navbar--hidden");
-
-                        showTimeout = null;
-
-                    }, showDelay);
-
-                }
-
+                imagePromises.push(
+                    new Promise((resolve) => {
+                        img.addEventListener("load", resolve, { once: true });
+                        img.addEventListener("error", resolve, { once: true });
+                    })
+                );
             }
-
-        } else if (!skipInitialUpdate && !navbarWasHidden) {
-
-            navbar.classList.remove("navbar--hidden");
-
-            if (showTimeout) {
-
-                clearTimeout(showTimeout);
-
-                showTimeout = null;
-
-            }
-
-        }
-
-        skipInitialUpdate = false;
-
-        lastScrollY = currentScrollY;
-
-    }
-
-
-
-
-
-    if (lenis) {
-
-        lenis.off("scroll", updateNavbar);
-
-        lenis.on("scroll", updateNavbar);
-
-    } else {
-
-        window.removeEventListener("scroll", updateNavbar);
-
-        window.addEventListener("scroll", updateNavbar);
-
-    }
-
-}
-
-initNavbarScrollHide();
-
-
-/* ==========================================================================
-    NAVIGATION THEME (Scroll-based)
-    Switches body.nav-light / body.nav-dark based on which section
-    is currently overlapping the fixed navbar.
-    ========================================================================== */
-
-
-let navThemeSections = [];
-let currentNavTheme = null;
-let navThemeScrollHandler = null;
-
-
-function updateNavTheme(theme) {
-
-    if (!theme) {
-
-        document.body.classList.remove("nav-light", "nav-dark");
-        document.body.classList.add("nav-light");
-        currentNavTheme = "light";
-        return;
-
-    }
-
-    if (theme === currentNavTheme) return;
-
-    document.body.classList.remove("nav-light", "nav-dark");
-    document.body.classList.add(`nav-${theme}`);
-    currentNavTheme = theme;
-
-}
-
-
-function detectNavTheme() {
-
-    const scrollY = lenis ? lenis.scroll : (window.scrollY || 0);
-
-    const navbarPos = scrollY + 86;
-
-    let activeTheme = null;
-
-    navThemeSections.forEach(section => {
-
-        const rect = section.getBoundingClientRect();
-
-        const sectionTop = scrollY + rect.top;
-
-        if (sectionTop <= navbarPos) {
-
-            activeTheme = section.dataset.navTheme;
-
-        }
-
+        });
     });
 
-    if (!activeTheme) {
+    Promise.all(imagePromises).then(() => {
+        cards.forEach((card) => {
+            card.dataset.portfolioInit = "true";
 
-        if (navThemeSections.length) {
-            activeTheme = navThemeSections[0].dataset.navTheme;
-        } else {
-            activeTheme = "light";
+            // Стартовое состояние: скрыта, опущена, уменьшена
+            gsap.set(card, { opacity: 0, y: 30, scale: 0.96, force3D: true });
+
+            // Анимация появления: fade-in + подъем + масштаб до 1
+            const playReveal = () => {
+                gsap.to(card, {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 1.4,
+                    ease: "power4.out",
+                    overwrite: "auto",
+                    force3D: true
+                });
+            };
+
+             // project-item--first: анимация появляется при загрузке страницы с задержкой
+             if (card.classList.contains("project-item--first")) {
+                 gsap.delayedCall(ANIM.portfolio.firstDelay, playReveal);
+             } else {
+                // Единый ScrollTrigger для всех карточек — избегаем race condition с getBoundingClientRect
+                ScrollTrigger.create({
+                    trigger: card,
+                    start: "top 85%",
+                    onEnter: playReveal,
+                    once: true
+                });
+            }
+
+            // Hover scale animation on the image wrapper
+            const imgWrapper = card.querySelector(".portfolio-image-wrapper");
+            const video = card.querySelector(".portfolio-video");
+            if (imgWrapper) {
+                card.addEventListener("mouseenter", () => {
+                    gsap.to(imgWrapper, {
+                        scale: 1.02,
+                        duration: 0.4,
+                        ease: "cubic-bezier(0.25, 1, 0.5, 1)",
+                        force3D: true
+                    });
+                    if (video) video.play().catch(() => {});
+                });
+                card.addEventListener("mouseleave", () => {
+                    gsap.to(imgWrapper, {
+                        scale: 1,
+                        duration: 0.5,
+                        ease: "cubic-bezier(0.25, 1, 0.5, 1)",
+                        force3D: true
+                    });
+                    if (video) {
+                        video.pause();
+                        video.currentTime = 0;
+                    }
+                });
+            }
+
+        });
+
+        ScrollTrigger.refresh();
+    });
+}
+
+
+
+
+window.addEventListener("resize", () => {
+    clearTimeout(window._resizeTimer);
+    window._resizeTimer = setTimeout(() => {
+        ScrollTrigger.refresh();
+        if (typeof lenis !== "undefined" && lenis) lenis.update();
+
+        // Пересчитываем масштаб меню при пересечении точки 1900px
+        const menu = document.querySelector("#menu");
+        if (menu && menuState === "closed") {
+            gsap.set(menu, { scale: window.innerWidth < 1900 ? 0.8 : 1 });
         }
-
-    }
-
-    updateNavTheme(activeTheme);
-
-}
-
-
-function initNavigationTheme() {
-
-    navThemeSections = Array.from(document.querySelectorAll("[data-nav-theme]"));
-
-    if (navThemeSections.length === 0) return;
-
-    detectNavTheme();
-
-    navThemeScrollHandler = () => detectNavTheme();
-
-    if (lenis) {
-        lenis.off("scroll", navThemeScrollHandler);
-        lenis.on("scroll", navThemeScrollHandler);
-    }
-
-}
-
-
-function destroyNavigationTheme() {
-
-    if (navThemeScrollHandler && lenis) {
-        lenis.off("scroll", navThemeScrollHandler);
-    }
-
-    navThemeScrollHandler = null;
-    navThemeSections = [];
-    currentNavTheme = null;
-
-    document.body.classList.remove("nav-light", "nav-dark");
-    document.body.classList.add("nav-light");
-
-}
+    }, 250);
+});
 
 
 /* ==========================================================================
-    VISUAL PARALLAX CONTROLLER
-    Parallax for images inside .visual-card on truco page.
-    Each image moves independently using GSAP ScrollTrigger with scrub.
-    ========================================================================== */
-
-
-let visualParallaxTriggers = [];
+   VISUAL PARALLAX CONTROLLER (disabled)
+   ========================================================================== */
 
 
 function initVisualParallax(container) {
-
-    if (typeof container === "undefined") return;
-
-    const grid = container.querySelector(".visual-grid");
-    if (!grid) return;
-
-    const cards = grid.querySelectorAll(".visual-card");
-    if (!cards.length) return;
-
-    cards.forEach(card => {
-
-        const img = card.querySelector("img");
-        if (!img) return;
-
-        // Set initial scale and position for parallax effect
-        gsap.set(img, { transform: "translateZ(0)" });
-
-        const tween = gsap.fromTo(img,
-            { y: -15, x: -5 },
-            {
-                y: 15,
-                x: 5,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: card,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: true
-                }
-            }
-        );
-
-        visualParallaxTriggers.push(tween.scrollTrigger);
-
-    });
-
-    ScrollTrigger.refresh();
-
+    // Parallax effects removed — images are static
 }
 
 
 function destroyVisualParallax() {
-
-    visualParallaxTriggers.forEach(trigger => {
-        if (trigger) trigger.kill();
-    });
-    visualParallaxTriggers = [];
-
-    // Reset images — clear all GSAP inline styles, let CSS handle the rest
-    const images = document.querySelectorAll(".visual-card img");
-    gsap.set(images, { clear: "all" });
-
+    // Parallax effects removed — no cleanup needed
 }
 
 
 /* ==========================================================================
+   NAVIGATION MENU COMPONENT
+   ========================================================================== */
+
+let menuState = "closed";
+
+function initNavMenu() {
+    const menu = document.querySelector("#menu");
+    if (!menu) return;
+    if (menu.dataset.navMenuInit) return;
+    menu.dataset.navMenuInit = "true";
+    const surface = menu.querySelector("#surface");
+    const trigger = menu.querySelector("#trigger");
+    const label = menu.querySelector("#label");
+    const circle = menu.querySelector("#circle");
+    const burgerEls = menu.querySelectorAll(".burger");
+    const circleTitle = menu.querySelector("#circleTitle");
+    const itemsWrap = menu.querySelector("#items");
+    const items = [...menu.querySelectorAll(".menu__item")];
+    const indicator = menu.querySelector("#indicator");
+
+    if (!surface || !trigger || !label || !circle || !circleTitle || !itemsWrap || !indicator) return;
+
+    const burgerEl = burgerEls[0];
+
+    let state = menuState;
+    let menuTl = null;
+    let leaveTimer = null; // грация перед закрытием/сужением — гасит "мерцание" от ресайза хитбокса под курсором
+
+    function clearLeaveTimer() {
+        if (leaveTimer) {
+            clearTimeout(leaveTimer);
+            leaveTimer = null;
+        }
+    }
+
+    // Останавливает текущую анимацию меню перед стартом новой.
+    // Без этого при быстром клике/наведении поверх ещё не доигравшей
+    // анимации у старого таймлайна может никогда не вызваться onComplete —
+    // state зависает в промежуточном значении, а меню визуально "ломается".
+    function killMenuTl() {
+        if (menuTl) {
+            menuTl.kill();
+            menuTl = null;
+        }
+    }
+
+    const RED = "#F93E4E";
+    const MENU_CLOSED = 208;
+    const MENU_OPEN = 269;
+    const CIRCLE_SIZE = 59;
+    const ITEM_HEIGHT = 59;
+    const ROW_GAP = 6;
+    const ROW_HEIGHT = ITEM_HEIGHT + ROW_GAP;
+    const CLOSED_CIRCLE_LEFT = MENU_CLOSED - 9 - CIRCLE_SIZE;
+    const HOVER_CIRCLE_LEFT = (MENU_OPEN - CIRCLE_SIZE) / 2;
+    const SPEED = 0.65;
+    const EASE_SWIFT = "expo.out";
+    const EASE_SWIFT_INOUT = "expo.inOut";
+    const EASE_POP_SOFT = "back.out(1.1)";
+    const EASE_PRESS = "power2.out";
+    const EASE_RELEASE = "back.out(1.6)";
+    const LABEL_ENTER_X = 34;
+    const LABEL_HIDE_X_OPEN = -12;
+
+    gsap.set(menu, { transformOrigin: "top right" });
+        gsap.set(menu, { scale: window.innerWidth < 1900 ? 0.8 : 1 });
+    gsap.set(circle, { left: CLOSED_CIRCLE_LEFT, x: 0, backgroundColor: RED });
+    gsap.set(surface, { width: MENU_CLOSED, height: 77 });
+    gsap.set(trigger, { width: MENU_CLOSED, height: 77 });
+    gsap.set(label, { opacity: 1, x: 0, y: 0 });
+    gsap.set(circleTitle, { opacity: 0, y: 11 });
+    gsap.set(itemsWrap, { opacity: 0, pointerEvents: "none" });
+    gsap.set(items.slice(1), { opacity: 0, y: 18 });
+    gsap.set(indicator, { opacity: 0, y: 0, scaleY: 1 });
+
+    // Экспортируем функцию полного сброса — вызывается из barba finalize
+    // чтобы синхронизировать локальный state с внешним menuState = "closed"
+    menu._reset = function() {
+        killMenuTl();
+        clearLeaveTimer();
+        state = "closed";
+        menuState = "closed";
+        gsap.set(circle, { left: CLOSED_CIRCLE_LEFT, x: 0, backgroundColor: RED, width: CIRCLE_SIZE, height: CIRCLE_SIZE, borderRadius: 30 });
+        gsap.set(surface, { width: MENU_CLOSED, height: 77 });
+        gsap.set(trigger, { width: MENU_CLOSED, height: 77 });
+        gsap.set(label, { opacity: 1, x: 0, y: 0 });
+        gsap.set(circleTitle, { opacity: 0, y: 11 });
+        gsap.set(itemsWrap, { opacity: 0, pointerEvents: "none" });
+        gsap.set(items.slice(1), { opacity: 0, y: 18 });
+        gsap.set(indicator, { opacity: 0, y: 0, scaleY: 1 });
+        gsap.set(burgerEl, { opacity: 1, scale: 1 });
+        gsap.set(menu, { scale: window.innerWidth < 1900 ? 0.8 : 1 });
+        trigger.setAttribute("aria-expanded", "false");
+    };
+
+    trigger.addEventListener("mousedown", () => {
+        const baseScale = window.innerWidth < 1900 ? 0.8 : 1;
+        gsap.to(menu, { scale: baseScale * 0.975, duration: 0.14 * SPEED, ease: EASE_PRESS });
+    });
+    ["mouseup", "mouseleave"].forEach(evt => {
+        trigger.addEventListener(evt, () => {
+            const baseScale = window.innerWidth < 1900 ? 0.8 : 1;
+            gsap.to(menu, { scale: baseScale, duration: 0.4 * SPEED, ease: EASE_RELEASE });
+        });
+    });
+
+    function hoverIn() {
+        if (state !== "closed") return;
+        state = "preview";
+        clearLeaveTimer();
+        killMenuTl();
+        menuTl = gsap.timeline({ defaults: { ease: EASE_SWIFT_INOUT } })
+            .to(surface, { width: 269, duration: 0.6 * SPEED }, 0)
+            .to(trigger, { width: 269, duration: 0.6 * SPEED }, 0)
+            .to(label, { opacity: 0, x: LABEL_HIDE_X_OPEN, y: 0, duration: 0.32 * SPEED }, 0)
+            .to(circle, { left: HOVER_CIRCLE_LEFT, duration: 0.6 * SPEED, ease: EASE_POP_SOFT }, 0);
+    }
+
+    function hoverOut() {
+        if (state !== "preview") return;
+        state = "closed";
+        killMenuTl();
+        menuTl = gsap.timeline({ defaults: { ease: EASE_SWIFT_INOUT } })
+            .to(circle, { left: CLOSED_CIRCLE_LEFT, duration: 0.5 * SPEED }, 0)
+            .to(surface, { width: 208, duration: 0.55 * SPEED }, 0)
+            .to(trigger, { width: 208, duration: 0.55 * SPEED }, 0)
+            .to(label, { opacity: 1, x: 0, y: 0, duration: 0.32 * SPEED }, 0.12 * SPEED);
+    }
+
+    function openMenu() {
+        if (state === "open" || state === "opening") return;
+        state = "opening";
+        trigger.setAttribute("aria-expanded", "true");
+        clearLeaveTimer();
+        killMenuTl();
+        gsap.set(itemsWrap, { pointerEvents: "auto" });
+        gsap.set(indicator, { opacity: 0, y: 0 });
+        gsap.set(label, { opacity: 0, x: LABEL_HIDE_X_OPEN, y: 0 });
+        menuTl = gsap.timeline({
+            defaults: { ease: EASE_SWIFT_INOUT },
+            onComplete() { state = "open"; menuState = "open"; menuTl = null; }
+        });
+        menuTl.to(surface, { width: 269, duration: 0.46 * SPEED }, 0)
+            .to(trigger, { width: 269, duration: 0.46 * SPEED }, 0)
+            .to(surface, { height: 344, duration: 0.55 * SPEED, ease: EASE_POP_SOFT }, 0.1 * SPEED)
+            .to(trigger, { height: 344, duration: 0.55 * SPEED, ease: EASE_POP_SOFT }, 0.1 * SPEED)
+            .to(circle, {
+                left: 19, width: 230, height: 59, borderRadius: 30,
+                duration: 0.55 * SPEED, ease: EASE_POP_SOFT
+            }, 0.1 * SPEED)
+            .to(burgerEl, { opacity: 0, scale: 0.4, duration: 0.18 * SPEED, ease: EASE_PRESS }, 0.22 * SPEED)
+            .to(circleTitle, { opacity: 1, y: 0, duration: 0.34 * SPEED, ease: EASE_SWIFT }, 0.34 * SPEED)
+            .to(itemsWrap, { opacity: 1, duration: 0.18 * SPEED }, 0.3 * SPEED)
+            .to(items.slice(1), {
+                opacity: 1, y: 0, duration: 0.45 * SPEED, stagger: 0.06 * SPEED, ease: EASE_SWIFT
+            }, 0.32 * SPEED)
+            // Раньше это были два .to() (индикатор alpha 1→0/0→1, кружок alpha 0→1/1→0),
+            // идущие ОДНОВРЕМЕННО поверх друг друга. Даже с одинаковой кривой они не дают
+            // 100% покрытия в середине перехода (два независимых альфа-слоя друг на друге
+            // математически "проседают" по непрозрачности) — сквозь них на миг просвечивал
+            // тёмный фон surface, отсюда грязный оттенок на скриншоте. Меняем мгновенно
+            // (.set, без длительности) — глазом это всё равно неотличимо от 0.14*SPEED кросс-фейда,
+            // зато без промежуточного "провала" прозрачности.
+            .set(circle, { backgroundColor: "rgba(249, 62, 78, 0)" }, 0.54 * SPEED)
+            .set(indicator, { opacity: 1 }, 0.54 * SPEED);
+    }
+
+    function highlightRow(rowIndex) {
+        if (state !== "open") return;
+        gsap.timeline()
+            .to(indicator, { y: rowIndex * ROW_HEIGHT, duration: 0.34 * SPEED, ease: EASE_SWIFT }, 0)
+            .to(indicator, { scaleY: 0.94, duration: 0.1 * SPEED, ease: EASE_PRESS }, 0)
+            .to(indicator, { scaleY: 1, duration: 0.24 * SPEED, ease: EASE_POP_SOFT }, 0.1 * SPEED);
+    }
+
+    circle.addEventListener("mouseenter", () => highlightRow(0));
+    items.slice(1).forEach((item, i) => {
+        item.addEventListener("mouseenter", () => highlightRow(i + 1));
+    });
+
+    menu.addEventListener("mouseleave", () => {
+        // Курсор физически стоит на месте, а хитбокс trigger/surface/circle меняет
+        // размер под ним (GSAP анимирует width/height/left). Браузер в такие моменты
+        // пересчитывает hit-test и шлёт "паразитные" mouseleave/mouseenter даже без
+        // реального движения мыши — отсюда мерцание. Даём короткую грацию: если
+        // почти сразу придёт mouseenter обратно (см. ниже), сужение отменяется.
+        clearLeaveTimer();
+        leaveTimer = setTimeout(() => {
+            leaveTimer = null;
+            if (state === "preview") hoverOut();
+            if (state === "open") {
+                highlightRow(0);
+                closeMenu();
+            }
+        }, 120);
+    });
+
+    itemsWrap.addEventListener("mouseleave", (e) => {
+        if (state !== "open") return;
+        if (!circle.contains(e.relatedTarget)) highlightRow(0);
+    });
+
+    function closeMenu() {
+        if (state === "closed" || state === "closing") return;
+        state = "closing";
+        trigger.setAttribute("aria-expanded", "false");
+        clearLeaveTimer();
+        killMenuTl();
+        menuTl = gsap.timeline({
+            defaults: { ease: EASE_SWIFT_INOUT },
+            onComplete() {
+                state = "closed";
+                menuState = "closed";
+                menuTl = null;
+                gsap.set(items.slice(1), { opacity: 0, y: 18 });
+                gsap.set(itemsWrap, { opacity: 0, pointerEvents: "none" });
+                gsap.set(indicator, { opacity: 0, y: 0, scaleY: 1 });
+                gsap.set(circle, { backgroundColor: RED });
+                gsap.set(menu, { scale: window.innerWidth < 1900 ? 0.8 : 1 });
+            }
+        })
+            .to(items.slice(1), {
+                opacity: 0, y: 14, duration: 0.22 * SPEED, stagger: 0.03 * SPEED, ease: EASE_PRESS
+            }, 0)
+            // Мгновенный set вместо двух параллельных .to() по той же причине, что и в
+            // openMenu(): два независимых альфа-перехода друг на друге дают "провал"
+            // покрытия в середине и грязный цвет. См. комментарий там же.
+            .set(indicator, { opacity: 0 }, 0)
+            .set(circle, { backgroundColor: RED }, 0)
+            .to(circleTitle, { opacity: 0, y: 10, duration: 0.2 * SPEED, ease: EASE_PRESS }, 0.16 * SPEED)
+            .to(circle, {
+                left: HOVER_CIRCLE_LEFT, width: CIRCLE_SIZE, height: CIRCLE_SIZE, borderRadius: 30,
+                duration: 0.44 * SPEED, ease: EASE_SWIFT_INOUT
+            }, 0.2 * SPEED)
+            .to(burgerEl, { opacity: 1, scale: 1, duration: 0.24 * SPEED, ease: EASE_POP_SOFT }, 0.36 * SPEED)
+            .to(surface, { height: 77, duration: 0.46 * SPEED, ease: EASE_SWIFT_INOUT }, 0.16 * SPEED)
+            .to(circle, { left: CLOSED_CIRCLE_LEFT, duration: 0.42 * SPEED, ease: EASE_SWIFT_INOUT }, 0.42 * SPEED)
+            .to(surface, { width: MENU_CLOSED, duration: 0.42 * SPEED, ease: EASE_SWIFT_INOUT }, 0.42 * SPEED)
+            .to(trigger, { width: MENU_CLOSED, height: 77, duration: 0.42 * SPEED, ease: EASE_SWIFT_INOUT }, 0.42 * SPEED)
+            .set(label, { x: LABEL_ENTER_X, y: 0 }, 0.4 * SPEED)
+            .to(label, {
+                opacity: 1, x: 0, duration: 0.5 * SPEED, ease: EASE_SWIFT
+            }, 0.44 * SPEED);
+    }
+
+    menu.addEventListener("mouseenter", () => {
+        clearLeaveTimer(); // отменяем запланированное сужение, если курсор фактически не уходил
+        if (state === "closed") hoverIn();
+    });
+
+    trigger.addEventListener("click", (event) => {
+
+  const clickedCircle = event.target.closest("#circle");
+
+  // Клик по красной "Главная" в открытом/закрывающемся меню — переходим на главную
+  if ((state === "open" || state === "closing") && clickedCircle) {
+    const homeLink = itemsWrap.querySelector(".menu__item:first-child a");
+    if (homeLink) {
+      // Сбрасываем внутренний кэш Barba перед переходом, чтобы гарантированно
+      // получить свежий HTML/namespace, а не закэшированную старую версию
+      if (window.barba && barba.cache && typeof barba.cache.clear === "function") {
+        barba.cache.clear();
+      }
+      homeLink.click(); // клик реального <a> — подхватит Barba
+    }
+    if (state === "open") closeMenu();
+    return;
+  }
+
+  event.preventDefault();
+
+  if (state === "closed" || state === "preview" || state === "closing") {
+    openMenu();
+  } else if (state === "open") {
+    closeMenu();
+  }
+
+});
+
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && state === "open") closeMenu();
+    });
+
+    items.slice(1).forEach(item => {
+        const link = item.querySelector("a");
+        if (link) {
+            link.addEventListener("click", () => {
+                if (window.barba && barba.cache && typeof barba.cache.clear === "function") {
+                    barba.cache.clear();
+                }
+                if (state === "open") closeMenu();
+            });
+        }
+    });
+
+    // Logo click — close menu if open (Barba handles navigation automatically)
+    const logo = document.querySelector(".site-logo");
+    if (logo) {
+        logo.addEventListener("click", () => {
+            if (state === "open") closeMenu();
+        });
+    }
+}
+
+/* ==========================================================================
     SPLINE CLEANUP
-    ========================================================================== */
+   ========================================================================== */
+
 
 document.addEventListener("DOMContentLoaded", () => {
+
+    initNavMenu();
+    initCustomScrollbar();
 
     // If Barba's `once` hook hasn't fired yet, initialize page animations.
     // If Barba's `once` has already fired (initialPageLoaded = true), it handles
@@ -1244,7 +1807,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!initialPageLoaded) {
         const container = document.querySelector("[data-barba=\"container\"]") || document.body;
         initPage(container);
+        ScrollTrigger.refresh();
     }
+
+    // initHomeEntrance();
 
     const spline = document.querySelector("spline-viewer");
     if (!spline) return;
@@ -1256,50 +1822,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function initComparisonSliders(container) {
     const sliders = container.querySelectorAll("[data-comparison-slider]");
-    sliders.forEach(slider => {
+    if (!sliders.length) return;
+
+    let activeSlider = null;
+
+    const setPosition = (slider, clientX) => {
         const afterLayer = slider.querySelector(".comparison-slider__after");
         const handle = slider.querySelector("[data-comparison-handle]");
         if (!afterLayer || !handle) return;
+        const rect = slider.getBoundingClientRect();
+        let x = clientX - rect.left;
+        x = Math.max(0, Math.min(x, rect.width));
+        const pct = (x / rect.width) * 100;
+        afterLayer.style.clipPath = `inset(0 0 0 ${pct}%)`;
+        handle.style.left = `${pct}%`;
+    };
 
-        let isDragging = false;
-
-        const setPosition = (clientX) => {
-            const rect = slider.getBoundingClientRect();
-            let x = clientX - rect.left;
-            x = Math.max(0, Math.min(x, rect.width));
-            const pct = (x / rect.width) * 100;
-            afterLayer.style.clipPath = `inset(0 0 0 ${pct}%)`;
-            handle.style.left = `${pct}%`;
-        };
-
+    sliders.forEach(slider => {
         slider.addEventListener("mousedown", (e) => {
-            isDragging = true;
-            setPosition(e.clientX);
+            activeSlider = slider;
+            setPosition(slider, e.clientX);
         });
-
-        window.addEventListener("mousemove", (e) => {
-            if (!isDragging) return;
-            setPosition(e.clientX);
-        });
-
-        window.addEventListener("mouseup", () => {
-            isDragging = false;
-        });
-
         slider.addEventListener("touchstart", (e) => {
-            isDragging = true;
-            setPosition(e.touches[0].clientX);
+            activeSlider = slider;
+            setPosition(slider, e.touches[0].clientX);
         }, { passive: true });
-
-        window.addEventListener("touchmove", (e) => {
-            if (!isDragging) return;
-            setPosition(e.touches[0].clientX);
-        }, { passive: true });
-
-        window.addEventListener("touchend", () => {
-            isDragging = false;
-        });
     });
+
+    if (!window._comparisonSlidersBound) {
+        window._comparisonSlidersBound = true;
+        window.addEventListener("mousemove", (e) => {
+            if (activeSlider) setPosition(activeSlider, e.clientX);
+        });
+        window.addEventListener("mouseup", () => { activeSlider = null; });
+        window.addEventListener("touchmove", (e) => {
+            if (activeSlider) setPosition(activeSlider, e.touches[0].clientX);
+        }, { passive: true });
+        window.addEventListener("touchend", () => { activeSlider = null; });
+    }
 }
 
 function initComparisonSliderAnimation(container) {
@@ -1341,4 +1901,3 @@ function initComparisonSliderAnimation(container) {
         });
     });
 }
-

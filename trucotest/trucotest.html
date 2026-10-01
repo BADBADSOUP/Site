@@ -7,7 +7,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TrucoReal — Кейс</title>
+<title>TrucoTest — Кейс</title>
 
 
 <link rel="icon" href="../favicon.png" type="image/png">
@@ -18,7 +18,7 @@
 
 <link rel="stylesheet" href="../fonts.css">
 <link rel="stylesheet" href="../style.css">
-<link rel="stylesheet" href="truco.css">
+<link rel="stylesheet" href="trucotest.css">
 <link rel="stylesheet" href="../transition.css">
 
 
@@ -45,9 +45,41 @@
   <div class="custom-scrollbar-thumb"></div>
 </div>
 
+<!-- Navigation Menu Component -->
+<nav class="menu" id="menu" data-lenis-prevent>
+
+    <div class="menu__surface" id="surface"></div>
+
+    <button class="menu__trigger" id="trigger" aria-expanded="false">
+
+      <span class="menu__label" id="label">Меню</span>
+
+      <span class="menu__circle" id="circle">
+
+        <span class="burger" id="burger">
+          <span></span>
+          <span></span>
+        </span>
+
+        <span class="circle-title" id="circleTitle">
+          Главная
+        </span>
+
+      </span>
+
+    </button>
 
 
+    <ul class="menu__items" id="items">
+  <li class="menu__item"><a href="/index.html"><span>Главная</span></a></li>
+  <li class="menu__item"><a href="/trucotest/trucotest.html"><span>Проекты</span></a></li>
+  <li class="menu__item"><a href="/pg3d/pg3d.html"><span>Обо мне</span></a></li>
+  <li class="menu__item"><a href="/#contacts"><span>Контакты</span></a></li>
+</ul>
 
+    <div class="menu__indicator" id="indicator"></div>
+
+</nav>
 
 
 
@@ -71,14 +103,13 @@
 
             <h1 class="hero-title">
 
-                Дизайн MVP платформы онлайн казино для запуска на рынок Аргентины
+                Дизайн MVP казино для рынка Аргентины
 
             </h1>
 
 
-        </div>
-
-    </div>
+         </div>
+     </div>
 
 </div>
 
@@ -89,7 +120,7 @@
 <!-- ====== ЗАЛИВКА ====== -->
 
 
-<div class="phones-block" data-nav-theme="dark">
+<div class="hero_image" data-nav-theme="dark">
 
     <img src="phone-left.png" alt="TrucoReal — интерфейс">
 
@@ -107,17 +138,16 @@
 <div class="about-project-grid">
 
 
-<div class="about-project-label">
+<div class="about-project-label reveal-custom">
 
 О проекте
 
 </div>
 
 
+    <div class="about-project-content reveal-custom">
 
-    <div class="about-project-content animate-this">
-
-    TrucoReal — это онлайн-казино, ориентированное на рынок Аргентины. Главной особенностью проекта является культовая южноамериканская карточная игра Truco. Её суть строится на блефе, психологии и обмане соперников. По своей механике Truco напоминает смесь покера и дурака, благодаря чему она идеально вписывается в формат онлайн-гэмблинга.
+    TrucoReal — это онлайн-казино, ориентированное на рынок Аргентины. Главной особенностью проекта является культовая южноамериканская карточная игра Truco. Её суть строится на блефе, психологии и обмане соперников. По своей механике Truco напоминает смесь покера и дурака, поэтому она идеально вписывается в формат онлайн-гэмблинга.
 
 </div>
 
@@ -131,7 +161,7 @@
 <div class="about-project-grid about-project-grid--second">
 
 
-<div class="about-project-label">
+<div class="about-project-label reveal-custom">
 
 Задача
 
@@ -139,16 +169,16 @@
 
 
 
-    <div class="about-project-content about-project-content--body animate-this">
+    <div class="about-project-content about-project-content--body reveal-custom">
 
 
-Когда я присоединился к проекту, команда уже имела рабочий прототип с реализованной игровой логикой. Однако интерфейс создавался без единой дизайн-системы, выглядел устаревшим и не был готов к запуску MVP.
+Когда я присоединился к проекту, команда уже имела рабочий прототип с реализованной игровой логикой. Интерфейс прототипа создавался без единой дизайн-системы, выглядел устаревшим и не был готов к запуску MVP.
 
 
 <br><br>
 
 
-Моей задачей было полностью переработать UX, создать современный визуальный стиль и заложить основу для дальнейшего масштабирования продукта.
+Моей задачей было переработать UI и UX продукта, и заложить основу для дальнейшего масштабирования продукта.
 
 
 </div>
@@ -202,10 +232,9 @@ class="reveal-image">
 <div class="prototype-section__inner">
 
 
-<h2 class="prototype-section__title">
+<h2 class="prototype-section__title animate-this">
 
-Рабочий прототип<br>
-сайт и геймплей
+Рабочий прототип
 
 </h2>
 
@@ -219,7 +248,7 @@ class="reveal-image">
 <div class="prototype-section__grid">
 
 
-    <div class="prototype-section__body animate-this">
+    <div class="prototype-section__body reveal-custom">
 
 
 Разработчики быстро собрали рабочий прототип с помощью AI-инструментов и вайбкодинга, это позволило оперативно проверить игровые механики и собрать ключевые экраны платформы.
@@ -269,7 +298,7 @@ class="reveal-image">
 <div class="prototype-section__inner">
 
 
-<h2 class="prototype-section__title">
+<h2 class="prototype-section__title animate-this">
 
 Визуальное <br>
 направление продукта
@@ -288,23 +317,33 @@ class="reveal-image">
 <div class="prototype-section__grid">
 
 
+<div class="truco-text-columns">
+
+
 <div class="prototype-section__body">
 
 
     
-    <p class="animate-this">
+    <p class="reveal-custom">
 
-На этапе формирования визуальной концепции были проанализированы интерфейсы онлайн-казино Stake и Bet365. Эти продукты стали основными референсами благодаря сдержанному визуальному стилю, продуманной иерархии и удобной организации большого объема контента.
+При разработке визуальной концепцией я проанализировал интерфейсы схожих проектов и крупных игроков в сфере iGaming. Главным критерием выбора референсов стал минималистичный дизайн. Я стремился избежать визуального и информационного шума. В качестве стилистических примеров согласовали платформы Stake и Bet360.
+
+</p>
+
+
+</div>
+
+<div class="prototype-section__body">
+
+
+    <p class="reveal-custom">
+
+Основной задачей при разработке концепта было разработать простой минималистичный интерфейс, чтобы сфокусировать внимание пользователей на контенте и целевых действиях и не тратить драгоценное время на графический контент.
 
 </p>
 
+</div>
 
-
-    <p class="animate-this">
-
-Главной задачей было создать интерфейс, который не отвлекает пользователя декоративными элементами и позволяет быстро находить нужные игры, акции и основные сценарии взаимодействия. Для этого в основу концепта легли минималистичная цветовая палитра, четкая типографика, единая система отступов и акцентные элементы, используемые только для ключевых действий.
-
-</p>
 
 </div>
 
@@ -357,7 +396,7 @@ class="reveal-image">
 <div class="prototype-section__inner">
 
 
-<h2 class="prototype-section__title">
+<h2 class="prototype-section__title animate-this">
 
 Пользовательские<br>
 сценарии
@@ -374,7 +413,7 @@ class="reveal-image">
 <div class="prototype-section__grid">
 
 
-<div class="prototype-section__body animate-this">
+<div class="prototype-section__body reveal-custom">
 
 
 Разработчики быстро собрали рабочий прототип с помощью AI-инструментов и вайбкодинга, это позволило оперативно проверить игровые механики и собрать ключевые экраны платформы.
@@ -388,17 +427,6 @@ class="reveal-image">
 
 </div>
 
-
-
-
-
-<div class="prototype-section__frame">
-
-
-<img src="prot.png" alt="Пользовательские сценарии" class="prototype-section__frame-img">
-
-
-</div>
 
 
 
@@ -418,7 +446,7 @@ class="reveal-image">
 <div class="mobile-first-section__inner">
 
 
-<h2 class="mobile-first-section__title">
+<h2 class="mobile-first-section__title animate-this">
 
 Приоритет
 <br>
@@ -429,7 +457,7 @@ class="reveal-image">
 <div class="mobile-first-section__grid">
 
 
-<div class="mobile-first-section__body animate-this">
+<div class="mobile-first-section__body reveal-custom">
 
 
 На рынке Аргентины мобильные устройства являются основным способом доступа в интернет. Более 96% пользователей выходят в сеть со смартфонов.
@@ -457,34 +485,33 @@ class="reveal-image">
 
 <!-- ====== UI ====== -->
 
+<section class="ui-section ui-section--concept">
 
-<section class="ui-section">
+  <div class="ui-section__inner">
 
+    <div class="ui-section__content">
 
-<div class="ui-section__inner">
+      <div class="ui-section__content-sticky">
 
+        <h2 class="ui-section__title animate-this">
+          Финальный дизайн <br>
+          ключевых экранов
+        </h2>
 
-<h2 class="ui-section__title" data-nav-theme="light">
+        <div class="ui-section__body reveal-custom">
+          На этапе формирования визуальной концепции были проанализированы интерфейсы онлайн-казино Stake и Bet365. Эти продукты стали основными референсами благодаря сдержанному визуальному стилю, продуманной иерархии и удобной организации большого объема контента.
+        </div>
 
-Финальный дизайн <br>
-ключевых экранов
+      </div>
 
-</h2>
+    </div>
 
-<div class="ui-section__divider"></div>
-<div class="ui-section__grid">
-<div class="ui-section__label">
+    <div class="ui-section__showcase">
+      <img src="all.png" alt="UI" class="ui-section__img ui-section__img--concept">
+    </div>
 
-MOBILE FIRST
-</div>
-<div class="ui-section__body animate-this">
-На рынке Аргентины мобильные устройства являются основным способом доступа в интернет.
-</div>
-</div>
-</div>
-<div class="ui-section__showcase" data-nav-theme="dark">
-<img src="all.png" alt="UI" class="ui-section__img">
-</div>
+  </div>
+
 </section>
 
 
@@ -497,7 +524,7 @@ MOBILE FIRST
 <div class="ui-section__inner">
 
 
-<h2 class="ui-section__title" data-nav-theme="light">
+<h2 class="ui-section__title animate-this" data-nav-theme="light">
 
 Финальный дизайн <br>
 ключевых экранов
@@ -506,16 +533,16 @@ MOBILE FIRST
 
 <div class="ui-section__divider"></div>
 <div class="ui-section__grid">
-<div class="ui-section__label">
+<div class="ui-section__label reveal-custom">
 MOBILE FIRST
 </div>
-<div class="ui-section__body animate-this">
+<div class="ui-section__body reveal-custom animate-this">
 На рынке Аргентины мобильные устройства являются основным способом доступа в интернет.
 </div>
 </div>
 </div>
 <div class="ui-section__showcase" data-nav-theme="dark">
-<img src="all.png" alt="UI" class="ui-section__img">
+<img src="tbg.png" alt="UI" class="ui-section__img">
 </div>
 </section>
 </div>

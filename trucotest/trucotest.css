@@ -1,0 +1,1656 @@
+/* ==========================================================
+   TRUCOREAL CASE
+   Base styles
+========================================================== */
+
+/* Убираем верхний padding body — navbar наложится на HERO */
+body {
+    padding-top: 0;
+}
+
+/* ==========================================================
+    VARIABLES — scoped to .truco-page to prevent leaking into other pages
+    when truco.css is loaded dynamically on Barba navigation.
+    ========================================================== */
+
+.truco-page {
+
+    /* Colors */
+    --black: #06070A;
+    --dark: #0B1C2A;
+    --dark-soft: #0D2535;
+
+    --white: #FFFFFF;
+    --gray-bg: #F5F5F5;
+
+    --text-muted: rgba(6,7,10,.55);
+    --text-light: rgba(255,255,255,.65);
+
+    --border: rgba(6,7,10,.12);
+
+
+    /* Container */
+
+    --max-width: 164rem;
+
+    --padding-x:
+        clamp(2rem, 5vw, 8rem);
+
+    --container:
+        min(
+            calc(100vw - (var(--padding-x) * 2)),
+            var(--max-width)
+        );
+
+
+    /* Typography */
+
+    --display:
+        clamp(4.2rem,5.2vw,8.4rem);
+
+    --h1:
+        clamp(3rem,3vw,3rem);
+
+    --h2:
+        clamp(2.4rem,2vw,3rem);
+
+    --h3:
+        clamp(2.4rem,2vw,4.2rem);
+
+    --body:
+        clamp(2.4rem,1.5vw,2.6rem);
+
+    --small:
+        clamp(1.6rem,1.2vw,2.2rem);
+
+    --label:
+        1.4rem;
+
+
+    /* Spacing */
+
+    --section-xl:
+        clamp(12rem,12vw,22rem);
+
+    --section-lg:
+        clamp(8rem,8vw,14rem);
+
+    --section-md:
+        clamp(4rem,5vw,8rem);
+
+
+    /* Radius */
+
+    --radius:
+        4rem;
+
+
+    /* Page background colors — centralized page-level background management */
+
+    --page-bg-hero:    #051D2B;
+    --page-bg-phones:  #121212;
+    --page-bg-dark:    #0B1C2A;
+    --page-bg-light:   #F5F5F5;
+    --page-bg-frame:   #EDEDED;
+    --page-bg-section: #FFFFFF;
+
+}
+
+
+
+/* ==========================================================
+   RESET — handled by style.css, no need to duplicate here
+   ========================================================== */
+
+
+
+/* ==========================================================
+   PAGE BACKGROUND — Centralized background color management
+   for all top-level sections on the truco case page.
+   ========================================================== */
+
+
+.hero-frame {
+    background: white;
+}
+
+
+.phones-block {
+    background:var(--page-bg-phones);
+}
+
+
+.image-block {
+    background:var(--page-bg-light);
+}
+
+.userflow-showcase {
+    background: white;
+}
+
+
+.prototype-section {
+    background:var(--page-bg-section);
+}
+
+
+.mobile-first-section,
+.ui-section {
+    background:var(--page-bg-section);
+}
+
+
+.about-project {
+    background:var(--page-bg-section);
+}
+
+.prototype-section__frame,
+.visual-card {
+    background: var(--page-bg-frame);
+}
+
+
+img,
+video {
+
+    max-width:100%;
+    display:block;
+
+}
+
+
+
+/* ==========================================================
+   BARBA TRANSITION — задаётся в transition.css корня,
+   здесь только переопределяем если нужно
+========================================================== */
+
+
+
+/* ==========================================================
+   GLOBAL CONTAINER
+========================================================== */
+
+
+.container,
+.hero,
+.about-project-grid,
+.prototype-section__inner,
+.mobile-first-section__inner,
+.ui-section__inner {
+
+    width:var(--container);
+
+    margin-inline:auto;
+
+}
+
+
+
+/* ==========================================================
+   HERO
+========================================================== */
+
+
+.hero-frame {
+
+    width:100%;
+
+}
+
+
+
+.hero {
+
+
+
+    display:flex;
+
+    margin: 0 0 6rem 6rem;
+
+    overflow:hidden;
+
+    padding-top: 15rem;
+
+}
+
+
+.hero-label {
+
+    font-size:var(--h1);
+
+    font-weight:700;
+
+    margin-bottom: 2rem;
+
+    color:rgb(0, 0, 0);
+
+    letter-spacing:-0.02em;
+
+}
+
+
+
+.hero-title {
+
+    font-size:11rem;
+
+    line-height:1;
+
+    font-weight:400;
+
+    letter-spacing:-0.04em;
+
+    color:rgb(0, 0, 0);
+
+    max-width:146rem;
+
+}
+
+
+
+/* ==========================================================
+   PHONES BLOCK
+========================================================== */
+
+
+.phones-block {
+
+    width:100vw;
+
+    height:100vh;
+
+    background-color: #ffffff;
+
+    overflow:hidden;
+
+    position:relative;
+
+}
+
+
+
+.phones-block img {
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    object-position:center;
+
+}
+
+
+
+/* ==========================================================
+   ABOUT PROJECT
+========================================================== */
+
+
+.about-project {
+
+    color:var(--black);
+
+    padding:
+
+    var(--section-xl)
+
+    0;
+
+}
+
+
+
+.about-project-grid {
+
+    display:grid;
+
+    grid-template-columns:
+
+    minmax(22rem,42rem)
+
+    1fr;
+
+    gap:6rem;
+
+}
+
+
+
+.about-project-grid--second {
+
+    margin-top:12rem;
+
+}
+
+
+
+.about-project-label {
+
+    font-size:var(--h3);
+
+    font-weight:600;
+
+    letter-spacing:-0.03em;
+
+}
+
+
+
+.about-project-content {
+
+    font-size:var(--h2);
+
+    line-height:1.6;
+
+    letter-spacing:-0.02em;
+
+    max-width:111rem;
+    font-weight: 500;
+
+}
+
+
+
+.about-project-content--body {
+
+    font-size:var(--body);
+
+    line-height:1.6;
+
+    font-weight: 400;
+
+}
+
+
+
+/* ==========================================================
+   FULL IMAGE BLOCK
+========================================================== */
+
+
+.image-block {
+
+    width:100%;
+
+    overflow:hidden;
+
+}
+
+
+
+.image-block__frame {
+
+    width:100%;
+
+    aspect-ratio:16 / 9;
+
+}
+
+
+
+.image-block__frame img {
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+/* ==========================================================
+   PROTOTYPE SECTIONS
+========================================================== */
+
+
+.prototype-section {
+
+    color:var(--black);
+
+}
+
+
+
+.prototype-section__inner {
+
+    padding:
+
+    var(--section-xl)
+
+    0
+
+    var(--section-lg);
+
+}
+
+
+
+.prototype-section__title {
+
+    font-size:5rem;
+
+    font-weight:700;
+
+    line-height:1.05;
+
+    letter-spacing:-0.04em;
+
+    max-width:110rem;
+
+    margin-bottom: 4.5rem;
+
+}
+
+
+
+.prototype-section__divider {
+
+    width:100%;
+
+    height:0rem;
+
+    background:var(--border);
+
+    margin-bottom:2rem;
+
+}
+
+
+
+.prototype-section__grid {
+
+}
+
+.truco-text-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+}
+
+@media (max-width: 768px) {
+    .truco-text-columns {
+        grid-template-columns: 1fr;
+        gap: 3.2rem;
+    }
+}
+
+
+
+.prototype-section__label {
+
+    font-size:var(--label);
+
+    font-weight:600;
+
+    text-transform:uppercase;
+
+    letter-spacing:.08em;
+
+    color:rgba(6,7,10,.45);
+
+    line-height:1.5;
+
+}
+
+
+
+.prototype-section__body {
+
+    font-size:var(--body);
+
+    line-height:1.45;
+
+    letter-spacing:-0.02em;
+
+    max-width:111rem;
+
+}
+
+
+
+.prototype-section__body p {
+
+    margin-bottom:2.4rem;
+
+}
+
+
+
+.prototype-section__body p:last-child {
+
+    margin-bottom:0;
+
+}
+
+
+
+/* ==========================================================
+   LARGE IMAGE FRAME
+========================================================== */
+
+
+.prototype-section__frame,
+.prototype-section__userflow {
+    /* Оставлен для других секций */
+    width: var(--container);
+    margin-inline: auto;
+    height: clamp(42rem, 65vw, 108rem);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.prototype-section__frame-img {
+    width: 80%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* ==========================================================
+   USERFLOW — бесконечная прокрутка изображения
+========================================================== */
+
+.userflow-showcase {
+    width: 100vw;
+    overflow: hidden;
+    /* Высота определяется содержимым — изображением в натуральном размере */
+}
+
+.userflow-track {
+    display: flex;
+    flex-wrap: nowrap;
+    /* Ширина и анимация задаются через JS после загрузки изображения */
+}
+
+.userflow-img {
+    flex-shrink: 0;
+    height: 1512px;
+    width: auto;
+    display: block;
+}
+
+@keyframes userflow-loop {
+    from { transform: translateX(0); }
+    to   { transform: translateX(var(--userflow-shift)); }
+}
+
+
+/* ==========================================================
+   VISUAL DIRECTION GRID
+========================================================== */
+
+
+.visual-grid {
+
+    width:var(--container);
+
+    margin-inline:auto;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:2.4rem;
+
+
+}
+
+
+
+.visual-card {
+
+   /* border-radius:var(--radius); */
+
+    overflow:hidden;
+
+}
+
+
+
+.visual-card--small {
+
+    height:auto;
+
+    aspect-ratio:3/4;
+
+}
+
+
+
+.visual-card--wide {
+
+    grid-column:span 2;
+
+    height:auto;
+
+    aspect-ratio:4/3;
+
+}
+
+
+/* Parallax image inside visual card */
+
+.visual-card img {
+
+    width:100% !important;
+
+    height:100% !important;
+
+    object-fit:contain !important;
+
+    object-position:center;
+
+}
+
+
+
+/* ==========================================================
+   CONCEPT CARDS
+========================================================== */
+
+
+.concept-grid {
+
+    width:var(--container);
+
+    margin-inline:auto;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:4rem;
+
+}
+
+
+
+.concept-card {
+
+    overflow:hidden;
+
+    border-radius:var(--radius);
+
+}
+
+
+
+.concept-card--top {
+
+    min-height:80rem;
+
+}
+
+
+
+.concept-card--bottom {
+
+    grid-column:span 2;
+
+    min-height:90rem;
+
+}
+
+
+
+.concept-card--dark {
+
+    background:#0B1C2A;
+
+}
+
+
+
+.concept-card--text {
+
+    background:#C9935D;
+
+    padding:
+
+    clamp(4rem,5vw,10rem);
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+}
+
+
+
+.concept-card__title {
+
+    font-size:
+
+    clamp(
+        4.2rem,
+        5vw,
+        8rem
+    );
+
+    line-height:1.05;
+
+    font-weight:700;
+
+    letter-spacing:-0.04em;
+
+    color:white;
+
+    margin-bottom:4rem;
+
+}
+
+
+
+.concept-card__body {
+
+    font-size:
+
+    clamp(
+        1.8rem,
+        2vw,
+        3.2rem
+    );
+
+    line-height:1.5;
+
+    color:white;
+
+    max-width:70rem;
+
+}
+
+
+
+.concept-card__img {
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+
+
+/* ==========================================================
+   MOBILE FIRST SECTION
+========================================================== */
+
+
+.mobile-first-section {
+
+}
+
+
+
+.mobile-first-section__inner {
+
+    padding:
+
+    var(--section-xl)
+
+    0
+
+    var(--section-lg);
+
+}
+
+
+
+.mobile-first-section__title {
+
+    font-size:5rem;
+
+    font-weight:700;
+
+    line-height:1.05;
+
+    letter-spacing:-0.04em;
+
+    margin-bottom: 4.5rem;
+
+}
+
+
+
+.mobile-first-section__grid {
+
+    display:grid;
+
+    grid-template-columns:
+
+    minmax(110rem,42rem)
+
+    1fr;
+
+    gap:6rem;
+
+}
+
+
+
+.mobile-first-section__body {
+
+    font-size:var(--body);
+
+    line-height:1.65;
+
+    letter-spacing:-0.02em;
+
+}
+
+/* ==========================================================
+   VIDEO SHOWCASE
+========================================================== */
+
+
+.video-showcase {
+
+    width:100%;
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:
+
+    clamp(
+        4rem,
+        8vw,
+        12rem
+    );
+
+    margin-left:
+
+    calc(
+        (100vw - var(--container)) / 2
+    );
+
+    /* padding-left даёт место для box-shadow слева — без него левая обводка
+       обрезается по границе контейнера */
+    padding-left: 1.6rem;
+
+    overflow-x: clip;
+
+
+}
+
+
+
+.video-mob,
+.video-desk {
+
+    background:#000;
+
+    border-radius:3.2rem;
+
+    box-shadow:0 0 0 1.2rem rgba(0,0,0,.3);
+
+    position:relative;
+
+}
+
+
+
+.video-mob {
+
+    flex:
+
+    0 0 auto;
+
+    width:
+
+    clamp(
+        28rem,
+        22vw,
+        37.1rem
+    );
+
+    height:
+
+    clamp(
+        56rem,
+        50vw,
+        80.8rem
+    );
+
+}
+
+
+
+.video-desk {
+
+    flex:
+
+    0 0 auto;
+
+    width:
+
+    clamp(
+        70rem,
+        65vw,
+        118.3rem
+    );
+
+    height:
+
+    clamp(
+        40rem,
+        45vw,
+        80.8rem
+    );
+
+    margin-top:12rem;
+
+}
+
+
+
+.video-mob video,
+.video-desk video {
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    border-radius:3.2rem;
+
+    overflow:hidden;
+
+}
+
+
+
+/* ==========================================================
+   UI SECTION
+========================================================== */
+
+
+.ui-section {
+
+    color:var(--black);
+    background:#0B1C2A;
+
+}
+
+/* ==========================================================
+   CONCEPT SECTION
+   Секция высотой по картинке. Левый текст — sticky,
+   плывёт вместе со страницей и остаётся в центре экрана
+   пока рядом скроллится all.png.
+========================================================== */
+
+.concept-scroll-wrapper {
+    display: none; /* враппер больше не используется */
+}
+
+.ui-section--concept {
+    background: #0B1C2A;
+    color: #fff;
+    width: 100vw;
+    margin-top: var(--section-xl);
+    /* Высота определяется содержимым (картинкой) + отступы */
+}
+
+.ui-section--concept .ui-section__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    width: var(--container);
+    margin-inline: auto;
+    /* Выравниваем колонки по верху */
+    align-items: start;
+}
+
+/* Левая колонка — sticky, текст центрирован по вертикали в viewport */
+.ui-section--concept .ui-section__content {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding-top: 16rem;
+}
+
+/* Обёртка текста — просто контент */
+.ui-section__content-sticky {
+    display: flex;
+    flex-direction: column;
+}
+
+.ui-section--concept .ui-section__title {
+    color: #fff;
+}
+
+.ui-section--concept .ui-section__body {
+    color: #fff;
+    max-width: 80%;
+    letter-spacing: -0.02em;
+}
+
+/* Правая колонка — картинка в полную высоту без обрезки */
+.ui-section--concept .ui-section__showcase {
+    width: 100%;
+    overflow: visible;
+    display: flex;
+    align-items: flex-start;
+    margin-top: 10rem;
+}
+
+.ui-section__img--concept {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+
+
+
+.ui-section__inner {
+
+    padding:
+
+    var(--section-md)
+
+    0
+
+    var(--section-md);
+
+}
+
+
+
+.ui-section__title {
+
+    font-size:5rem;
+
+    font-weight:700;
+
+    line-height:1.05;
+
+    letter-spacing:-0.04em;
+
+    margin-bottom: 4.5rem;
+
+   color: #fff;
+
+}
+
+
+
+.ui-section__divider {
+
+    width:100%;
+    height:0.1rem;
+    margin-bottom:5rem;
+
+}
+
+
+
+.ui-section__grid {
+
+    display:grid;
+
+    grid-template-columns:
+
+    minmax(22rem,42rem)
+
+    1fr;
+
+    gap:6rem;
+
+}
+
+
+
+.ui-section__label {
+
+    font-size:var(--label);
+
+    font-weight:600;
+
+    text-transform:uppercase;
+
+    letter-spacing:.08em;
+
+    color:rgba(6,7,10,.45);
+
+}
+
+
+
+.ui-section__body {
+
+    font-size:var(--body);
+
+    line-height:1.65;
+
+    max-width:110rem;
+
+    letter-spacing:-0.02em;
+
+}
+
+
+
+/* ==========================================================
+   FINAL UI IMAGE
+========================================================== */
+.ui-section__showcase {
+
+    width:100vw;
+
+    calc(
+
+        (var(--container) - 100vw) / 2
+
+    );
+
+    overflow:hidden;
+
+}
+
+.ui-section--concept .ui-section__showcase {
+    /* Переопределено в блоке CONCEPT STICKY SCROLL выше */
+}
+
+
+
+.ui-section__img {
+
+    width:100%;
+
+    height:auto;
+
+}
+
+.ui-section--concept .ui-section__img {
+    /* Переопределено классом .ui-section__img--concept выше */
+}
+
+
+
+/* ==========================================================
+   USERFLOW / DARK BLOCKS
+========================================================== */
+
+.userflow-copy {
+
+    width:var(--container);
+
+    margin:auto;
+
+    color:white;
+
+}
+
+.userflow-copy .note-title {
+
+    color:white;
+
+}
+
+.userflow-copy .note-body {
+
+    color:
+    rgba(255,255,255,.7);
+
+}
+
+.userflow-ribbon {
+
+    margin-top:8rem;
+
+    overflow:hidden;
+
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+
+/* -------------------------
+   TABLET
+------------------------- */
+
+@media (max-width: 96rem) {
+
+
+    .truco-page {
+
+        --padding-x:2.4rem;
+
+    }
+
+
+
+    .hero {
+
+        height:auto;
+
+        min-height:50rem;
+
+        padding:
+
+        8rem 0;
+
+    }
+
+
+
+    .hero-title {
+
+        max-width:100%;
+
+    }
+
+    .ui-section--concept .ui-section__inner {
+
+        grid-template-columns:1fr;
+
+        height:auto;
+
+        padding:var(--section-xl) var(--section-lg);
+
+    }
+
+    /* На мобильном sticky отключается */
+    .ui-section--concept .ui-section__content {
+        position: relative;
+        height: auto;
+        top: auto;
+    }
+
+    .ui-section--concept .ui-section__showcase {
+        overflow: visible;
+    }
+
+
+
+    .about-project-grid,
+    .prototype-section__grid,
+    .mobile-first-section__grid,
+    .ui-section__grid {
+
+        grid-template-columns:1fr;
+
+        gap:3.2rem;
+
+    }
+
+
+
+    .about-project-grid--second {
+
+        margin-top:8rem;
+
+    }
+
+
+
+    .prototype-section__title,
+    .mobile-first-section__title,
+    .ui-section__title {
+
+        margin-bottom:4rem;
+
+    }
+
+
+
+    .prototype-section__frame,
+    .prototype-section__userflow {
+
+        border-radius:2.4rem;
+
+    }
+
+
+
+    .visual-grid {
+
+        grid-template-columns:1fr;
+
+        gap:2.4rem;
+
+    }
+
+    .visual-card--wide {
+
+        grid-column:auto;
+
+    }
+
+
+
+    .concept-grid {
+
+        grid-template-columns:1fr;
+
+    }
+
+
+
+    .concept-card--bottom {
+
+        grid-column:auto;
+
+    }
+
+
+
+    .video-showcase {
+
+        margin-left:0;
+
+        width:100%;
+
+        flex-direction:column;
+
+        padding-inline:var(--padding-x);
+
+    }
+
+
+
+    .video-mob,
+    .video-desk {
+
+        width:100%;
+
+        height:auto;
+
+        aspect-ratio:16/9;
+
+        margin-top:0;
+
+    }
+
+
+
+    .video-mob {
+
+        aspect-ratio:9/16;
+
+        max-width:37rem;
+
+    }
+
+
+
+}
+
+
+
+/* -------------------------
+   MOBILE
+------------------------- */
+
+
+@media (max-width:60rem) {
+
+
+    .truco-page {
+
+        --padding-x:1.6rem;
+
+    }
+
+
+
+    .hero {
+
+        min-height:42rem;
+
+        padding:
+
+        6rem 0;
+
+
+    }
+
+
+
+    .hero-label {
+
+        margin-bottom:2rem;
+
+    }
+
+
+
+    .hero-title {
+
+        font-size:
+
+        clamp(
+            4rem,
+            11vw,
+            5.6rem
+        );
+
+    }
+
+
+
+    .phones-block {
+    }
+
+
+
+    .about-project {
+
+        padding:
+
+        8rem 0;
+
+    }
+
+
+
+    .about-project-content {
+
+        font-size:2rem;
+
+    }
+
+
+
+    .prototype-section__inner,
+    .mobile-first-section__inner,
+    .ui-section__inner {
+
+        padding-top:8rem;
+
+        padding-bottom:6rem;
+
+    }
+
+
+
+    .prototype-section__title,
+    .mobile-first-section__title,
+    .ui-section__title {
+
+        font-size:
+
+        clamp(
+            3.8rem,
+            10vw,
+            5.2rem
+        );
+
+    }
+
+
+
+    .prototype-section__body,
+    .mobile-first-section__body,
+    .ui-section__body {
+
+        font-size:1.8rem;
+
+    }
+
+
+
+    .prototype-section__frame,
+    .prototype-section__userflow {
+
+        height:auto;
+
+        aspect-ratio:4/5;
+
+        border-radius:2rem;
+
+    }
+
+
+
+    .visual-card--small {
+
+        height:auto;
+
+        aspect-ratio:3/4;
+
+        border-radius:2rem;
+
+    }
+
+    .visual-card--wide {
+
+        height:auto;
+
+        aspect-ratio:4/3;
+
+        border-radius:2rem;
+
+    }
+
+
+
+    .concept-card {
+
+        border-radius:2.4rem;
+
+    }
+
+
+
+    .concept-card--top {
+
+        min-height:50rem;
+
+    }
+
+
+
+    .concept-card--bottom {
+
+        min-height:50rem;
+
+    }
+
+
+
+    .concept-card__title {
+
+        font-size:4.2rem;
+
+    }
+
+
+
+    .concept-card__body {
+
+        font-size:2rem;
+
+    }
+
+
+
+    .ui-section__showcase {
+
+        width:100%;
+
+        margin-left:0;
+
+    }
+
+
+
+}
+
+
+
+/* ==========================================================
+   ACCESSIBILITY / PERFORMANCE
+========================================================== */
+
+
+
+@media (prefers-reduced-motion:reduce) {
+
+
+    *,
+    *::before,
+    *::after {
+
+        animation:none!important;
+
+        transition:none!important;
+
+        scroll-behavior:auto!important;
+
+    }
+
+
+}
+
+/* ==========================================================
+   GSAP INITIAL STATES
+========================================================== */
+
+/* will-change не нужен здесь как постоянный стиль —
+   GSAP управляет им автоматически через gsap.set() во время анимации */
+
+/* Скрываем заголовки до split — предотвращает мигание */
+h1, h2, h3, .hero-label {
+    opacity: 0;
+}
+
+[data-split="true"] {
+    opacity: 1;
+}
+
+.truco-page {
+    width: 100%;
+    min-height: 100vh;
+    background: var(--page-bg-section);
+    /* overflow:hidden убран — он блокирует position:sticky
+       на вложенных элементах (.ui-section--concept) */
+    overflow-x: clip;
+}
+
+/* Custom reveal animation */
+.reveal-custom {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+/* Hero image reveal */
+.hero_image img {
+    opacity: 0;
+    transform: translateY(30px);
+}

@@ -14,7 +14,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&family=Roboto+Mono&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="../fonts.css">
 <link rel="stylesheet" href="../style.css">
@@ -28,98 +28,60 @@
 <body data-barba="wrapper">
 
 
-<div class="custom-cursor">Кейсы</div>
+<div class="cursor-placeholder"></div>
 
+
+<a href="/" class="site-logo" data-lenis-prevent>
+    <img src="/logo.svg" alt="Logo" width="73" height="68">
+</a>
 
 <div class="transition-wrapper">
-    <div class="loading-screen"></div>
+    <div class="dark-curtain curtain">
+      <span class="curtain-label">KNDKV</span>
+    </div>
 </div>
 
+<div class="custom-scrollbar" data-custom-scrollbar>
+  <div class="custom-scrollbar-thumb"></div>
+</div>
 
-<!-- ==========================================================
-     NAVIGATION
-     ========================================================== -->
+<!-- Navigation Menu Component -->
+<nav class="menu" id="menu" data-lenis-prevent>
 
+    <div class="menu__surface" id="surface"></div>
 
-<nav class="navbar">
+    <button class="menu__trigger" id="trigger" aria-expanded="false">
 
-  <div class="navbar__inner">
+      <span class="menu__label" id="label">Меню</span>
 
+      <span class="menu__circle" id="circle">
 
-    <!-- Left: Logo + Brand Name -->
+        <span class="burger" id="burger">
+          <span></span>
+          <span></span>
+        </span>
 
-    <a href="/" class="navbar__brand">
+        <span class="circle-title" id="circleTitle">
+          Главная
+        </span>
 
-       <div class="navbar__logo">
+      </span>
 
-          <svg class="navbar__logo-img" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M19 0L19.5041 1.36228C22.4414 9.30014 28.6999 15.5586 36.6377 18.4959L38 19L36.6377 19.5041C28.6999 22.4414 22.4414 28.6999 19.5041 36.6377L19 38L18.4959 36.6377C15.5586 28.6999 9.30013 22.4414 1.36227 19.5041L0 19L1.36228 18.4959C9.30014 15.5586 15.5586 9.30013 18.4959 1.36227L19 0Z" fill="currentColor"/>
-          </svg>
-
-       </div>
-
-      <span class="navbar__brand-name">Никита Копытов</span>
-
-    </a>
-
-
-
-    <!-- Right: Navigation Links -->
-
-    <ul class="navbar__nav" id="navbarNav">
-
-      <li><a href="#projects" class="navbar__link">Проекты</a></li>
-
-      <li><a href="#about" class="navbar__link">Обо мне</a></li>
-
-      <li><a href="#contacts" class="navbar__link">Контакты</a></li>
-
-    </ul>
+    </button>
 
 
+    <ul class="menu__items" id="items">
+  <li class="menu__item"><a href="/index.html"><span>Главная</span></a></li>
+  <li class="menu__item"><a href="/trucotest/trucotest.html"><span>Проекты</span></a></li>
+  <li class="menu__item"><a href="/pg3d/pg3d.html"><span>Обо мне</span></a></li>
+  <li class="menu__item"><a href="/#contacts"><span>Контакты</span></a></li>
+</ul>
 
-    <!-- Mobile: Burger Menu Button -->
-
-    <div class="navbar__burger" id="navbarBurger" aria-label="Открыть меню" aria-expanded="false">
-
-      <span class="navbar__burger-line"></span>
-
-      <span class="navbar__burger-line"></span>
-
-      <span class="navbar__burger-line"></span>
-
-    </div>
-
-
-
-    <!-- Mobile: Menu Overlay -->
-
-    <nav class="navbar__mobile-menu" id="navbarMobileMenu">
-
-      <div class="navbar__menu-close" id="navbarMenuClose">
-
-        <span class="navbar__menu-close-line"></span>
-
-        <span class="navbar__menu-close-line"></span>
-
-      </div>
-
-      <ul class="navbar__mobile-nav">
-
-        <li><a href="#projects" class="navbar__mobile-link">Проекты</a></li>
-
-        <li><a href="#about" class="navbar__mobile-link">Обо мне</a></li>
-
-        <li><a href="#contacts" class="navbar__mobile-link">Контакты</a></li>
-
-      </ul>
-
-    </nav>
-
-
-  </div>
+    <div class="menu__indicator" id="indicator"></div>
 
 </nav>
+
+
 
 
 <div class="pg3d-page" data-barba="container" data-barba-namespace="pg3d">

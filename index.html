@@ -6,6 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Масштабируемое портфолио дизайнера</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="transition.css">
   <link rel="stylesheet" href="style.css">
@@ -13,73 +17,78 @@
 
 <body data-barba="wrapper">
 
-  <div class="custom-cursor">Показать кейс</div>
-
-  <div class="transition-wrapper">
-    <div class="loading-screen"></div>
+<div class="custom-cursor" id="main-cursor">
+    <img src="/link.svg" alt="" class="custom-cursor__icon">
   </div>
 
-  <!-- NAVIGATION -->
+  <a href="/" class="site-logo" data-lensy-prevent>
+    <img src="/logo.svg" alt="Logo" width="73" height="68" class="blend-me">
+  </a>
 
-  <nav class="navbar">
-    <div class="navbar__inner">
-
-      <!-- Left: Logo + Brand Name -->
-      <a href="/" class="navbar__brand">
-        <div class="navbar__logo">
-          <svg class="navbar__logo-img" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M19 0L19.5041 1.36228C22.4414 9.30014 28.6999 15.5586 36.6377 18.4959L38 19L36.6377 19.5041C28.6999 22.4414 22.4414 28.6999 19.5041 36.6377L19 38L18.4959 36.6377C15.5586 28.6999 9.30013 22.4414 1.36227 19.5041L0 19L1.36228 18.4959C9.30014 15.5586 15.5586 9.30013 18.4959 1.36227L19 0Z" fill="currentColor"/>
-          </svg>
-        </div>
-        <span class="navbar__brand-name">Никита Копытов</span>
-      </a>
-
-      <!-- Right: Navigation Links -->
-      <ul class="navbar__nav" id="navbarNav">
-        <li><a href="#projects" class="navbar__link">Проекты</a></li>
-        <li><a href="#about" class="navbar__link">Обо мне</a></li>
-        <li><a href="#contacts" class="navbar__link">Контакты</a></li>
-      </ul>
-
-      <!-- Mobile: Burger Menu Button -->
-      <div class="navbar__burger" id="navbarBurger" aria-label="Открыть меню" aria-expanded="false">
-        <span class="navbar__burger-line"></span>
-        <span class="navbar__burger-line"></span>
-        <span class="navbar__burger-line"></span>
-      </div>
-
-      <!-- Mobile: Menu Overlay -->
-      <nav class="navbar__mobile-menu" id="navbarMobileMenu">
-        <div class="navbar__menu-close" id="navbarMenuClose">
-          <span class="navbar__menu-close-line"></span>
-          <span class="navbar__menu-close-line"></span>
-        </div>
-        <ul class="navbar__mobile-nav">
-          <li><a href="#projects" class="navbar__mobile-link">Проекты</a></li>
-          <li><a href="#about" class="navbar__mobile-link">Обо мне</a></li>
-          <li><a href="#contacts" class="navbar__mobile-link">Контакты</a></li>
-        </ul>
-      </nav>
-
+  <div class="transition-wrapper">
+    <div class="dark-curtain curtain">
+      <span class="curtain-label"></span>
     </div>
+  </div>
+
+  <div class="custom-scrollbar" data-custom-scrollbar>
+    <div class="custom-scrollbar-thumb"></div>
+  </div>
+
+  <!-- Navigation Menu Component -->
+  <nav class="menu" id="menu" data-lenis-prevent>
+
+    <div class="menu__surface" id="surface"></div>
+
+    <button class="menu__trigger" id="trigger" aria-expanded="false">
+
+      <span class="menu__label" id="label">Меню</span>
+
+      <span class="menu__circle" id="circle">
+
+        <span class="burger" id="burger">
+          <span></span>
+          <span></span>
+        </span>
+
+        <span class="circle-title" id="circleTitle">
+          Главная
+        </span>
+
+      </span>
+
+    </button>
+
+
+    <ul class="menu__items" id="items">
+  <li class="menu__item"><a href="/index.html"><span>Главная</span></a></li>
+  <li class="menu__item"><a href="/trucotest/trucotest.html"><span>Проекты</span></a></li>
+  <li class="menu__item"><a href="/pg3d/pg3d.html"><span>Обо мне</span></a></li>
+  <li class="menu__item"><a href="/#contacts"><span>Контакты</span></a></li>
+</ul>
+
+    <div class="menu__indicator" id="indicator"></div>
+
   </nav>
 
   <div data-barba="container" data-barba-namespace="home">
 
-    <main class="container">
+     <main class="container">
 
-      <!-- Текстовый блок над карточками -->
-      <section class="hero-block">
-        <h1 class="hero-text">
-          UI/UX дизайнер с 15+ годами опыта. Запускаю Gamedev и iGaming проекты. Проектирую сложные Enterprise продукты, развиваю дизайн-системы. Организую процессы в дизайн-командах.
-        </h1>
-      </section>
+      
 
-     <!-- Сетка проектов -->
+        <!-- Текстовый блок над карточками -->
+        <section class="hero-block">
+          <h1 class="hero-text hero-intro animate-this">
+            Проектирую Enterprise продукты, запускаю проекты в Gamedev и iGaming. Развиваю дизайн-системы и процессы в командах.
+          </h1>
+        </section>
+
+       <!-- Сетка проектов -->
       <div class="projects-grid">
 
         <!-- Блок 1 (Широкий) -->
-        <a href="truco/truco.html" class="project-link animate-this project-item project-item--first">
+        <a href="foresight/foresight.html" class="project-link animate-this project-item project-item--first" data-category="design">
           <div class="image-container">
             <div class="portfolio-image-wrapper">
               <img src="project1.png" alt="Foresight" class="portfolio-img">
@@ -90,25 +99,43 @@
         </a>
 
         <!-- Блок 2 (Левый вертикальный) -->
-        <a href="pg3d/pg3d.html" class="project-link animate-this project-item project-item--second">
+        <a href="pg3d/pg3d.html" class="project-link animate-this project-item project-item--second" data-category="branding">
           <div class="portfolio-image-wrapper">
-            <img src="project2.png" alt="Foresight" class="portfolio-img">
+            <video src="trucoprev.mp4" class="portfolio-video" muted loop playsinline></video>
           </div>
-          <div class="project-meta">Foresight</div> 
+          <div class="project-meta">TrucoReal</div>
           <h2 class="project-title">MVP онлайн казино для аргентинского рынка</h2>
         </a>
 
         <!-- Блок 3 (Правый вертикальный) -->
-        <article class="project-item animate-this project-item--third">
+        <a href="trucotest/trucotest.html" class="project-link animate-this project-item project-item--third" data-category="web">
           <div class="portfolio-image-wrapper">
             <img src="project3.png" alt="Foresight" class="portfolio-img">
           </div>
+          <div class="project-meta">Pixel Gun 3D</div>
+          <h2 class="project-title">Онлайн-шутер в стилистике майнкрафт</h2>
+        </a>
+
+        <!-- Блок 5 (Левый вертикальный) -->
+        <article class="project-item animate-this project-item--fifth" data-category="branding">
+          <div class="portfolio-image-wrapper">
+            <img src="project5.png" alt="Описание проекта 5" class="portfolio-img">
+          </div>
           <div class="project-meta">Foresight</div>
-          <h2 class="project-title">Мобильная RPG с автоматическими боями</h2>
+          <h2 class="project-title">UX/UI аудит и оптимизация конверсии крипто-кошелька</h2>
         </article>
 
-        <!-- Блок 4 (Широкий — дублирует геометрию Блока 1) -->
-        <article class="project-item animate-this project-item--fourth">
+        <!-- Блок 6 (Правый вертикальный) -->
+        <article class="project-item animate-this project-item--sixth" data-category="web">
+          <div class="portfolio-image-wrapper">
+            <video class="portfolio-img" src="PG3D.mp4" loop muted playsinline></video>
+          </div>
+          <div class="project-meta">Foresight</div>
+          <h2 class="project-title">Разработка веб-интерфейса для облачного SaaS продукта</h2>
+        </article>
+
+        <!-- Блок 4 (Широкий) -->
+        <article class="project-item animate-this project-item--fourth" data-category="design">
           <div class="image-container">
             <div class="portfolio-image-wrapper">
               <img src="project4.png" alt="Описание проекта 4" class="portfolio-img">
@@ -118,23 +145,7 @@
           <h2 class="project-title">Проектирование сложной дизайн-системы для финтех платформы</h2>
         </article>
 
-        <!-- Блок 5 (Левый вертикальный — дублирует геометрию Блока 2) -->
-        <article class="project-item animate-this project-item--fifth">
-          <div class="portfolio-image-wrapper">
-            <img src="project5.png" alt="Описание проекта 5" class="portfolio-img">
-          </div>
-          <div class="project-meta">Foresight</div>
-          <h2 class="project-title">UX/UI аудит и оптимизация конверсии крипто-кошелька</h2>
-        </article>
-
-        <!-- Блок 6 (Правый вертикальный — дублирует геометрию Блока 3) -->
-        <article class="project-item animate-this project-item--sixth">
-          <div class="portfolio-image-wrapper">
-            <img src="project6.png" alt="Описание проекта 6" class="portfolio-img">
-          </div>
-          <div class="project-meta">Foresight</div>
-          <h2 class="project-title">Разработка веб-интерфейса для облачного SaaS продукта</h2>
-        </article>
+        
 
       </div>
     </main>

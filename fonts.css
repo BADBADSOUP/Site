@@ -82,10 +82,100 @@
 }
 
 
+@font-face {
+
+    font-family: "Onest";
+
+    src: url("Fonts/Onest-300.ttf") format("truetype");
+
+    font-weight:300;
+
+    font-style:normal;
+
+    font-display:swap;
+
+}
+
+
+@font-face {
+
+    font-family: "Onest";
+
+    src: url("Fonts/Onest-400.ttf") format("truetype");
+
+    font-weight:400;
+
+    font-style:normal;
+
+    font-display:swap;
+
+}
+
+
+@font-face {
+
+    font-family: "Onest";
+
+    src: url("Fonts/Onest-500.ttf") format("truetype");
+
+    font-weight:500;
+
+    font-style:normal;
+
+    font-display:swap;
+
+}
+
+
+@font-face {
+
+    font-family: "Onest";
+
+    src: url("Fonts/Onest-600.ttf") format("truetype");
+
+    font-weight:600;
+
+    font-style:normal;
+
+    font-display:swap;
+
+}
+
+
+@font-face {
+
+    font-family: "Onest";
+
+    src: url("Fonts/Onest-700.ttf") format("truetype");
+
+    font-weight:700;
+
+    font-style:normal;
+
+    font-display:swap;
+
+}
+
+
+@font-face {
+
+    font-family: "Actay Wide";
+
+    src: url("Fonts/ActayWide-Bold.otf") format("opentype");
+
+    font-weight: 700;
+
+    font-style: normal;
+
+    font-display: swap;
+
+}
+
 
 :root {
 
     --main-font:
+        "Onest",
         "Suisse Intl",
         "Inter",
         Arial,
@@ -93,8 +183,16 @@
 
 
     --title-font:
+        "Onest",
         "Suisse Intl",
         "Inter",
+        Arial,
+        sans-serif;
+
+    --name-font:
+        "Actay Wide",
+        "Onest",
+        "Suisse Intl",
         Arial,
         sans-serif;
 

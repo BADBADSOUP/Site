@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Foresight — Кейс</title>
+  <link rel="icon" href="../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../fonts.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="foresight.css">
+  <link rel="stylesheet" href="../transition.css">
+</head>
+
+<body data-barba="wrapper">
+
+  <div class="cursor-placeholder"></div>
+
+  <a href="/" class="site-logo" data-lenis-prevent>
+    <img src="/logo.svg" alt="Logo" width="73" height="68">
+  </a>
+
+  <div class="transition-wrapper">
+    <div class="dark-curtain curtain">
+      <span class="curtain-label">KNDKV</span>
+    </div>
+  </div>
+
+  <div class="custom-scrollbar" data-custom-scrollbar>
+    <div class="custom-scrollbar-thumb"></div>
+  </div>
+
+  <!-- Navigation Menu Component -->
+  <nav class="menu" id="menu" data-lenis-prevent>
+
+    <div class="menu__surface" id="surface"></div>
+
+    <button class="menu__trigger" id="trigger" aria-expanded="false">
+      <span class="menu__label" id="label">Меню</span>
+      <span class="menu__circle" id="circle">
+        <span class="burger" id="burger">
+          <span></span>
+          <span></span>
+        </span>
+        <span class="circle-title" id="circleTitle">Главная</span>
+      </span>
+    </button>
+
+    <ul class="menu__items" id="items">
+      <li class="menu__item"><a href="/index.html"><span>Главная</span></a></li>
+      <li class="menu__item"><a href="/trucotest/trucotest.html"><span>Проекты</span></a></li>
+      <li class="menu__item"><a href="/pg3d/pg3d.html"><span>Обо мне</span></a></li>
+      <li class="menu__item"><a href="/#contacts"><span>Контакты</span></a></li>
+    </ul>
+
+    <div class="menu__indicator" id="indicator"></div>
+
+  </nav>
+
+  <div class="foresight-page" data-barba="container" data-barba-namespace="foresight">
+
+    <!-- ====== HERO ====== -->
+    <div class="hero-frame" data-nav-theme="dark">
+      <div class="hero">
+        <div class="hero-left">
+          <div class="hero-label">Foresight</div>
+          <h1 class="hero-title">Редизайн и перенос в веб BI платформы</h1>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== HERO IMAGE ====== -->
+    <div class="hero_image" data-nav-theme="dark">
+      <img src="phone-left.png" alt="Foresight — интерфейс">
+    </div>
+
+    <!-- ====== О ПРОЕКТЕ ====== -->
+    <section class="about-project" data-nav-theme="light">
+
+      <div class="about-project-grid">
+        <div class="about-project-label reveal-custom">Контекст</div>
+        <div class="about-project-content reveal-custom">
+          «Форсайт» &#8209; российский разработчик ПО классов BI, CPM и IBP. Продукты компании используются в крупном бизнесе и госсекторе для анализа данных, бюджетирования и интегрированного планирования.
+        </div>
+      </div>
+
+      <div class="about-project-grid">
+        <div class="about-project-label reveal-custom">Бизнес-задача</div>
+        <div class="about-project-content reveal-custom">
+          Перевести экосистему продуктов с desktop-платформы в web, сохранив существующую функциональность, и полностью обновить визуальный и UX подход. Основные цели переноса: работа на Linux системах в рамках импортозамещения, сокращение времени на развёртывание.
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ====== ПРОБЛЕМЫ ====== -->
+    <section class="about-project" data-nav-theme="light">
+      <div class="about-project-grid">
+        <div class="about-project-label reveal-custom">Проблемы</div>
+        <div class="about-project-content reveal-custom">
+          Проведя аудит платформы я понял, что задачу нельзя решить «простой перерисовкой» интерфейсов. Для решения задачи определил три ключевые проблемы:
+        </div>
+      </div>
+    </section>
+
+    <div class="cards-grid">
+      <div class="info-card">
+        <div class="card-tag">Устаревший дизайн</div>
+        <p class="card-text">Весь UI платформы проектировался по гайдлайнам Microsoft Office, предназначенным для десктопных систем.</p>
+        <button class="card-btn" aria-label="Подробнее">+</button>
+      </div>
+      <div class="info-card">
+        <div class="card-tag">10+ инструментов</div>
+        <p class="card-text">Редизайн платформы должен был охватить больше 10 бизнес и системных инструментов, сохранив консистентность.</p>
+        <button class="card-btn" aria-label="Подробнее">+</button>
+      </div>
+      <div class="info-card">
+        <div class="card-tag">Масштабируемость</div>
+        <p class="card-text">Дизайн платформы строился на одном UI&#8209;ките без единой дизайн-системы и единых принципов проектирования.</p>
+        <button class="card-btn" aria-label="Подробнее">+</button>
+      </div>
+    </div>
+
+    <!-- ====== ИЗОБРАЖЕНИЕ КОНЦЕПТ ====== -->
+    <section class="image-block" data-nav-theme="dark">
+      <div class="image-block__frame">
+        <img src="concept2.png" class="reveal-image" alt="">
+      </div>
+    </section>
+
+    <!-- ====== ПОДХОД ====== -->
+    <section class="prototype-section" data-nav-theme="light">
+
+      <div class="prototype-section__inner">
+
+        <h2 class="prototype-section__title animate-this">Процесс разработки</h2>
+
+
+
+        <div class="prototype-section__grid">
+          <div class="truco-text-columns">
+            <div class="prototype-section__body">
+              <p class="reveal-custom">
+                Перед стартом разработки анализирую, как решены аналогичные проблемы у крупных игроков рынка: <strong>Tableau</strong>, <strong>Qlik</strong> и <strong>Power BI</strong>. Также обращаюсь к опыту Google, который решал похожую задачу при переносе функциональности Microsoft Office в Google Docs. Все перечисленные системы отказываются от опыта громоздкого RibonUX&#8209контекстного меню в пользу контекстных боковых панелей, это позволят минимизировать размер интерфейса в условиях работ с большой плотностью данных
+              </p>
+            </div>
+            <div class="prototype-section__body">
+              <p class="reveal-custom">
+                Выбираю самый высоконагруженный инструмент платформы и собираю на его основе прототип интерфейса, чтобы проверить гипотезы и UI-решения. Совместно с бизнес-аналитиком разбираем функциональные требования и переносим их в прототип, валидируя решения с BI-экспертами. Поскольку инструменты платформы тесно связаны, большинство UI/UX-решений можно масштабировать на другие инструменты. Это позволилит ускорить разработку и сохранить единые паттерны взаимодействия во всей платформе. 
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    
+      <div class="prototype-section__inner">
+
+        <section class="image-block" data-nav-theme="dark">
+          <div class="image-block__inner">
+            <div class="image-block__frame">
+              <img src="old.png" class="reveal-image" alt="">
+            </div>
+          </div>
+        </section>
+
+        <div class="prototype-section__grid">
+          <div class="prototype-section__body reveal-custom">
+            Выбранный подход позволил обойтись без долгих количественных тестов и быстро валидировать сложные UX&#8209;решения на соответствие бизнес&#8209;логике. Только в рамках одного инструмента было проработано:
+          </div>
+        </div>
+
+      </div>
+
+      <div class="stats-container">
+        <div class="stats-card">
+          <div class="stats-number">50 +</div>
+          <div class="stats-content">
+            <h4 class="stats-title">Пользовательских сценариев</h4>
+            <p class="stats-text">Было детально спроектировано и валидировано в рамках работы всего над одним инструментом.</p>
+          </div>
+        </div>
+        <div class="stats-card">
+          <div class="stats-number">2 500 +</div>
+          <div class="stats-content">
+            <h4 class="stats-title">Макетов</h4>
+            <p class="stats-text">Создано для фиксации всех состояний и вариантов взаимодействия интерфейса.</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ====== ДИЗАЙН-СИСТЕМА ====== -->
+    <div class="image-block_ds">
+      <img src="ds.png" alt="">
+    </div>
+
+    <!-- ====== ВИЗУАЛЬНОЕ НАПРАВЛЕНИЕ ====== -->
+    <section class="prototype-section" data-nav-theme="light">
+
+      <div class="prototype-section__inner">
+
+        <h2 class="prototype-section__title animate-this">Финальный дизайн</h2>
+
+
+
+        <div class="prototype-section__grid">
+          <div class="truco-text-columns">
+            <div class="prototype-section__body">
+              <p class="reveal-custom">
+                После обкатки всех сценариев на одном из инструментов приступаю к следующему этапу UI что бы привести все элементы к единому стилю и сложить единую картину. Еще при работе над прототипом все UI элементы заносились в дизайн-систему что в будушем позволило значительно упростить следующий этап редизайна платформы.
+              </p>
+            </div>
+            <div class="prototype-section__body">
+              <p class="reveal-custom">
+                Основной задачей при разработке концепта было разработать простой минималистичный интерфейс, чтобы сфокусировать внимание пользователей на контенте и целевых действиях и не тратить драгоценное время на графический контент.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+        <section class="image-block" data-nav-theme="dark">
+          <div class="image-block__frame">
+            <img src="ROOK.png" class="reveal-image" alt="">
+          </div>
+        </section>
+
+         <section class="image-block" data-nav-theme="dark">
+          <div class="image-block__frame">
+            <img src="IDEOK.png" class="reveal-image" alt="">
+          </div>
+        </section>
+
+         <section class="image-block" data-nav-theme="dark">
+          <div class="image-block__frame">
+            <img src="ETLOK.png" class="reveal-image" alt="">
+          </div>
+        </section>
+
+      <div class="visual-grid">
+        <div class="visual-card visual-card--wide" style="background:#0B1C2A;">
+          <img src="Frame7556.png" alt="">
+        </div>
+        <div class="visual-card visual-card--small" style="background:#C9935D;">
+          <img src="Frame7557.png" alt="">
+        </div>
+        <div class="visual-card visual-card--small" style="background:#0B1C2A;">
+          <img src="Frame7559.png" alt="">
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ====== ПОЛЬЗОВАТЕЛЬСКИЕ СЦЕНАРИИ ====== -->
+    <section class="prototype-section" data-nav-theme="light">
+      <div class="prototype-section__inner">
+
+        <h2 class="prototype-section__title animate-this">
+          Пользовательские<br>сценарии
+        </h2>
+
+        <div class="prototype-section__divider"></div>
+
+        <div class="prototype-section__grid">
+          <div class="prototype-section__body reveal-custom">
+            Разработчики быстро собрали рабочий прототип с помощью AI-инструментов и вайбкодинга, это позволило оперативно проверить игровые механики и собрать ключевые экраны платформы.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====== MOBILE FIRST ====== -->
+    <section class="mobile-first-section" data-nav-theme="light">
+
+      <div class="mobile-first-section__inner">
+
+        <h2 class="mobile-first-section__title animate-this">
+          Приоритет<br>мобильной версии
+        </h2>
+
+        <div class="mobile-first-section__grid">
+          <div class="mobile-first-section__body reveal-custom">
+            На рынке Аргентины мобильные устройства являются основным способом доступа в интернет. Более 96% пользователей выходят в сеть со смартфонов.
+            <br><br>
+            Концепция интерфейса разрабатывалась по принципу Mobile First.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="video-showcase">
+        <div class="video-mob">
+          <video src="mob.webm" autoplay muted loop playsinline preload="auto"></video>
+        </div>
+        <div class="video-desk">
+          <video src="desc.webm" autoplay muted loop playsinline preload="auto"></video>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ====== UI — ФИНАЛЬНЫЙ ДИЗАЙН ====== -->
+    <section class="ui-section ui-section--concept">
+      <div class="ui-section__inner">
+
+        <div class="ui-section__content">
+          <div class="ui-section__content-sticky">
+            <h2 class="ui-section__title animate-this">
+              Финальный дизайн <br>ключевых экранов
+            </h2>
+            <div class="ui-section__body reveal-custom">
+              На этапе формирования визуальной концепции были проанализированы интерфейсы онлайн-казино Stake и Bet365. Эти продукты стали основными референсами благодаря сдержанному визуальному стилю, продуманной иерархии и удобной организации большого объёма контента.
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-section__showcase">
+          <img src="all.png" alt="UI" class="ui-section__img ui-section__img--concept">
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====== UI — ФОН ====== -->
+    <section class="ui-section">
+      <div class="ui-section__inner">
+
+        <h2 class="ui-section__title animate-this" data-nav-theme="light">
+          Финальный дизайн <br>ключевых экранов
+        </h2>
+
+        <div class="ui-section__divider"></div>
+
+        <div class="ui-section__grid">
+          <div class="ui-section__label reveal-custom">MOBILE FIRST</div>
+          <div class="ui-section__body reveal-custom">
+            На рынке Аргентины мобильные устройства являются основным способом доступа в интернет.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="ui-section__showcase" data-nav-theme="dark">
+        <img src="tbg.png" alt="UI" class="ui-section__img">
+      </div>
+    </section>
+
+  </div><!-- /.foresight-page -->
+
+  <!-- SCRIPTS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+  <script src="https://unpkg.com/@barba/core@2.10.3/dist/barba.umd.js"></script>
+  <script src="../script.js"></script>
+
+</body>
+</html>
